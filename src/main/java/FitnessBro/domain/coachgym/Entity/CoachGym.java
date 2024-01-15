@@ -3,7 +3,6 @@ package FitnessBro.domain.coachgym.Entity;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.common.BaseEntity;
 import FitnessBro.domain.gym.Entity.Gym;
-import FitnessBro.domain.user.Entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

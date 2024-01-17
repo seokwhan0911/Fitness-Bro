@@ -25,4 +25,7 @@ public class UserRestController {
         Users user = userCommandService.joinUser(request);
         return ApiResponse.onSuccess(UserConverter.toJoinResultDTO(user));
     }
+
+    //@PostMapping("/sign-up")
+    //public
 }

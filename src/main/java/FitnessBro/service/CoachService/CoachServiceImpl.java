@@ -16,4 +16,24 @@ public class CoachServiceImpl implements CoachService{
         return coachRepository.getById(coachId);
     }
 
+
+
+    public void addCoach() {
+        Coach coach = new Coach();
+        coach.setId(1L);
+        coach.setAge(3);
+        coach.setEmail("awef");
+        coach.setAddress("awef");
+        coach.setName("awef");
+        coach.setNickname("awef");
+        coach.setRating(4L);
+        coach.setIntroduction("awef");
+        coach.setSchedule("awef");
+        coach.setPassword("awef");
+        coach.setComment("awef");
+        coach.setPrice(10000);
+
+        coachRepository.save(coach);
+    }
+
 }

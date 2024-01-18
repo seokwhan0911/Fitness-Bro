@@ -8,4 +8,7 @@ import org.springframework.stereotype.Service;
 public interface CoachService {
 
     public Coach getCoachById(Long coachId);
+
+    public void addCoach();
+
 }

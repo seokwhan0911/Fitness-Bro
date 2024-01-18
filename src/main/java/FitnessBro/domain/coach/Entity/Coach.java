@@ -21,6 +21,8 @@ public class Coach extends BaseEntity {
     @Column(name = "coach_id")
     private Long id;
 
+    private String name;
+
     private String nickname;
 
     private String email;

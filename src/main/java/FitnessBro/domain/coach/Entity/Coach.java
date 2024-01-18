@@ -21,6 +21,8 @@ public class Coach extends BaseEntity {
     @Column(name = "coach_id")
     private Long id;
 
+    private String name;
+
     private String nickname;
 
     private String email;
@@ -30,6 +32,16 @@ public class Coach extends BaseEntity {
     private int age;
 
     private Long rating;
+
+    private String address;
+
+    private String comment;
+
+    private int price;
+
+    private String schedule;
+
+    private String introduction;
 
     // 추후에 PM 기획 후 추가 예정
 }

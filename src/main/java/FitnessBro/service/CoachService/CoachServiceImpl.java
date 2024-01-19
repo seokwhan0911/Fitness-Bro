@@ -3,6 +3,7 @@ package FitnessBro.service.CoachService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.respository.CoachRepository;
+import FitnessBro.respository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
+    private final ReviewRepository reviewRepository;
+    private final ReviewRepository A;
 
     public Coach getCoachById(Long coachId){
         return coachRepository.getById(coachId);
@@ -32,7 +35,7 @@ public class CoachServiceImpl implements CoachService{
         coach.setPassword("awef");
         coach.setComment("awef");
         coach.setPrice(10000);
-
+//awefwaef
         coachRepository.save(coach);
     }
 

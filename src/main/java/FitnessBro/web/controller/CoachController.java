@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/coaches")
 @RequiredArgsConstructor
@@ -24,5 +26,11 @@ public class CoachController {
         coachService.addCoach();
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
     }
+
+//    @GetMapping("/{coachId}/reviews")
+//    public ApiResponse<List<CoachResponseDTO.CoachProfileDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
+//
+//
+//    }
 
 }

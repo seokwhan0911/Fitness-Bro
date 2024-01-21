@@ -5,14 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 public class Coach extends BaseEntity {
 
@@ -32,6 +30,16 @@ public class Coach extends BaseEntity {
     private int age;
 
     private Long rating;
+
+    private String address;
+
+    private String comment;
+
+    private int price;
+
+    private String schedule;
+
+    private String introduction;
 
     // 추후에 PM 기획 후 추가 예정
 }

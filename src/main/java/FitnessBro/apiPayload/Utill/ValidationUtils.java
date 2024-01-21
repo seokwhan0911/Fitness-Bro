@@ -1,4 +1,4 @@
-package com.intp.common.util;
+package FitnessBro.apiPayload.Utill;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;

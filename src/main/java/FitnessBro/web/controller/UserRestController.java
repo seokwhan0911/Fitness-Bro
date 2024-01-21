@@ -2,7 +2,7 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.UserConverter;
-import FitnessBro.domain.user.Entity.Users;
+import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.service.UserService.UserCommandService;
 import FitnessBro.web.dto.UserRequestDTO;
 import FitnessBro.web.dto.UserResponseDTO;
@@ -22,7 +22,7 @@ public class UserRestController {
 
     @PostMapping("/")
     public ApiResponse<UserResponseDTO.JoinResultDTO> join(@RequestBody @Valid UserRequestDTO.JoinDTO request){
-        Users user = userCommandService.joinUser(request);
+        Member user = userCommandService.joinUser(request);
         return ApiResponse.onSuccess(UserConverter.toJoinResultDTO(user));
     }
 

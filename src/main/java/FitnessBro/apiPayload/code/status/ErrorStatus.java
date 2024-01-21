@@ -20,7 +20,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // 코치 관련 에러
-    COACH_NOT_FOUND(HttpStatus.BAD_REQUEST, "COACH4001", "코치가 없습니다");
+    COACH_NOT_FOUND(HttpStatus.BAD_REQUEST, "COACH5001", "코치가 없습니다"),
+
+    MYPAGE_ERROR(HttpStatus.BAD_REQUEST, "COACH5002", "서버가 응답하지 않아요");
+
 
     // 유저 관련 에러
 

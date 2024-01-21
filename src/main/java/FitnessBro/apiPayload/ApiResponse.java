@@ -1,7 +1,6 @@
 package FitnessBro.apiPayload;
 
 import FitnessBro.apiPayload.code.BaseCode;
-import FitnessBro.apiPayload.code.BaseErrorCode;
 import FitnessBro.apiPayload.code.status.SuccessStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,9 +33,5 @@ public class ApiResponse<T> {
     // 실패한 경우 응답 생성
     public static <T> ApiResponse<T> onFailure(String code, String message, T data){
         return new ApiResponse<>(false, code, message, data);
-    }
-
-    public static <T> ApiResponse<T> ofFailure(BaseErrorCode code, T result) {
-        return new ApiResponse<>(false, code.getReasonHttpStatus().getCode(), code.getReasonHttpStatus().getMessage(), result);
     }
 }

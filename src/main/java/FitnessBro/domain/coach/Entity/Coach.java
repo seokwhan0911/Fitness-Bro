@@ -5,12 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Coach extends BaseEntity {
 
@@ -18,8 +20,6 @@ public class Coach extends BaseEntity {
     @GeneratedValue
     @Column(name = "coach_id")
     private Long id;
-
-    private String name;
 
     private String nickname;
 
@@ -30,16 +30,6 @@ public class Coach extends BaseEntity {
     private int age;
 
     private Long rating;
-
-    private String address;
-
-    private String comment;
-
-    private int price;
-
-    private String schedule;
-
-    private String introduction;
 
     // 추후에 PM 기획 후 추가 예정
 }

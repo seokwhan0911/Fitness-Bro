@@ -3,8 +3,11 @@ package FitnessBro.service.CoachService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.respository.CoachRepository;
+import FitnessBro.web.dto.CoachResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +17,10 @@ public class CoachServiceImpl implements CoachService{
 
     public Coach getCoachById(Long coachId){
         return coachRepository.getById(coachId);
+    }
+
+    public List<CoachResponseDTO.CoachDTO> getCoachList(Coach coach){
+        List<Coach> coaches = coachRepository.findAllByAddress(coach.getAddress());
     }
 
 

@@ -4,6 +4,8 @@ package FitnessBro.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 
 public class CoachResponseDTO {
 
@@ -20,6 +22,23 @@ public class CoachResponseDTO {
         private String address;
         private String schedule;
 
+    }
+
+    @Getter
+    @Builder
+    public static class CoachDTO{
+        private String name;
+        private int age;
+        private float rating;
+        private String comment;
+        private int price;
+        private String address;
+    }
+
+    @Getter
+    @Builder
+    public static class CoachListDTO{
+        List<CoachDTO> coachList;
     }
 
 }

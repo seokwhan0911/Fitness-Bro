@@ -34,7 +34,7 @@ public class CoachController {
     @GetMapping("/{coachId}/info")
     @Operation(summary = "코치 마이페이지 API", description = "코치 id를 받아 코치 마이페이지 전달")
     public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId, Errors errors){
-        coachService.addCoach();
+
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
     }
 

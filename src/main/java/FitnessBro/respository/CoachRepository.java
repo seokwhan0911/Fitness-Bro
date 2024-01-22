@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface CoachRepository extends JpaRepository<Coach, Long>{
-    //List<Coach> findAllByGym(Long gymId);
+
     List<Coach> findAll();
-    //Page<Coach> findAllByGym(Gym gym, PageRequest pageRequest);
+
 }

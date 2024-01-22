@@ -23,8 +23,6 @@ public interface CoachService {
 
     public List<Coach> getCoachList();
 
-    //Optional<Gym> findGym(Long gymId);
 
-    //Page<Coach> getCoachList(Long gymId, Integer page);
 
 }

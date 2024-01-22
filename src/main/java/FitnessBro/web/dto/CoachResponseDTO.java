@@ -35,10 +35,5 @@ public class CoachResponseDTO {
         private String address;
     }
 
-    @Getter
-    @Builder
-    public static class CoachListDTO{
-        List<CoachDTO> coachList;
-    }
 
 }

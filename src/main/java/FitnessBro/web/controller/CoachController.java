@@ -4,9 +4,13 @@ package FitnessBro.web.controller;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.converter.CoachConverter;
+import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.CoachResponseDTO;
+import FitnessBro.web.dto.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Getter;
@@ -29,7 +33,7 @@ import static FitnessBro.apiPayload.Utill.ValidationUtils.getValidationErrors;
 @RequiredArgsConstructor
 public class CoachController {
     private final CoachService coachService;
-
+    private final ReviewService reviewService;
 
     @GetMapping("/{coachId}/info")
     @Operation(summary = "코치 마이페이지 API", description = "코치 id를 받아 코치 마이페이지 전달")
@@ -54,6 +58,11 @@ public class CoachController {
         List<Coach> coachList = coachService.getCoachList();
         ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+    @GetMapping("/{coachId}/reviews")
+    public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
+        List<Review> reviews =  reviewService.getByCoachId(coachId);
+        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
     }
 
 }

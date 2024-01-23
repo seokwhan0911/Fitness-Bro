@@ -21,4 +21,18 @@ public class ReviewResponseDTO {
 
     }
 
+    @Getter
+    @Builder
+    public static class ReviewsByUserDTO{
+
+        private String coachName;
+
+        private LocalDateTime createdAt;
+
+        private String contents;
+
+        private float rating;
+
+    }
+
 }

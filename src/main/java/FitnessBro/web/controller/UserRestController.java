@@ -25,7 +25,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{userId}/reviews")
-    public ApiResponse<ReviewResponseDTO.ReviewsByUserDTO> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+    public ApiResponse<ReviewResponseDTO.ReviewByUserDTO> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
 
     }
 }

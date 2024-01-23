@@ -30,5 +30,10 @@ public class CoachController {
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
     }
 
+    @GetMapping("/{coachId}/reveiws")
+    public ApiResponse<> getCoachReviews(@PathVariable(value = "coachId") Long coachId){
+
+    }
+
 
 }

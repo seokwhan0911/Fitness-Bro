@@ -4,6 +4,8 @@ package FitnessBro.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 
 public class CoachResponseDTO {
 

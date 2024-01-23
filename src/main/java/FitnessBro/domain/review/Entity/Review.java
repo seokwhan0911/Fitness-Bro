@@ -26,7 +26,7 @@ public class Review extends BaseEntity {
 
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member user;
+    private Member member;
 
     @JoinColumn(name = "coach_id")
     @ManyToOne(fetch = FetchType.LAZY)

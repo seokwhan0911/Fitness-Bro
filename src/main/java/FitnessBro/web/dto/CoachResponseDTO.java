@@ -7,8 +7,7 @@ import lombok.Getter;
 
 public class CoachResponseDTO {
 
-    @Getter
-    @Builder
+    @Getter    @Builder
     public static class CoachProfileDTO{
 
         private String name;

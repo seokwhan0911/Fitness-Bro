@@ -9,6 +9,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)

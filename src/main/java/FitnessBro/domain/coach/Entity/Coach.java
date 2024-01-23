@@ -29,17 +29,17 @@ public class Coach extends BaseEntity {
 
     private int age;
 
-    private Long rating;
+    private float rating;
 
     private String address;
 
-    private String comment;
+    private String comment;     // 한 줄 인사말
 
     private int price;
 
     private String schedule;
 
-    private String introduction;
+    private String introduction;    // 선생님 소개
 
     // 추후에 PM 기획 후 추가 예정
 }

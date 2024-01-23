@@ -1,8 +1,8 @@
 package FitnessBro.converter;
 
 import FitnessBro.domain.user.Entity.Member;
-import FitnessBro.web.dto.UserRequestDTO;
-import FitnessBro.web.dto.UserResponseDTO;
+import FitnessBro.web.dto.User.UserRequestDTO;
+import FitnessBro.web.dto.User.UserResponseDTO;
 
 import java.time.LocalDateTime;
 

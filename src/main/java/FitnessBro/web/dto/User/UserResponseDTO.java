@@ -1,4 +1,4 @@
-package FitnessBro.web.dto;
+package FitnessBro.web.dto.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +17,6 @@ public class UserResponseDTO {
         Long userId;
         LocalDateTime createdAt;
     }
+
+
 }

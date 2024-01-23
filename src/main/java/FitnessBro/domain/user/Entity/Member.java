@@ -20,7 +20,7 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
 
     private String nickname;

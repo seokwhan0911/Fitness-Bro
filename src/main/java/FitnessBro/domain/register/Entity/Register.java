@@ -18,9 +18,9 @@ public class Register extends BaseEntity {
     @Column(name = "register_id")
     private Long id;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member user;
+    private Member member;
 
     @JoinColumn(name = "coach_id")
     @ManyToOne(fetch = FetchType.LAZY)

@@ -3,7 +3,7 @@ package FitnessBro.service.UserService;
 import FitnessBro.converter.UserConverter;
 import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.web.dto.UserRequestDTO;
+import FitnessBro.web.dto.User.UserRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

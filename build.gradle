@@ -25,39 +25,40 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'junit:junit:4.13.1'
+
+
 	compileOnly 'org.projectlombok:lombok'
+//	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'com.h2database:h2'
+
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.15.Final'
-	// jwt
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// swagger
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
-	// swagger
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-	testImplementation 'junit:junit:4.13.1'
+//	// jwt
+//	implementation 'com.auth0:java-jwt:4.2.0'
+//	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+//	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+//	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+//
+//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	testImplementation 'org.springframework.security:spring-security-test'
+//	testImplementation 'junit:junit:4.13.1'
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
 
-//	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.15.Final'
 
-//jwt
-	implementation 'com.auth0:java-jwt:4.2.0'
+//	// swagger
+//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+//	testImplementation 'junit:junit:4.13.1'
+//
+//
 }
 
 tasks.named('test') {

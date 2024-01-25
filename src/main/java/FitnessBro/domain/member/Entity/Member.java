@@ -1,4 +1,4 @@
-package FitnessBro.domain.user.Entity;
+package FitnessBro.domain.member.Entity;
 
 import FitnessBro.domain.common.BaseEntity;
 import jakarta.persistence.Column;
@@ -12,11 +12,11 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
 
     private String nickname;

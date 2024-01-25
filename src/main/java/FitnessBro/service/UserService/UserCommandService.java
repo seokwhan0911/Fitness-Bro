@@ -1,9 +1,9 @@
 package FitnessBro.service.UserService;
 
-import FitnessBro.domain.user.Entity.User;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.web.dto.UserRequestDTO;
 
 public interface UserCommandService {
 
-    User joinUser(UserRequestDTO.JoinDTO request);
+    Member joinUser(UserRequestDTO.JoinDTO request);
 }

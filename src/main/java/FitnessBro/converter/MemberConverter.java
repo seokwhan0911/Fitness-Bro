@@ -10,7 +10,7 @@ public class MemberConverter {
 
     public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member){
         return MemberResponseDTO.JoinResultDTO.builder()
-                .userId(member.getId())
+                .memberId(member.getId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -18,7 +18,7 @@ public class MemberConverter {
     public static Member toMember(MemberRequestDTO.JoinDTO request){
         return Member.builder()
                 .nickname(request.getNickname())
-                .id(request.getUserId())
+                .id(request.getMemberId())
                 .age(request.getAge())
                 .email(request.getEmail())
                 .build();

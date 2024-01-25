@@ -9,7 +9,7 @@ public class MemberRequestDTO {
     @Builder
     public static class JoinDTO {    // 회원가입 DTO
         String nickname;
-        Long userId;
+        Long memberId;
         Integer age;
         String email;
     }

@@ -32,4 +32,7 @@ public class UserRestController {
     public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
         return ApiResponse.onSuccess(reviewService.getReviews(userId));
     }
+
+    //@PostMapping("/{userId}/reviews")
+    //public ApiResponse<>
 }

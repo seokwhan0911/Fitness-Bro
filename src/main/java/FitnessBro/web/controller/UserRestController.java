@@ -3,6 +3,7 @@ package FitnessBro.web.controller;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.UserConverter;
 import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.service.UserService.UserCommandService;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import FitnessBro.web.dto.UserRequestDTO;
@@ -11,12 +12,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserRestController {
 
     private final UserCommandService userCommandService;
+    private final ReviewService reviewService;
 
     @PostMapping("/")
     public ApiResponse<UserResponseDTO.JoinResultDTO> join(@RequestBody @Valid UserRequestDTO.JoinDTO request){
@@ -25,7 +29,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{userId}/reviews")
-    public ApiResponse<ReviewResponseDTO.ReviewByUserDTO> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
-
+    public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+        return ApiResponse.onSuccess(reviewService.getReviews(userId));
     }
 }

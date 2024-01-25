@@ -6,12 +6,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Builder
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+//@DynamicUpdate  // Update시 null인 경우 쿼리를 안 보냄
+//@DynamicInsert  // Insert시 null인 경우 쿼리를 안 보냄
 public class Member extends BaseEntity {
 
     @Id

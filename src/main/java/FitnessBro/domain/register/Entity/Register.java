@@ -25,4 +25,6 @@ public class Register extends BaseEntity {
     @JoinColumn(name = "coach_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Coach coach;
+
+
 }

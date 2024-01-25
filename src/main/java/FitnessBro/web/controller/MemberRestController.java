@@ -1,11 +1,11 @@
 package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.UserConverter;
+import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.member.Entity.Member;
-import FitnessBro.service.UserService.UserCommandService;
-import FitnessBro.web.dto.UserRequestDTO;
-import FitnessBro.web.dto.UserResponseDTO;
+import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.web.dto.MemberRequestDTO;
+import FitnessBro.web.dto.MemberResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class UserRestController {
+public class MemberRestController {
 
-    private final UserCommandService userCommandService;
+    private final MemberCommandService userCommandService;
 
     @PostMapping("/sign-up")
-    public ApiResponse<UserResponseDTO.JoinResultDTO> join(@RequestBody @Valid UserRequestDTO.JoinDTO request){
+    public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
 
         Member user = userCommandService.joinUser(request);
-        return ApiResponse.onSuccess(UserConverter.toJoinResultDTO(user));
+        return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(user));
     }
+
+    //@PostMapping("/sign-up")
+    //public
 }

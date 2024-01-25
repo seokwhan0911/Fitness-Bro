@@ -5,6 +5,7 @@ import FitnessBro.converter.UserConverter;
 import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.service.UserService.UserCommandService;
+import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import FitnessBro.web.dto.UserRequestDTO;
 import FitnessBro.web.dto.UserResponseDTO;
@@ -33,6 +34,9 @@ public class UserRestController {
         return ApiResponse.onSuccess(reviewService.getReviews(userId));
     }
 
-    //@PostMapping("/{userId}/reviews")
-    //public ApiResponse<>
+    @PostMapping("/{userId}/reviews")
+    public ApiResponse<ReviewResponseDTO.ReviewByUserDTO> createReviews(
+            @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
+        return ApiResponse.onSuccess(reviewService.createReview(createReviewDTO, userId));
+    }
 }

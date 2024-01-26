@@ -11,7 +11,7 @@ public class RegisterConverter {
     public static RegisterResponseDTO.RegisterMemberDTO toRegisterMemberDTO(Register register){
         return RegisterResponseDTO.RegisterMemberDTO.builder()
                 .nickname(register.getMember().getNickname())
-                .creatdAt(register.getCreatedAt())
+                .createdAt(register.getCreatedAt())
                 .build();
     }
 
@@ -21,5 +21,16 @@ public class RegisterConverter {
                 .collect(Collectors.toList());
     }
 
+    public static RegisterResponseDTO.RegisterCoachDTO toRegisterCoachDTO(Register register){
+        return RegisterResponseDTO.RegisterCoachDTO.builder()
+                .nickname(register.getCoach().getNickname())
+                .createdAt(register.getCreatedAt())
+                .build();
+    }
 
+    public static List<RegisterResponseDTO.RegisterCoachDTO> toRegisterCoachListDTO(List<Register> registerList){
+        return registerList.stream()
+                .map(register -> toRegisterCoachDTO(register))
+                .collect(Collectors.toList());
+    }
 }

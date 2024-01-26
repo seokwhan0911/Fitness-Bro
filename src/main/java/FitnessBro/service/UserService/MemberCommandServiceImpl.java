@@ -8,19 +8,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserCommandServiceImpl implements UserCommandService {
+public class MemberCommandServiceImpl implements MemberCommandService {
 
-    private final MemberRepository userRespository;
+    private final MemberRepository memberRepository;
 
     @Override
-    @Transactional
-    public Member joinUser(UserRequestDTO.JoinDTO request) {
-
-        Member newUser = UserConverter.toUser(request);
-
-        return userRespository.save(newUser);
+    public Member getMemberById(Long memberId){
+        Member member = memberRepository.getById(memberId);
+        return member;
     }
+
+
+
 }

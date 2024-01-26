@@ -12,6 +12,13 @@ public class RegisterResponseDTO {
     @Getter
     public static class RegisterMemberDTO{
         String nickname;
-        LocalDateTime creatdAt;
+        LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    public static class RegisterCoachDTO{
+        String nickname;
+        LocalDateTime createdAt;
     }
 }

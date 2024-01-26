@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
@@ -29,4 +30,8 @@ public class Register extends BaseEntity {
     private Coach coach;
 
     private LocalDateTime createdAt;
+
+    private Boolean  memberSuccess = false;
+
+    private Boolean coachSuccess = false;
 }

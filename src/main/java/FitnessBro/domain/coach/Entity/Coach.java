@@ -41,5 +41,6 @@ public class Coach extends BaseEntity {
 
     private String introduction;
 
+
     // 추후에 PM 기획 후 추가 예정
 }

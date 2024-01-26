@@ -3,6 +3,7 @@ package FitnessBro.service.CoachService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.gym.Entity.Gym;
+import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.GymRepository;
 import FitnessBro.web.dto.CoachResponseDTO;
@@ -37,5 +38,6 @@ public class CoachServiceImpl implements CoachService{
         List<Coach> coaches = coachRepository.findAll();
         return coaches;
     }
+
 
 }

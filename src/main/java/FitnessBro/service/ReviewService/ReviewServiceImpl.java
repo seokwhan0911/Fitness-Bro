@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     }
     public ReviewResponseDTO.ReviewByUserDTO createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId){
-        Member member = memberRepository.getById(userId);
+        Member member = memberRepository.getReferenceById(userId);
         Coach coach = coachRepository.findByNickname(createReviewDTO.getCoachName());
 
         Review review = ReviewRequestDTO.CreateReviewDTO.toEntity(createReviewDTO,member,coach);

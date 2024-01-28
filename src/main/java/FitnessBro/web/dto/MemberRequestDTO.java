@@ -2,12 +2,14 @@ package FitnessBro.web.dto;
 
 import lombok.Getter;
 
-public class UserRequestDTO {
+public class MemberRequestDTO {
 
     @Getter
     public static class JoinDTO{
+        String userId;
+        String password;
         String nickname;
-        Integer age;
         String email;
+        int age;
     }
 }

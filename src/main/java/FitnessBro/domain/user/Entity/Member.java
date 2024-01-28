@@ -14,6 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Setter
 //@DynamicUpdate  // Update시 null인 경우 쿼리를 안 보냄
 //@DynamicInsert  // Insert시 null인 경우 쿼리를 안 보냄
 public class Member extends BaseEntity {
@@ -22,6 +23,8 @@ public class Member extends BaseEntity {
     @GeneratedValue
     @Column(name = "user_id")
     private Long id;
+
+    private String memberId;
 
     private String nickname;
 

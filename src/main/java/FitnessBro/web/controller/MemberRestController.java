@@ -6,10 +6,8 @@ import FitnessBro.web.dto.MemberRequestDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +21,12 @@ public class MemberRestController {
         memberCommandService.joinMember(request);
         return ResponseEntity.ok().body("회원가입에 성공했습니다.");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody @Valid MemberRequestDTO.loginDTO request){
+        String token = memberCommandService.login(request.getMemberId(), request.getPassword());
+
+        return ResponseEntity.ok().body(token);
+    }
+
 }

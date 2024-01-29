@@ -16,3 +16,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+jwt:
+  token:
+    secret: "secretKey"

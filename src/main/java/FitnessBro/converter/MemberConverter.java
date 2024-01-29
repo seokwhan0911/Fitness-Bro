@@ -17,7 +17,7 @@ public class MemberConverter {
 
     public static Member toMember(MemberRequestDTO.JoinDTO request){
         return Member.builder()
-                .memberId(request.getUserId())
+                .memberId(request.getMemberId())
                 .password(request.getPassword())
                 .nickname(request.getNickname())
                 .age(request.getAge())

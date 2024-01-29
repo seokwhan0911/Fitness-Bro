@@ -17,8 +17,5 @@ public class Gym extends BaseEntity {
     @Column(name = "gym_id")
     private Long id;
 
-//    @Embedded
-//    private Address address;
-
     private String address;
 }

@@ -1,7 +1,7 @@
 package FitnessBro.apiPayload.configuration;
 
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
-import FitnessBro.service.UserService.MemberCommandService;
+import FitnessBro.service.MemberService.MemberCommandService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

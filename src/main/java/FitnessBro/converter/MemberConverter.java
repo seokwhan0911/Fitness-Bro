@@ -1,15 +1,15 @@
 package FitnessBro.converter;
 
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.web.dto.MemberRequestDTO;
-import FitnessBro.web.dto.UserResponseDTO;
+import FitnessBro.web.dto.MemberResponseDTO;
 
 import java.time.LocalDateTime;
 
 public class MemberConverter {
 
-    public static UserResponseDTO.JoinResultDTO toJoinResultDTO(Member user){
-        return UserResponseDTO.JoinResultDTO.builder()
+    public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member user){
+        return MemberResponseDTO.JoinResultDTO.builder()
                 .userId(user.getId())
                 .createdAt(LocalDateTime.now())
                 .build();

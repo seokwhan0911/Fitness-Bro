@@ -1,6 +1,5 @@
-package FitnessBro.service.UserService;
+package FitnessBro.service.MemberService;
 
-import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.web.dto.MemberRequestDTO;
 
 public interface MemberCommandService {

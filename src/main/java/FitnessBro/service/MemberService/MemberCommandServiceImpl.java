@@ -1,10 +1,10 @@
-package FitnessBro.service.UserService;
+package FitnessBro.service.MemberService;
 
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.web.dto.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;

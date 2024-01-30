@@ -35,7 +35,9 @@ public class SecurityConfig {
                                 .requestMatchers("/members/login").permitAll()
                                 .requestMatchers("/coaches/sign-up").permitAll()
                                 .requestMatchers("/coaches/login").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
+
                 )
                 .addFilterBefore(new JwtFilter(memberCommandService, seceretKey), UsernamePasswordAuthenticationFilter.class);
         return http.build();

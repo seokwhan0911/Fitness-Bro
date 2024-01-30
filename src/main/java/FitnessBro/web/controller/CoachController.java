@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static FitnessBro.apiPayload.Utill.ValidationUtils.getValidationErrors;
-
 
 @RestController
 @RequestMapping("/coaches")

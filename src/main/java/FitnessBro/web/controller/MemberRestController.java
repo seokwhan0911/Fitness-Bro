@@ -1,14 +1,14 @@
 package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.UserConverter;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.converter.MemberConverter;
+import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.ReviewService.ReviewService;
-import FitnessBro.service.UserService.UserCommandService;
+import FitnessBro.web.dto.MemberRequestDTO;
+import FitnessBro.web.dto.MemberResponseDTO;
 import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
-import FitnessBro.web.dto.UserRequestDTO;
-import FitnessBro.web.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +18,17 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class UserRestController {
+public class MemberRestController {
 
-    private final UserCommandService userCommandService;
+
+    private final MemberCommandService memberCommandService;
     private final ReviewService reviewService;
 
-    @PostMapping("/")
-    public ApiResponse<UserResponseDTO.JoinResultDTO> join(@RequestBody @Valid UserRequestDTO.JoinDTO request){
-        Member user = userCommandService.joinUser(request);
-        return ApiResponse.onSuccess(UserConverter.toJoinResultDTO(user));
+    @PostMapping("/sign-up")
+    public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
+
+        Member user = memberCommandService.joinUser(request);
+        return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(user));
     }
 
     @GetMapping("/{userId}/reviews")
@@ -39,4 +41,5 @@ public class UserRestController {
             @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
         return ApiResponse.onSuccess(reviewService.createReview(createReviewDTO, userId));
     }
+
 }

@@ -2,7 +2,7 @@ package FitnessBro.service.ReviewService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.review.Entity.Review;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.ReviewRepository;

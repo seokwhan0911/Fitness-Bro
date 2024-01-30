@@ -1,8 +1,8 @@
 package FitnessBro.respository;
 
-import FitnessBro.domain.user.Entity.Member;
-import FitnessBro.web.dto.ReviewRequestDTO;
-import FitnessBro.web.dto.ReviewResponseDTO;
+
+import FitnessBro.domain.member.Entity.Member;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

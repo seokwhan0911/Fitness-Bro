@@ -2,7 +2,7 @@ package FitnessBro.domain.review.Entity;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.common.BaseEntity;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +24,9 @@ public class Review extends BaseEntity {
 
     private String contents;
 
+
     private Long rating;
+
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)

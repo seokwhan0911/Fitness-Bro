@@ -2,7 +2,7 @@ package FitnessBro.domain.register.Entity;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.common.BaseEntity;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,9 +18,9 @@ public class Register extends BaseEntity {
     @Column(name = "register_id")
     private Long id;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member user;
+    private Member member;
 
     @JoinColumn(name = "coach_id")
     @ManyToOne(fetch = FetchType.LAZY)

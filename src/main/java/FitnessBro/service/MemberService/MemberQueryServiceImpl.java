@@ -1,7 +1,8 @@
-package FitnessBro.service.UserService;
+package FitnessBro.service.MemberService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.favorites.Entity.Favorites;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.FavoriteRepository;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserQueryServiceImpl implements UserQueryService {
+public class MemberQueryServiceImpl implements MemberQueryService {
 
     private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
@@ -25,9 +26,8 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     public List<Coach> getFavoriteCoachList(Long memberId) {
 
-        Member member = memberRepository.findById(memberId).get();
 
-        List<Favorites> favoritesList = favoriteRepository.findAllByMember(member);
+        List<Favorites> favoritesList = favoriteRepository.findAllByMemberId(memberId);
 
         List<Coach> coachList = favoritesList.stream()
                 .map(Favorites::getCoach)

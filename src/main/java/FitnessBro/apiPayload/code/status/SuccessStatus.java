@@ -20,8 +20,6 @@ public enum SuccessStatus implements BaseCode {
     //회원가입 관련 응답
     _SIGNUP_SUCCESS(HttpStatus.OK, "SIGNUP200", "회원가입 성공입니다.");
 
-
-
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

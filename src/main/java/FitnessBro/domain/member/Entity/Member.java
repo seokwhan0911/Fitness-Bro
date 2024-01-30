@@ -1,4 +1,4 @@
-package FitnessBro.domain.user.Entity;
+package FitnessBro.domain.member.Entity;
 
 import FitnessBro.domain.common.BaseEntity;
 import jakarta.persistence.Column;
@@ -9,13 +9,11 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Entity
 @Builder
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-//@DynamicUpdate  // Update시 null인 경우 쿼리를 안 보냄
-//@DynamicInsert  // Insert시 null인 경우 쿼리를 안 보냄
 public class Member extends BaseEntity {
 
     @Id

@@ -31,10 +31,28 @@ public class CoachServiceImpl implements CoachService{
 
     @Override
     @Transactional
-    public List<Coach> getCoachList(){
+    public List<Coach> getCoachList() {
 
         List<Coach> coaches = coachRepository.findAll();
         return coaches;
+    }
+
+    public void addCoach() {
+        Coach coach = new Coach();
+        coach.setId(1L);
+        coach.setAge(3);
+        coach.setEmail("awef");
+        coach.setAddress("awef");
+        coach.setName("awef");
+        coach.setNickname("awef");
+        coach.setRating(4L);
+        coach.setIntroduction("awef");
+        coach.setSchedule("awef");
+        coach.setPassword("awef");
+        coach.setComment("awef");
+        coach.setPrice(10000);
+
+        coachRepository.save(coach);
     }
 
 }

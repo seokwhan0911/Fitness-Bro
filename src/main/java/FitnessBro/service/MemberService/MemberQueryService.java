@@ -1,9 +1,9 @@
-package FitnessBro.service.UserService;
+package FitnessBro.service.MemberService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 
 import java.util.List;
 
-public interface UserQueryService {
+public interface MemberQueryService {
     List<Coach> getFavoriteCoachList(Long memberId);
 }

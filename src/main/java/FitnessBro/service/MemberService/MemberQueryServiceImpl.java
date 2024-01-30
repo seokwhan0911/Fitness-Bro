@@ -3,7 +3,6 @@ package FitnessBro.service.MemberService;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.favorites.Entity.Favorites;
 import FitnessBro.domain.member.Entity.Member;
-import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.FavoriteRepository;
 import FitnessBro.respository.MemberRepository;
@@ -19,8 +18,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class MemberQueryServiceImpl implements MemberQueryService {
 
-    private final MemberRepository memberRepository;
-    private final CoachRepository coachRepository;
     private final FavoriteRepository favoriteRepository;
 
     @Override

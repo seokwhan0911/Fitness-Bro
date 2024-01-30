@@ -3,11 +3,9 @@ package FitnessBro.web.controller;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.user.Entity.Member;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
-import FitnessBro.web.dto.Member.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -28,19 +26,12 @@ public class MemberRestController {
 
     private final MemberQueryService memberQueryService;
 
-    @GetMapping("/{userId}/favorites")
+    @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
-    @Parameters({
-            @Parameter(name = "memberId", description = "사용자의 아이디, path variable 입니다!"),
-    })
-    public ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> getFavoriteCoachList(@PathVariable(name = "member_id") Long memberId){
+    public ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> getFavoriteCoachList(){
         try{
+            Long memberId = getCurrentMemberId();
+
             // 찜한 동네형 목록 조회
             List<Coach> coachList = memberQueryService.getFavoriteCoachList(memberId);
 
@@ -57,5 +48,9 @@ public class MemberRestController {
         }
     }
 
+    // 로그인 구현 전 임시 메서드
+    private Long getCurrentMemberId(){
+        return 1l;
+    }
 
 }

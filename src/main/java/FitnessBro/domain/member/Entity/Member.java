@@ -30,4 +30,5 @@ public class Member extends BaseEntity {
     private int age;
 
 //    private List<Image> image = new ArrayList<>();     // 추후에 이미지 엔티티 생성 예정
+
 }

@@ -1,10 +1,7 @@
 package FitnessBro.domain.member.Entity;
 
 import FitnessBro.domain.common.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -21,8 +18,6 @@ public class Member extends BaseEntity {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-
-    private String memberId;
 
     private String nickname;
 

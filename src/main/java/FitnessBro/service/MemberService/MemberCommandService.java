@@ -6,5 +6,5 @@ public interface MemberCommandService {
 
     String joinMember(MemberRequestDTO.JoinDTO request);
 
-    String login(String memberId, String password);
+    String login(String email, String password);
 }

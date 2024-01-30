@@ -9,9 +9,9 @@ import java.util.Stack;
 
 public class JwtTokenUtil {
 
-    public static String getMemberId(String token, String secretKey){
+    public static String getEmail(String token, String secretKey){
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("memberId", String.class);
+                .getBody().get("email", String.class);
     }
 
     public static boolean isExpired(String token, String secretKey){
@@ -19,9 +19,9 @@ public class JwtTokenUtil {
                 .getBody().getExpiration().before(new Date());
     }
 
-    public static String createToken(String memberId, String key, Long expireTimeMs){
+    public static String createToken(String email, String key, Long expireTimeMs){
         Claims claims = Jwts.claims(); //일종의 map
-        claims.put("memberId", memberId);
+        claims.put("email", email);
 
         return Jwts.builder()
                 .setClaims(claims)

@@ -7,7 +7,6 @@ public class MemberRequestDTO {
     @Builder
     @Getter
     public static class JoinDTO{
-        String memberId;
         String password;
         String nickname;
         String email;
@@ -17,7 +16,7 @@ public class MemberRequestDTO {
     @Builder
     @Getter
     public static class loginDTO{
-        String memberId;
+        String email;
         String password;
     }
 

@@ -22,7 +22,7 @@ public class MemberRestController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid MemberRequestDTO.loginDTO request){
-        String token = memberCommandService.login(request.getMemberId(), request.getPassword());
+        String token = memberCommandService.login(request.getEmail(), request.getPassword());
 
         return ResponseEntity.ok().body(token);
     }

@@ -47,12 +47,12 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             return;
         }
-        // 토큰에서 memberId 꺼내기
-        String memberId = JwtTokenUtil.getMemberId(token, secretKey);
-        log.info("memberId:{}", memberId);
+        // 토큰에서 email 꺼내기
+        String email = JwtTokenUtil.getEmail(token, secretKey);
+        log.info("email:{}", email);
         //권한부여
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(memberId, null, List.of(new SimpleGrantedAuthority("MEMBER")));
+                new UsernamePasswordAuthenticationToken(email, null, List.of(new SimpleGrantedAuthority("MEMBER")));
 
         //Detail을 넣어준다
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

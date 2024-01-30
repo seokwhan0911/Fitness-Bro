@@ -1,30 +1,24 @@
 package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.RegisterConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.register.Entity.Register;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.RegisterService.RegisterService;
-import FitnessBro.service.UserService.MemberCommandService;
-import FitnessBro.web.dto.CoachResponseDTO;
+import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.web.dto.RegisterResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/match")
@@ -65,25 +59,25 @@ public class RegisterController {
 
 
     @GetMapping("/{memberId}/{coachId}")
-    @Operation(summary = "유저가 성사버튼 클릭", description = "유저가 채팅에서 '성사 완료' 버튼 누를때 api")
-    public ResponseEntity<?> getRegisterMember(@PathVariable(value = "memberId") Long memberId, @PathVariable(value = "coachId") Long coachId){
+    @Operation(summary = "유저가 먼저 성사버튼 클릭", description = "유저가 채팅에서 '성사 완료' 버튼 누를때 api")
+    public ResponseEntity<String> getRegisterMember(@PathVariable(value = "memberId") Long memberId, @PathVariable(value = "coachId") Long coachId){
         Member member = memberCommandService.getMemberById(memberId);
         Coach coach = coachService.getCoachById(coachId);
 
         Register register = registerService.registerSetting(member, coach);
 
-        return null;
+        return ResponseEntity.ok().body("코치에게 성사 요청을 보냈습니다.");
     }
 
     @GetMapping("/{coachId}/{memberId}")
-    @Operation(summary = "코치가 성사버튼 클릭", description = "코치가 채팅에서 '성사 완료' 버튼 누를때 api")
-    public ResponseEntity<?> getRegisterCoach(@PathVariable(value = "coachId")Long coachId, @PathVariable(value = "memberId") Long memberId){
+    @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 성사버튼 클릭", description = "코치가 채팅에서 '성사 완료' 버튼 누를때 api")
+    public ResponseEntity<String> getRegisterCoach(@PathVariable(value = "coachId")Long coachId, @PathVariable(value = "memberId") Long memberId){
         Member member = memberCommandService.getMemberById(memberId);
         Coach coach = coachService.getCoachById(coachId);
 
         Register register = registerService.registerCoachSetting(member, coach);
 
-        return null;
+        return ResponseEntity.ok().body(member.getNickname() + "님과 성사가 되었습니다.");
     }
 
 

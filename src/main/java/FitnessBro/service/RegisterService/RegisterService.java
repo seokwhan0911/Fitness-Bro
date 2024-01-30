@@ -2,10 +2,9 @@ package FitnessBro.service.RegisterService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.register.Entity.Register;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RegisterService {
 

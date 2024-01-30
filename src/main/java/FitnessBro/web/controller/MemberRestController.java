@@ -1,15 +1,6 @@
 package FitnessBro.web.controller;
 
-import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.UserConverter;
-import FitnessBro.domain.user.Entity.Member;
-
-import FitnessBro.web.dto.UserRequestDTO;
-import FitnessBro.web.dto.UserResponseDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

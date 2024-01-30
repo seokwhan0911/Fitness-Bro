@@ -1,14 +1,10 @@
-package FitnessBro.service.UserService;
+package FitnessBro.service.MemberService;
 
-import FitnessBro.converter.UserConverter;
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.web.dto.UserRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 package FitnessBro.converter;
 
-import FitnessBro.domain.user.Entity.Member;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.web.dto.UserRequestDTO;
 import FitnessBro.web.dto.UserResponseDTO;
 

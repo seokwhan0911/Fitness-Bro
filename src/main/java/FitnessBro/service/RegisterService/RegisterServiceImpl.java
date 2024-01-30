@@ -2,17 +2,14 @@ package FitnessBro.service.RegisterService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.register.Entity.Register;
-import FitnessBro.domain.user.Entity.Member;
-import FitnessBro.respository.MemberRepository;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.RegisterRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

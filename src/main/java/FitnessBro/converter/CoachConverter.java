@@ -1,7 +1,7 @@
 package FitnessBro.converter;
 
 import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.web.dto.CoachResponseDTO;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +36,16 @@ public class CoachConverter {
         return coaches.stream()
                 .map(coach -> toCoachDTO(coach)) // toCoachDTO 메서드를 사용하여 Coach를 CoachDTO로 변환
                 .collect(Collectors.toList()); // collect를 사용하여 리스트로 반환.
+    }
+
+    public static CoachResponseDTO.favoriteCoachDTO toFavoriteCoachDTO(Coach coach){
+        // Coach 엔티티를 FavoriteCoachDTO로 변환
+        return  CoachResponseDTO.favoriteCoachDTO.builder()
+                .coachId(coach.getId())
+                .nickname(coach.getNickname())
+                .address(coach.getAddress())
+                .rating(coach.getRating())
+                .build();
     }
 
 }

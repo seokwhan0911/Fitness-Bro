@@ -1,32 +1,56 @@
 package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.MemberConverter;
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.converter.CoachConverter;
+import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
-import FitnessBro.web.dto.MemberRequestDTO;
-import FitnessBro.web.dto.MemberResponseDTO;
-import jakarta.validation.Valid;
+import FitnessBro.service.MemberService.MemberQueryService;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/memebers")
 public class MemberRestController {
 
-    private final MemberCommandService userCommandService;
+    private final MemberQueryService memberQueryService;
 
-    @PostMapping("/sign-up")
-    public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
+    @GetMapping("/favorites")
+    @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
+    public ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> getFavoriteCoachList(){
+        try{
+            Long memberId = getCurrentMemberId();
 
-        Member user = userCommandService.joinUser(request);
-        return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(user));
+            // 찜한 동네형 목록 조회
+            List<Coach> coachList = memberQueryService.getFavoriteCoachList(memberId);
+
+            // 찜한 동네형 목록을 사용하여 DTO로 반환
+            List<CoachResponseDTO.favoriteCoachDTO> favoriteCoachDTOList = coachList.stream()
+                    .map(CoachConverter::toFavoriteCoachDTO)
+                    .collect(Collectors.toList());
+
+            // 성공 응답 생성
+            return ApiResponse.onSuccess(favoriteCoachDTOList);
+
+        } catch (Exception e){
+            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+        }
     }
 
-    //@PostMapping("/sign-up")
-    //public
+    // 로그인 구현 전 임시 메서드
+    private Long getCurrentMemberId(){
+        return 1l;
+    }
+
 }

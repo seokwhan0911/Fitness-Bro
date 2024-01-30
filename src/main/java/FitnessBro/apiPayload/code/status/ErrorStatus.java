@@ -39,7 +39,6 @@ public enum ErrorStatus implements BaseErrorCode {
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4003", "이미 존재하는 이메일입니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다.");
 
-
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

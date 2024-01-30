@@ -26,8 +26,11 @@ public enum ErrorStatus implements BaseErrorCode {
 
 
     // 유저 관련 에러
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
+    MEMBERID_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "사용자가 없습니다."),
     MEMBER_LOGIN_FAILURE(HttpStatus.BAD_REQUEST, "MEMBER4003", "아이디 혹은 비밀번호를 잘못 입력하였습니다."),
+    MEMBERID_DUPLICATED(HttpStatus.CONFLICT, "MEEMBER4004", "중복된 아이디 입니다."),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"MEMBER4005", " 패스워드가 잘못 되었습니다."),
+
 
     LOCATION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "MEMBER4003" , "동네 인증 argument가 잘못되었습니다."),
 
@@ -35,6 +38,7 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4003", "이미 존재하는 이메일입니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

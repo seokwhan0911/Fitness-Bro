@@ -1,6 +1,7 @@
 package FitnessBro.apiPayload.exception;
 
 
+import FitnessBro.apiPayload.code.status.ErrorStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class AppException extends RuntimeException{
 
-    private ErrorCode errorCode;
+    private ErrorStatus errorStatus;
 
     String message;
 

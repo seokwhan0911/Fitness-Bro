@@ -14,7 +14,7 @@ public class ReviewConverter {
                 .map(
                         review ->
                                 ReviewResponseDTO.ReviewByCoachDTO.builder()
-                                        .nickname(review.getUser().getNickname())
+                                        .nickname(review.getMember().getNickname())
                                         .contents(review.getContents())
                                         .date(review.getDate())
                                         .build())

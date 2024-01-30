@@ -27,6 +27,7 @@ import java.util.List;
 
 
 
+
 @RestController
 @RequestMapping("/coaches")
 @RequiredArgsConstructor
@@ -41,7 +42,13 @@ public class CoachController {
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
     }
 
-
+    // 헬스장 id를 받는다능 가정하에 미완성
+//    @GetMapping("/{gymId}/search")
+//    @Operation(summary = "코치 리스트 API", description = "헬스장 id를 받아 코치 리스트 전달")
+//    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList(@PathVariable(value = "gymId")Long gymId, Errors errors){
+//        List<CoachResponseDTO.CoachDTO> coachList = coachService.getCoachList(gymId);
+//        return null;
+//    }
 
     //헬스장 id를 받지 않고 그냥 다 넘겨 줄 때
     @GetMapping("/search")

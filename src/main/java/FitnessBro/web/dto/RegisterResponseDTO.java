@@ -1,6 +1,5 @@
 package FitnessBro.web.dto;
 
-import com.google.common.annotations.Beta;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -30,5 +30,4 @@ public class CoachServiceImpl implements CoachService{
         return coaches;
     }
 
-
 }

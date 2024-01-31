@@ -1,5 +1,6 @@
 package FitnessBro.service.ReviewService;
 
+import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.domain.member.Entity.Member;
@@ -9,14 +10,17 @@ import FitnessBro.respository.ReviewRepository;
 import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private  final MemberRepository memberRepository;
@@ -34,16 +38,22 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toList());
 
     }
-    public ReviewResponseDTO.ReviewByUserDTO createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId){
-        Member member = memberRepository.getReferenceById(userId);
-        Coach coach = coachRepository.findByNickname(createReviewDTO.getCoachName());
+    public void createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId){
 
-        Review review = ReviewRequestDTO.CreateReviewDTO.toEntity(createReviewDTO,member,coach);
+        Member member = memberRepository.getById(userId);
+        Coach coach = coachRepository.getCoachByNickname(createReviewDTO.getCoachNickname());
+
+        System.out.println(coach);
+
+        Review review = Review.builder()
+                .date(createReviewDTO.getCreatedAt())
+                .contents(createReviewDTO.getContents())
+                .rating(createReviewDTO.getRating())
+                .member(member)
+                .coach(coach)
+                .build();
 
         reviewRepository.save(review);
-
-        return ReviewResponseDTO.ReviewByUserDTO.from(review);
-
 
     }
 

@@ -3,33 +3,33 @@ package FitnessBro.web.dto;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.domain.member.Entity.Member;
-import lombok.Builder;
-import lombok.Getter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+
+@Data
 public class ReviewRequestDTO {
 
 
     @Getter
-    @Builder
+    @NoArgsConstructor
     public static class CreateReviewDTO{
 
-        private String coachName;
+
+        @NotNull
+        private String coachNickname;
+        @NotNull
+        @Range(min = 0, max = 5)
         private Long rating;
         private String contents;
+        @NotNull
         private LocalDateTime createdAt;
 
-        public static Review toEntity(CreateReviewDTO createReviewDTO, Member member, Coach coach){
-            return Review.builder()
-                    .coach(coach)
-                    .member(member)
-                    .contents(createReviewDTO.contents)
-                    .date(createReviewDTO.createdAt)
-                    .rating(createReviewDTO.rating)
-                    .build();
-        }
+
 
     }
 

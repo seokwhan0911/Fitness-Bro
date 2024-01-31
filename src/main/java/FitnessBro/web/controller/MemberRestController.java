@@ -37,9 +37,11 @@ public class MemberRestController {
     }
 
     @PostMapping("/{userId}/reviews")
-    public ApiResponse<ReviewResponseDTO.ReviewByUserDTO> createReviews(
+    public ApiResponse<String> createReviews(
             @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
-        return ApiResponse.onSuccess(reviewService.createReview(createReviewDTO, userId));
+
+        reviewService.createReview(createReviewDTO, userId);
+        return ApiResponse.onSuccess("성공적으로 성공했습니다.");
     }
 
 }

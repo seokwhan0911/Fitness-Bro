@@ -12,7 +12,7 @@ public interface ReviewService {
 
     public List<ReviewResponseDTO.ReviewByUserDTO> getReviews(Long userId);
 
-    ReviewResponseDTO.ReviewByUserDTO createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId);
+    void createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId);
 
 
 }

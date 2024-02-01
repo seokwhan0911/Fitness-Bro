@@ -59,10 +59,11 @@ public class RegisterServiceImpl implements RegisterService{
     @Override
     @Transactional
     public Register registerSetting(Member member, Coach coach){
-        Register register = new Register();
-        register.setMember(member);
-        register.setCoach(coach);
-        register.setMemberSuccess(true);
+        Register register = Register.builder()
+                .member(member)
+                .coach(coach)
+                .memberSuccess(true)
+                .build();
 
         registerRepository.save(register);
 
@@ -74,8 +75,6 @@ public class RegisterServiceImpl implements RegisterService{
     public Register registerCoachSetting(Member member, Coach coach){
         Register register = getRegisterByMemberCoach(member, coach);
         register.setCoachSuccess(true);
-
-        registerRepository.save(register);
 
         return register;
     }

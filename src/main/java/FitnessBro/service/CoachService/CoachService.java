@@ -19,7 +19,6 @@ public interface CoachService {
 
 
 
-    //public List<CoachResponseDTO.CoachDTO> getCoachList(Long gymId);
 
 
     public List<Coach> getCoachList();

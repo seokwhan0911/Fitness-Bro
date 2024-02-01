@@ -1,4 +1,4 @@
-package FitnessBro.web.dto;
+package FitnessBro.web.dto.Member;
 
 import lombok.Builder;
 import lombok.Getter;

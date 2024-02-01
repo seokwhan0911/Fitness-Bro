@@ -45,8 +45,8 @@ public class CoachConverter {
     public static CoachResponseDTO.CoachMyPageDTO tocoachMyPageDTO(Coach coach, Long matchNum, Long reviewNum){
         return CoachResponseDTO.CoachMyPageDTO.builder()
                 .nickname(coach.getNickname())
-                .match_num(matchNum)
-                .review_num(reviewNum)
+                .matchNum(matchNum)
+                .reviewNum(reviewNum)
                 .build();
     }
     public static CoachResponseDTO.favoriteCoachDTO toFavoriteCoachDTO(Coach coach){

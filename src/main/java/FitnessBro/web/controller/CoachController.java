@@ -66,4 +66,5 @@ public class CoachController {
     public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage(@PathVariable(value = "coachId") Long coachId){
         return ApiResponse.onSuccess(CoachConverter.tocoachMyPageDTO(coachService.getCoachById(coachId), coachService.getMatchNum(coachId),coachService.getReviewNum(coachId)));
     }
+
 }

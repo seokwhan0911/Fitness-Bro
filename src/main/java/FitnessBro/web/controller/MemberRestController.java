@@ -2,10 +2,12 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
+import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import FitnessBro.web.dto.Member.MemberResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -21,10 +23,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/memebers")
+@RequestMapping("/members")
 public class MemberRestController {
 
     private final MemberQueryService memberQueryService;
+    private final MemberCommandService memberCommandService;
 
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
@@ -53,4 +56,9 @@ public class MemberRestController {
         return 1l;
     }
 
+    @GetMapping("/{memberId}")
+    @Operation(summary = "유저 마이페이지")
+    public ApiResponse<MemberResponseDTO.MemberMyPageDTO> getMemberMyPage(@PathVariable(value = "memberId") Long memberId) {
+        return ApiResponse.onSuccess(MemberConverter.toMemberMyPageDTO(memberCommandService.getMemberById(memberId),memberCommandService.getMatchNum(memberId),memberCommandService.getReviewNum(memberId)));
+    }
 }

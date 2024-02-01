@@ -30,10 +30,9 @@ public class CoachResponseDTO {
     public static class CoachMyPageDTO{
 
         private String nickname;
-        private Long match_num;
-        private Long review_num;
+        private Long matchNum;
+        private Long reviewNum;
         //private String image;
-
     }
 
     @Getter

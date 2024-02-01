@@ -23,4 +23,12 @@ public class MemberConverter {
                 .email(request.getEmail())
                 .build();
     }
+
+    public static MemberResponseDTO.MemberMyPageDTO toMemberMyPageDTO(Member member, Long matchNum, Long reviewNum) {
+        return MemberResponseDTO.MemberMyPageDTO.builder()
+                .nickname(member.getNickname())
+                .matchNum(matchNum)
+                .reviewNum(reviewNum)
+                .build();
+    }
 }

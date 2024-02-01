@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface RegisterRepository extends JpaRepository<Register,Long> {
     Long countByCoachId(Long coachId);
 
+    Long countByMemberId(Long memberId);
 }
 
 

@@ -8,7 +8,6 @@ import java.util.List;
 
 
 public class CoachResponseDTO {
-
     @Getter
     @Builder
     public static class CoachProfileDTO{
@@ -21,6 +20,17 @@ public class CoachResponseDTO {
         private int price;
         private String address;
         private String schedule;
+
+    }
+
+    @Getter
+    @Builder
+    public static class CoachMyPageDTO{
+
+        private String nickname;
+        private Long match_num;
+        private Long review_num;
+        //private String image;
 
     }
 

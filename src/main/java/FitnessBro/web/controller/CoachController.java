@@ -11,6 +11,7 @@ import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.CoachResponseDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Getter;
@@ -65,4 +66,9 @@ public class CoachController {
         return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
     }
 
+    @GetMapping("/{coachId}")
+    @Operation(summary = "코치 마이페이지 API")
+    public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage(@PathVariable(value = "coachId") Long coachId){
+        return ApiResponse.onSuccess(coachService.getCoachMyPage(coachId));
+    }
 }

@@ -1,11 +1,16 @@
 package FitnessBro.converter;
 
 import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.web.dto.CoachResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class CoachConverter {
+
+
+    CoachService coachService;
 
     public static CoachResponseDTO.CoachProfileDTO toCoachProfileDTO(Coach coach){
         return CoachResponseDTO.CoachProfileDTO.builder()
@@ -38,4 +43,11 @@ public class CoachConverter {
                 .collect(Collectors.toList()); // collect를 사용하여 리스트로 반환.
     }
 
+    public static CoachResponseDTO.CoachMyPageDTO tocoachMyPageDTO(Coach coach, Long matchNum, Long reviewNum){
+        return CoachResponseDTO.CoachMyPageDTO.builder()
+                .nickname(coach.getNickname())
+                .match_num(matchNum)
+                .review_num(reviewNum)
+                .build();
+    }
 }

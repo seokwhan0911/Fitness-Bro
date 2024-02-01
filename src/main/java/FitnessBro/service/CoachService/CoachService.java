@@ -23,6 +23,9 @@ public interface CoachService {
 
     public List<Coach> getCoachList();
 
+    public CoachResponseDTO.CoachMyPageDTO getCoachMyPage(Long coachId);
+    public Long getMatchNum(Long coachId);
+    public Long getReviewNum(Long coachId);
 
 
 }

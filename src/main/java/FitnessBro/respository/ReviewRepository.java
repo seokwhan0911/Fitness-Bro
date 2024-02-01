@@ -15,5 +15,6 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     @Query("select rv from Review rv inner join rv.coach c where c.id = :coachId" )
     List<Review> findByCoachId(@Param("coachId") Long coachId);
 
+    Long countByCoachId(Long coachId);
 
 }

@@ -3,8 +3,12 @@ package FitnessBro.service.CoachService;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.gym.Entity.Gym;
+import FitnessBro.domain.register.Entity.Register;
+import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.GymRepository;
+import FitnessBro.respository.RegisterRepository;
+import FitnessBro.respository.ReviewRepository;
 import FitnessBro.web.dto.CoachResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static FitnessBro.converter.CoachConverter.toCoachDTO;
+import static FitnessBro.converter.CoachConverter.tocoachMyPageDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +29,9 @@ public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
     private final GymRepository gymRepository;
+    private final ReviewRepository reviewRepository;
+    private final RegisterRepository registerRepository;
+
     public Coach getCoachById(Long coachId){
         return coachRepository.getById(coachId);
     }
@@ -45,4 +53,18 @@ public class CoachServiceImpl implements CoachService{
         return coaches;
     }
 
+    public Long getMatchNum(Long coachId){
+        return registerRepository.countByCoachId(coachId);
+    }
+
+    public Long getReviewNum(Long coachId){
+        return reviewRepository.countByCoachId(coachId);
+    }
+
+    public CoachResponseDTO.CoachMyPageDTO getCoachMyPage(Long coachId) {
+        //coachId로 coach entity 가져옴
+        Coach coach = coachRepository.getById(coachId);
+
+        return tocoachMyPageDTO(coach, getMatchNum(coachId), getReviewNum(coachId));
+    }
 }

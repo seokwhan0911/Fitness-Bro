@@ -6,8 +6,11 @@ import FitnessBro.domain.member.Entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
@@ -26,5 +29,9 @@ public class Register extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Coach coach;
 
+    private LocalDateTime createdAt;
 
+    private Boolean  memberSuccess = false;
+
+    private Boolean coachSuccess = false;
 }

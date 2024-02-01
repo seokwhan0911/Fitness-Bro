@@ -8,17 +8,11 @@ import java.time.LocalDateTime;
 
 public class MemberConverter {
 
-    public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member){
-        return MemberResponseDTO.JoinResultDTO.builder()
-                .memberId(member.getId())
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
 
     public static Member toMember(MemberRequestDTO.JoinDTO request){
         return Member.builder()
+                .password(request.getPassword())
                 .nickname(request.getNickname())
-                .id(request.getMemberId())
                 .age(request.getAge())
                 .email(request.getEmail())
                 .build();

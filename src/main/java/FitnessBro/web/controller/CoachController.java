@@ -10,7 +10,6 @@ import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
-
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,13 +37,6 @@ public class CoachController {
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
     }
 
-    // 헬스장 id를 받는다능 가정하에 미완성
-//    @GetMapping("/{gymId}/search")
-//    @Operation(summary = "코치 리스트 API", description = "헬스장 id를 받아 코치 리스트 전달")
-//    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList(@PathVariable(value = "gymId")Long gymId, Errors errors){
-//        List<CoachResponseDTO.CoachDTO> coachList = coachService.getCoachList(gymId);
-//        return null;
-//    }
 
     //헬스장 id를 받지 않고 그냥 다 넘겨 줄 때
     @GetMapping("/search")
@@ -66,5 +58,7 @@ public class CoachController {
     public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage(@PathVariable(value = "coachId") Long coachId){
         return ApiResponse.onSuccess(CoachConverter.tocoachMyPageDTO(coachService.getCoachById(coachId), coachService.getMatchNum(coachId),coachService.getReviewNum(coachId)));
     }
+
+
 
 }

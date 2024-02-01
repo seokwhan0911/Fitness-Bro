@@ -18,5 +18,5 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     Long countByCoachId(Long coachId);
 
     Long countByMemberId(Long memberId);
-
+    List<Review> findAllByMemberId(Long memberId);
 }

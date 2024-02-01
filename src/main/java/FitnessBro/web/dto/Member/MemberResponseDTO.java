@@ -14,7 +14,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinResultDTO{
-        Long memberId;
+        Long email;
         LocalDateTime createdAt;
     }
 

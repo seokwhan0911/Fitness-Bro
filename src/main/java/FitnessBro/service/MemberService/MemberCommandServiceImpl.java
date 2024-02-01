@@ -6,7 +6,7 @@ import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.web.dto.MemberRequestDTO;
+import FitnessBro.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +23,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
 
-    @Value("${jwt.token.secret}")
+    @Value("${jwt.secret}")
     private String key;
     private Long expireTimeMs = 1000 *60 * 60l;
 

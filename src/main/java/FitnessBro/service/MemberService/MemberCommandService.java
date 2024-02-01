@@ -1,6 +1,7 @@
 package FitnessBro.service.MemberService;
 
-import FitnessBro.web.dto.MemberRequestDTO;
+
+import FitnessBro.web.dto.Member.MemberRequestDTO;
 
 public interface MemberCommandService {
 

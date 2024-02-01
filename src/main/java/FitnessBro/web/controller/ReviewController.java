@@ -5,7 +5,6 @@ import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.service.ReviewService.ReviewService;
-import FitnessBro.web.dto.CoachResponseDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

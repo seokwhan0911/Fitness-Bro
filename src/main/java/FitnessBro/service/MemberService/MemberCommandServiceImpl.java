@@ -21,7 +21,7 @@ import java.util.Optional;
 public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
-
+    private final BCryptPasswordEncoder encoder;
     @Override
     public Member getMemberById(Long memberId){
         Member member = memberRepository.getById(memberId);
@@ -29,8 +29,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
 
-    private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder encoder;
+
 
     @Value("${jwt.secret}")
     private String key;

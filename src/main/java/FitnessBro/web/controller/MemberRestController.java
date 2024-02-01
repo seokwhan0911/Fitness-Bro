@@ -4,6 +4,14 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.ReviewService.ReviewService;
+import FitnessBro.web.dto.ReviewRequestDTO;
+import FitnessBro.web.dto.ReviewResponseDTO;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,13 +29,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/memebers")
 public class MemberRestController {
 
 
+    private final MemberCommandService memberCommandService;
+    private final ReviewService reviewService;
     private final MemberQueryService memberQueryService;
+
 
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
@@ -51,9 +63,24 @@ public class MemberRestController {
         }
     }
 
+
     // 로그인 구현 전 임시 메서드
     private Long getCurrentMemberId(){
         return 1l;
     }
+
+    @GetMapping("/{userId}/reviews")
+    public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+        return ApiResponse.onSuccess(reviewService.getReviews(userId));
+    }
+
+    @PostMapping("/{userId}/reviews")
+    public ApiResponse<String> createReviews(
+            @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
+
+        reviewService.createReview(createReviewDTO, userId);
+        return ApiResponse.onSuccess("성공적으로 성공했습니다.");
+    }
+
 
 }

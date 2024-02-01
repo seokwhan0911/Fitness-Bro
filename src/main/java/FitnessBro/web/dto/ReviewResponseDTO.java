@@ -1,6 +1,7 @@
 package FitnessBro.web.dto;
 
 
+import FitnessBro.domain.review.Entity.Review;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,6 +19,30 @@ public class ReviewResponseDTO {
 
 
 
+
+    }
+
+    @Getter
+    @Builder
+    public static class ReviewByUserDTO{
+
+        private String coachName;
+
+        private LocalDateTime createdAt;
+
+        private String contents;
+
+        private float rating;
+
+
+        public static ReviewByUserDTO from(Review review){
+            return ReviewByUserDTO.builder()
+                    .coachName(review.getCoach().getName())
+                    .contents(review.getContents())
+                    .rating(review.getCoach().getRating())
+                    .createdAt(review.getCreatedAt())
+                    .build();
+        }
 
     }
 

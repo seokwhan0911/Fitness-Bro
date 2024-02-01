@@ -9,7 +9,7 @@ import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.GymRepository;
 import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
-import FitnessBro.web.dto.CoachResponseDTO;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,12 +59,6 @@ public class CoachServiceImpl implements CoachService{
         return reviewRepository.countByCoachId(coachId);
     }
 
-    public CoachResponseDTO.CoachMyPageDTO getCoachMyPage(Long coachId) {
-        //coachId로 coach entity 가져옴
-        Coach coach = coachRepository.getById(coachId);
-
-        return tocoachMyPageDTO(coach, getMatchNum(coachId), getReviewNum(coachId));
-    }
     public void addCoach() {
         Coach coach = new Coach();
         coach.setId(1L);

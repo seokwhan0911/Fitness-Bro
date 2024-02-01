@@ -2,7 +2,6 @@ package FitnessBro.converter;
 
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.service.CoachService.CoachService;
-import FitnessBro.web.dto.CoachResponseDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;

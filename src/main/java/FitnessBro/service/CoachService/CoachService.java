@@ -2,6 +2,7 @@ package FitnessBro.service.CoachService;
 
 
 import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface CoachService {
 
     public List<Coach> getCoachList();
 
-    public CoachResponseDTO.CoachMyPageDTO getCoachMyPage(Long coachId);
+
     public Long getMatchNum(Long coachId);
     public Long getReviewNum(Long coachId);
 

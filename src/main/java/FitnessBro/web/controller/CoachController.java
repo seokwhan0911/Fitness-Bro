@@ -10,7 +10,7 @@ import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
-import io.swagger.annotations.Api;
+
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class CoachController {
     private final ReviewService reviewService;
 
     @GetMapping("/{coachId}/info")
-    @Operation(summary = "코치 마이페이지 API", description = "코치 id를 받아 코치 마이페이지 전달")
+    @Operation(summary = "코치 상세정보 API", description = "코치 id를 받아 코치 상세정보 전달")
     public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId, Errors errors){
 
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
@@ -64,6 +64,6 @@ public class CoachController {
     @GetMapping("/{coachId}")
     @Operation(summary = "코치 마이페이지 API")
     public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage(@PathVariable(value = "coachId") Long coachId){
-        return ApiResponse.onSuccess(coachService.getCoachMyPage(coachId));
+        return ApiResponse.onSuccess(CoachConverter.tocoachMyPageDTO(coachService.getCoachById(coachId), coachService.getMatchNum(coachId),coachService.getReviewNum(coachId)));
     }
 }

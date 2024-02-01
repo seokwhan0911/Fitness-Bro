@@ -27,7 +27,7 @@ spring:
             client-name: kakao
             scope:
               - account_email
-
+              - profile_nickname
   jpa:
     properties:
       hibernate:

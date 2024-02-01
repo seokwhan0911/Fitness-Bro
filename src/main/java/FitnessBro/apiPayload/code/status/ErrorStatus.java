@@ -26,8 +26,12 @@ public enum ErrorStatus implements BaseErrorCode {
 
 
     // 유저 관련 에러
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
+    EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER4001", "사용자가 없습니다."),
     MEMBER_LOGIN_FAILURE(HttpStatus.BAD_REQUEST, "MEMBER4003", "아이디 혹은 비밀번호를 잘못 입력하였습니다."),
+    EMAIL_DUPLICATED(HttpStatus.CONFLICT, "MEEMBER4004", "중복된 아이디 입니다."),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"MEMBER4005", " 패스워드가 잘못 되었습니다."),
+
+
     LOCATION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "MEMBER4003" , "동네 인증 argument가 잘못되었습니다."),
 
     // 회원가입 관련 에러

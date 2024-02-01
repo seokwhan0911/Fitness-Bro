@@ -4,14 +4,20 @@ import lombok.Builder;
 import lombok.Getter;
 
 public class MemberRequestDTO {
-
-    @Getter
     @Builder
-    public static class JoinDTO {    // 회원가입 DTO
+    @Getter
+    public static class JoinDTO{
+        String password;
         String nickname;
-        Long memberId;
-        Integer age;
         String email;
+        int age;
+    }
+
+    @Builder
+    @Getter
+    public static class loginDTO{
+        String email;
+        String password;
     }
 
 }

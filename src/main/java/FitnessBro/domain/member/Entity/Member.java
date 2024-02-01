@@ -13,8 +13,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-//@DynamicUpdate  // Update시 null인 경우 쿼리를 안 보냄
-//@DynamicInsert  // Insert시 null인 경우 쿼리를 안 보냄
 public class Member extends BaseEntity {
 
     @Id
@@ -32,4 +30,5 @@ public class Member extends BaseEntity {
 
 
 //    private List<Image> image = new ArrayList<>();     // 추후에 이미지 엔티티 생성 예정
+
 }

@@ -2,19 +2,16 @@ package FitnessBro.web.controller;
 
 
 import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.ReviewService.ReviewService;
-import FitnessBro.web.dto.CoachResponseDTO;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static FitnessBro.apiPayload.Utill.ValidationUtils.getValidationErrors;
 
 
 @RestController

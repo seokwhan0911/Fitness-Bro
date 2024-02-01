@@ -1,0 +1,56 @@
+package FitnessBro.web.controller;
+
+import FitnessBro.apiPayload.ApiResponse;
+import FitnessBro.converter.CoachConverter;
+import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.MemberService.MemberQueryService;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/memebers")
+public class MemberRestController {
+
+    private final MemberQueryService memberQueryService;
+
+    @GetMapping("/favorites")
+    @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
+    public ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> getFavoriteCoachList(){
+        try{
+            Long memberId = getCurrentMemberId();
+
+            // 찜한 동네형 목록 조회
+            List<Coach> coachList = memberQueryService.getFavoriteCoachList(memberId);
+
+            // 찜한 동네형 목록을 사용하여 DTO로 반환
+            List<CoachResponseDTO.favoriteCoachDTO> favoriteCoachDTOList = coachList.stream()
+                    .map(CoachConverter::toFavoriteCoachDTO)
+                    .collect(Collectors.toList());
+
+            // 성공 응답 생성
+            return ApiResponse.onSuccess(favoriteCoachDTOList);
+
+        } catch (Exception e){
+            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+        }
+    }
+
+    // 로그인 구현 전 임시 메서드
+    private Long getCurrentMemberId(){
+        return 1l;
+    }
+
+}

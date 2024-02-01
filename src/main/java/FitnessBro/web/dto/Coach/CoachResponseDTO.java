@@ -1,8 +1,10 @@
-package FitnessBro.web.dto;
+package FitnessBro.web.dto.Coach;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -43,6 +45,17 @@ public class CoachResponseDTO {
         private String comment;
         private int price;
         private String address;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class favoriteCoachDTO{
+        Long coachId;
+        String nickname;
+        String address;
+        Float rating;
     }
 
 

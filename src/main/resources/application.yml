@@ -1,18 +1,55 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/fitness-bro
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://fitness-bro-dev.creye0kuc4ct.ap-northeast-2.rds.amazonaws.com:3306/fitness-bro
+    username: root
+    password: fitnessbro12!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
+
+  security:
+    oauth2:
+      client:
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+        registration:
+          kakao:
+            client-id: 8c7208b34afec06d51425dd25d6a0a54
+            client-secret: 4qPZjYEfJ8ncAgpavX1oa3DmVrOJsYwi
+            client-authentication-method: client_secret_post
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            scope:
+              - account_email
 
   jpa:
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: tru
+        use_sql_comments: true
+        hbm2ddl:
+          auto: update
+        default_batch_fetch_size: 1000
 
 
 logging:
   level:
     org.hibernate.SQL: debug
+
+servlet:
+  multipart:
+    enabled: true
+    maxFileSize: 200MB
+    maxRequestSize: 300MB
+
+jwt:
+  secret: 64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff
+

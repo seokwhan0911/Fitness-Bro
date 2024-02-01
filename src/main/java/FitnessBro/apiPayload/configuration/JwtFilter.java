@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -26,8 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final String secretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        // request 헤더에서 토큰 꺼내기
+        //request 헤더에서 토큰 꺼내기
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("authorization : {}", authorization);
 
@@ -58,5 +58,22 @@ public class JwtFilter extends OncePerRequestFilter {
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request,response);
+
     }
+
+    private String parseBearerToken(HttpServletRequest request){
+        String authorization = request.getHeader("Authorization");
+
+        boolean hasAuthorization = StringUtils.hasText(authorization);
+
+        if(!hasAuthorization) return null;
+
+        boolean isBearer = authorization.startsWith("Bearer");
+        if (!isBearer) return null;
+        String token = authorization.substring(7);
+        return token;
+    }
+
+
+
 }

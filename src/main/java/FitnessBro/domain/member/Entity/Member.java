@@ -3,15 +3,15 @@ package FitnessBro.domain.member.Entity;
 import FitnessBro.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
+//@DynamicUpdate  // Update시 null인 경우 쿼리를 안 보냄
+//@DynamicInsert  // Insert시 null인 경우 쿼리를 안 보냄
 @Builder
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Setter
-//@DynamicUpdate  // Update시 null인 경우 쿼리를 안 보냄
-//@DynamicInsert  // Insert시 null인 경우 쿼리를 안 보냄
+
 public class Member extends BaseEntity {
 
     @Id
@@ -26,6 +26,7 @@ public class Member extends BaseEntity {
     private String password;
 
     private int age;
+
 
 //    private List<Image> image = new ArrayList<>();     // 추후에 이미지 엔티티 생성 예정
 }

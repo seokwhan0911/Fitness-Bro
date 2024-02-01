@@ -22,6 +22,14 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
+    @Override
+    public Member getMemberById(Long memberId){
+        Member member = memberRepository.getById(memberId);
+        return member;
+    }
+
+
+
 
     @Value("${jwt.secret}")
     private String key;

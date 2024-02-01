@@ -44,7 +44,6 @@ public class MemberRestController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
-    private final MemberCommandService memberCommandService;
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
     public ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> getFavoriteCoachList(){

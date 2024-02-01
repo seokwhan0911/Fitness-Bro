@@ -30,6 +30,8 @@ public class CoachServiceImpl implements CoachService{
     private final ReviewRepository reviewRepository;
     private final RegisterRepository registerRepository;
 
+    @Override
+    @Transactional
     public Coach getCoachById(Long coachId){
         return coachRepository.getById(coachId);
     }
@@ -44,10 +46,14 @@ public class CoachServiceImpl implements CoachService{
         return coaches;
     }
 
+    @Override
+    @Transactional
     public Long getMatchNum(Long coachId){
         return registerRepository.countByCoachId(coachId);
     }
 
+    @Override
+    @Transactional
     public Long getReviewNum(Long coachId){
         return reviewRepository.countByCoachId(coachId);
     }

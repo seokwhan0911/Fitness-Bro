@@ -8,6 +8,7 @@ import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
+import FitnessBro.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,9 +26,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public final RegisterRepository registerRepository;
     public final ReviewRepository reviewRepository;
 
-    public Member getMemberById(Long memberId){
-        return memberRepository.getById(memberId);
-    }
     public Long getReviewNum(Long memberId) {
         return reviewRepository.countByMemberId(memberId);
     }
@@ -36,7 +34,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return registerRepository.countByMemberId(memberId);
     }
 
-    private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
     @Override
     public Member getMemberById(Long memberId){

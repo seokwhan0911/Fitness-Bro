@@ -10,6 +10,7 @@ import FitnessBro.respository.GymRepository;
 import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
 
+import FitnessBro.service.RegisterService.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +27,10 @@ import static FitnessBro.converter.CoachConverter.tocoachMyPageDTO;
 public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
-    private final GymRepository gymRepository;
     private final ReviewRepository reviewRepository;
     private final RegisterRepository registerRepository;
+    private final CoachService coachService;
+    private final RegisterService registerService;
 
     @Override
     @Transactional
@@ -49,7 +51,11 @@ public class CoachServiceImpl implements CoachService{
     @Override
     @Transactional
     public Long getMatchNum(Long coachId){
-        return registerRepository.countByCoachId(coachId);
+        Coach coach = coachService.getCoachById(coachId);
+        List<Register> registerList = registerService.getRegisterListByCoach(coach);
+        List<Register> trueRegisterList = registerService.successRegisterList(registerList);
+
+        return (long)trueRegisterList.size();
     }
 
     @Override

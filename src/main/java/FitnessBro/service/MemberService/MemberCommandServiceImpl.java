@@ -5,9 +5,11 @@ import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.register.Entity.Register;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
+import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,14 +33,22 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public final MemberRepository memberRepository;
     public final RegisterRepository registerRepository;
     public final ReviewRepository reviewRepository;
+    public final MemberCommandService memberCommandService;
+    public final RegisterService registerService;
+
+    public Long getMatchNum(Long memberId) {
+        Member member = memberCommandService.getMemberById(memberId);
+
+        List<Register> registerList = registerService.getRegisterListByMember(member);
+        List<Register> trueRegisterList = registerService.successRegisterList(registerList);
+
+        return (long)trueRegisterList.size();
+    }
 
     public Long getReviewNum(Long memberId) {
         return reviewRepository.countByMemberId(memberId);
     }
 
-    public Long getMatchNum(Long memberId) {
-        return registerRepository.countByMemberId(memberId);
-    }
 
     @Override
     public Member getMemberById(Long memberId){

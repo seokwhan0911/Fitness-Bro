@@ -22,6 +22,11 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberCommandServiceImpl implements MemberCommandService {
 
+    @Value("${jwt.secret}")
+    private String key;
+    private Long expireTimeMs = 1000 *60 * 60l;
+    private final BCryptPasswordEncoder encoder;
+
     public final MemberRepository memberRepository;
     public final RegisterRepository registerRepository;
     public final ReviewRepository reviewRepository;
@@ -34,19 +39,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return registerRepository.countByMemberId(memberId);
     }
 
-    private final BCryptPasswordEncoder encoder;
     @Override
     public Member getMemberById(Long memberId){
         Member member = memberRepository.getById(memberId);
         return member;
     }
-
-
-
-
-    @Value("${jwt.secret}")
-    private String key;
-    private Long expireTimeMs = 1000 *60 * 60l;
 
     @Override
     @Transactional

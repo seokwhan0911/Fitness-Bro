@@ -54,6 +54,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return "SUCCESS";
     }
 
+
     @Override
     @Transactional
     public String login(String email, String password){

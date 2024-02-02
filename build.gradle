@@ -48,6 +48,7 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'junit:junit:4.13.1'
 
+	implementation 'org.json:json:20190722'
 
 
 //	implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.15.Final'

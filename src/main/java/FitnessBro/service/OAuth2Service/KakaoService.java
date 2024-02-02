@@ -1,4 +1,4 @@
-package FitnessBro.service;
+package FitnessBro.service.OAuth2Service;
 
 import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonObject;

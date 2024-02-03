@@ -20,39 +20,14 @@ public class CoachServiceImpl implements CoachService{
         return coachRepository.getById(coachId);
     }
 
-//    public List<CoachResponseDTO.CoachDTO> getCoachList(Long gymId){
-//
-//        List<Coach> coaches = coachRepository.findAllByGym(gymId);
-//
-//        return coaches.stream()
-//                .map(coach -> toCoachDTO(coach)) // toCoachDTO 메서드를 사용하여 Coach를 CoachDTO로 변환
-//                .collect(Collectors.toList()); // collect를 사용하여 리스트로 반환.
-//    }
+
 
     @Override
     @Transactional
-    public List<Coach> getCoachList() {
+    public List<Coach> getCoachList(){
 
         List<Coach> coaches = coachRepository.findAll();
         return coaches;
-    }
-
-    public void addCoach() {
-        Coach coach = new Coach();
-        coach.setId(1L);
-        coach.setAge(3);
-        coach.setEmail("awef");
-        coach.setAddress("awef");
-        coach.setName("awef");
-        coach.setNickname("awef");
-        coach.setRating(4L);
-        coach.setIntroduction("awef");
-        coach.setSchedule("awef");
-        coach.setPassword("awef");
-        coach.setComment("awef");
-        coach.setPrice(10000);
-
-        coachRepository.save(coach);
     }
 
 }

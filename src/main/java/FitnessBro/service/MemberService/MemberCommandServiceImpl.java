@@ -22,6 +22,14 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
+    @Override
+    public Member getMemberById(Long memberId){
+        Member member = memberRepository.getById(memberId);
+        return member;
+    }
+
+
+
 
     @Value("${jwt.secret}")
     private String key;
@@ -45,6 +53,29 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         return "SUCCESS";
     }
+
+//    @Override
+//    @Transactional
+//    public String joinSocialMember(String email, String id) {
+//
+//        // member 중복 체크
+//        memberRepository.findByEmail(email)
+//                .ifPresent(member -> {
+//
+//                    String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
+//                    return token;
+//
+//                });
+//
+//        Member member = new Member()
+//
+//        member.setPassword(encoder.encode(request.getPassword()));
+//
+//        memberRepository.save(member);
+//
+//        return "SUCCESS";
+//    }
+
 
     @Override
     @Transactional

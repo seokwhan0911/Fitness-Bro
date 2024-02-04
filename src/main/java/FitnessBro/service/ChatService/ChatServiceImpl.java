@@ -5,6 +5,8 @@ import FitnessBro.domain.Chat.ChatRoom;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.ChatRoomRepository;
+import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.MemberService.MemberCommandService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.ast.tree.expression.Over;
@@ -16,6 +18,9 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
+
+    private final MemberCommandService memberCommandService;
+    private final CoachService coachService;
 
     private final ChatRoomRepository chatRoomRepository;
 
@@ -43,8 +48,10 @@ public class ChatServiceImpl implements ChatService {
 
     //채팅방 생성
     @Override
-    public ChatRoom createRoom(Member member, Coach coach) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createRoom(Long memberId, Long coachId) {
+        Member member = memberCommandService.getMemberById(memberId);
+        Coach coach = coachService.getCoachById(coachId);
+        ChatRoom chatRoom = ChatRoom.
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }

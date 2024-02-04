@@ -30,10 +30,9 @@ import static FitnessBro.converter.CoachConverter.toCoachMyPageDTO;
 public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
+    private final GymRepository gymRepository;
     private final ReviewRepository reviewRepository;
     private final RegisterRepository registerRepository;
-    private final CoachService coachService;
-    private final RegisterService registerService;
 
     @Override
     @Transactional
@@ -49,22 +48,6 @@ public class CoachServiceImpl implements CoachService{
 
         List<Coach> coaches = coachRepository.findAll();
         return coaches;
-    }
-
-    @Override
-    @Transactional
-    public Long getMatchNum(Long coachId){
-        Coach coach = coachService.getCoachById(coachId);
-        List<Register> registerList = registerService.getRegisterListByCoach(coach);
-        List<Register> trueRegisterList = registerService.successRegisterList(registerList);
-
-        return (long)trueRegisterList.size();
-    }
-
-    @Override
-    @Transactional
-    public Long getReviewNum(Long coachId){
-        return reviewRepository.countByCoachId(coachId);
     }
 
     @Override

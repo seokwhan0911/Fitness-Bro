@@ -10,4 +10,6 @@ public interface MemberCommandService {
     String joinMember(MemberRequestDTO.JoinDTO request);
 
     String login(String email, String password);
+
+    public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO);
 }

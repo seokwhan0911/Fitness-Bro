@@ -20,4 +20,11 @@ public class MemberRequestDTO {
         String password;
     }
 
+    @Getter
+    @Builder
+    public static class MemberUpdateRequestDTO{
+        private String nickname;
+        private String email;
+        private String password;
+    }
 }

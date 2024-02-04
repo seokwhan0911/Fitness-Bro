@@ -4,6 +4,7 @@ import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
+import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
@@ -70,5 +71,14 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         //앞에서 Exception 안났으면 토큰 발행
         String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
         return token;
+    }
+
+    public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        member.update(memberUpdateRequestDTO);
+        memberRepository.save(member);
+        return member;
     }
 }

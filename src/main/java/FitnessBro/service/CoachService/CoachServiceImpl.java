@@ -54,7 +54,7 @@ public class CoachServiceImpl implements CoachService{
     @Transactional
     public Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO){
         Coach coach = coachRepository.findById(coachId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new RuntimeException("Coach not found"));
 
         coach.update(coachUpdateRequestDTO);
         coachRepository.save(coach);

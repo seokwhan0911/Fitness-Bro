@@ -4,6 +4,7 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.domain.register.Entity.Register;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.RegisterService.RegisterService;
@@ -14,6 +15,7 @@ import FitnessBro.web.dto.ReviewResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -103,4 +105,10 @@ public class MemberRestController {
         return ApiResponse.onSuccess("성공적으로 성공했습니다.");
     }
 
+    @PatchMapping("/{memberId}")
+    @Operation(summary = "멤버 정보 수정")
+    public ApiResponse<MemberResponseDTO.MemberUpdateResponseDTO> patchCoachUpdate(@PathVariable(value = "memberId") Long memberId, @RequestBody MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO) {
+        Member member = memberCommandService.updateMember(memberId,memberUpdateRequestDTO);
+        return ApiResponse.onSuccess(MemberConverter.toMemberUpdateDTO(member));
+    }
 }

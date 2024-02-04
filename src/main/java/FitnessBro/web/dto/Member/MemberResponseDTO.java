@@ -26,5 +26,11 @@ public class MemberResponseDTO {
         private Long reviewNum;
         //private String image;
     }
-
+    @Getter
+    @Builder
+    public static class MemberUpdateResponseDTO{
+        private String nickname;
+        private String email;
+        private String password;
+    }
 }

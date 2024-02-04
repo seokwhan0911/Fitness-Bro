@@ -25,4 +25,12 @@ public class MemberConverter {
                 .reviewNum(reviewNum)
                 .build();
     }
+
+    public static MemberResponseDTO.MemberUpdateResponseDTO toMemberUpdateDTO(Member member) {
+        return MemberResponseDTO.MemberUpdateResponseDTO.builder()
+                .nickname(member.getNickname())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .build();
+    }
 }

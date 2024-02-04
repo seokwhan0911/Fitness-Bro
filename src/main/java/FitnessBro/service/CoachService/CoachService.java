@@ -14,5 +14,5 @@ public interface CoachService {
 
     public List<Coach> getCoachList();
 
-    public Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateDTO);
+    public Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO);
 }

@@ -55,14 +55,15 @@ public class CoachController {
     }
 
     @GetMapping("/{coachId}")
-    @Operation(summary = "코치 마이페이지 API")
+    @Operation(summary = "코치 마이페이지")
     public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage(@PathVariable(value = "coachId") Long coachId){
         return ApiResponse.onSuccess(CoachConverter.toCoachMyPageDTO(coachService.getCoachById(coachId), registerService.getMatchNumCoach(coachId),reviewService.getReviewNumCoach(coachId)));
     }
 
     @PatchMapping("/{coachId}")
-    public ApiResponse<CoachResponseDTO.CoachProfileDTO> patchCoachUpdate(@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO){
-        coachService.updateCoach(coachId,coachUpdateRequestDTO);
-        return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
+    @Operation(summary = "코치 정보 수정")
+    public ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO> patchCoachUpdate(@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO){
+        Coach coach = coachService.updateCoach(coachId,coachUpdateRequestDTO);
+        return ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach));
     }
 }

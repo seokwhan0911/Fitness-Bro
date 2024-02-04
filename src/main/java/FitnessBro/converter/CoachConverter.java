@@ -58,19 +58,19 @@ public class CoachConverter {
                 .rating(coach.getRating())
                 .build();
     }
-    /*
+
     public static CoachResponseDTO.CoachUpdateResponseDTO toCoachUpdateDTO(Coach coach) {
         return CoachResponseDTO.CoachUpdateResponseDTO.builder()
-                .name(coach.getName())
-                .age(coach.getAge())
-                .rating(coach.getRating())
-                .comment(coach.getComment())
-                .introduction(coach.getIntroduction())
-                .price(coach.getPrice())
+                .nickname(coach.getNickname())
+                .email(coach.getEmail())
+                .password(coach.getPassword())
                 .address(coach.getAddress())
+                .comment(coach.getComment())
+                .price(coach.getPrice())
                 .schedule(coach.getSchedule())
+                .introduction(coach.getIntroduction())
                 .build();
     }
-    */
+
 
 }

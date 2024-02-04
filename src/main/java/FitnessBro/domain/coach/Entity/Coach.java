@@ -47,9 +47,6 @@ public class Coach extends BaseEntity {
 
     // 추후에 PM 기획 후 추가 예정
     public void update(CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO) {
-        if (StringUtils.isNotBlank(coachUpdateRequestDTO.getName())) {
-            this.name = coachUpdateRequestDTO.getName();
-        }
         if(StringUtils.isNotBlank(coachUpdateRequestDTO.getNickname())){
             this.nickname = coachUpdateRequestDTO.getNickname();
         }
@@ -59,19 +56,13 @@ public class Coach extends BaseEntity {
         if(StringUtils.isNotBlank(coachUpdateRequestDTO.getPassword())){
             this.password = coachUpdateRequestDTO.getPassword();
         }
-        if(StringUtils.isNotBlank(Integer.toString(coachUpdateRequestDTO.getAge()))){
-            this.age = coachUpdateRequestDTO.getAge();
-        }
-        if(StringUtils.isNotBlank(Float.toString(coachUpdateRequestDTO.getRating()))){
-            this.rating = coachUpdateRequestDTO.getRating();
-        }
         if(StringUtils.isNotBlank(coachUpdateRequestDTO.getAddress())){
             this.address = coachUpdateRequestDTO.getAddress();
         }
         if(StringUtils.isNotBlank(coachUpdateRequestDTO.getComment())){
             this.comment = coachUpdateRequestDTO.getComment();
         }
-        if(StringUtils.isNotBlank(Integer.toString(coachUpdateRequestDTO.getPrice()))){
+        if(coachUpdateRequestDTO.getPrice() != 0){
             this.price = coachUpdateRequestDTO.getPrice();
         }
         if (StringUtils.isNotBlank(coachUpdateRequestDTO.getSchedule())) {

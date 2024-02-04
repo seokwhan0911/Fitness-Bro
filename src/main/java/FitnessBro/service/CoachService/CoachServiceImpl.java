@@ -57,7 +57,8 @@ public class CoachServiceImpl implements CoachService{
                 .orElseThrow(() -> new RuntimeException("Member not found"));
 
         coach.update(coachUpdateRequestDTO);
-        return coachRepository.save(coach);
+        coachRepository.save(coach);
+        return coach;
     }
 
 

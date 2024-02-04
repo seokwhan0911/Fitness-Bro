@@ -1,4 +1,4 @@
-package FitnessBro.web.controller;
+package FitnessBro.web.controller.Chat;
 
 import FitnessBro.domain.Chat.ChatMessage;
 import lombok.RequiredArgsConstructor;

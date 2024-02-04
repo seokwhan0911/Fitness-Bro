@@ -10,6 +10,7 @@ import FitnessBro.respository.GymRepository;
 import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
 
+import FitnessBro.service.RegisterService.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

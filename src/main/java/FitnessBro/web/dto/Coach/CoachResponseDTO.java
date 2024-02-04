@@ -37,6 +37,19 @@ public class CoachResponseDTO {
 
     @Getter
     @Builder
+    public static class CoachUpdateResponseDTO{
+        private String name;
+        private int age;
+        private float rating;
+        private String comment;
+        private String introduction;
+        private int price;
+        private String address;
+        private String schedule;
+    }
+
+    @Getter
+    @Builder
     public static class CoachDTO{
         private String name;
         private int age;

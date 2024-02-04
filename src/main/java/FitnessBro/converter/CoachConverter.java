@@ -42,7 +42,7 @@ public class CoachConverter {
                 .collect(Collectors.toList()); // collect를 사용하여 리스트로 반환.
     }
 
-    public static CoachResponseDTO.CoachMyPageDTO tocoachMyPageDTO(Coach coach, Long matchNum, Long reviewNum){
+    public static CoachResponseDTO.CoachMyPageDTO toCoachMyPageDTO(Coach coach, Long matchNum, Long reviewNum){
         return CoachResponseDTO.CoachMyPageDTO.builder()
                 .nickname(coach.getNickname())
                 .matchNum(matchNum)
@@ -58,5 +58,19 @@ public class CoachConverter {
                 .rating(coach.getRating())
                 .build();
     }
+    /*
+    public static CoachResponseDTO.CoachUpdateResponseDTO toCoachUpdateDTO(Coach coach) {
+        return CoachResponseDTO.CoachUpdateResponseDTO.builder()
+                .name(coach.getName())
+                .age(coach.getAge())
+                .rating(coach.getRating())
+                .comment(coach.getComment())
+                .introduction(coach.getIntroduction())
+                .price(coach.getPrice())
+                .address(coach.getAddress())
+                .schedule(coach.getSchedule())
+                .build();
+    }
+    */
 
 }

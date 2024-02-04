@@ -1,6 +1,7 @@
 package FitnessBro.service.CoachService;
 
 
+import FitnessBro.apiPayload.Utill.StringUtils;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.gym.Entity.Gym;
 import FitnessBro.domain.register.Entity.Register;
@@ -11,6 +12,8 @@ import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
 
 import FitnessBro.service.RegisterService.RegisterService;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static FitnessBro.converter.CoachConverter.toCoachDTO;
-import static FitnessBro.converter.CoachConverter.tocoachMyPageDTO;
+import static FitnessBro.converter.CoachConverter.toCoachMyPageDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +66,17 @@ public class CoachServiceImpl implements CoachService{
     public Long getReviewNum(Long coachId){
         return reviewRepository.countByCoachId(coachId);
     }
+
+    @Override
+    @Transactional
+    public Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO){
+        Coach coach = coachRepository.findById(coachId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        coach.update(coachUpdateRequestDTO);
+        return coachRepository.save(coach);
+    }
+
 
     public void addCoach() {
         Coach coach = new Coach();

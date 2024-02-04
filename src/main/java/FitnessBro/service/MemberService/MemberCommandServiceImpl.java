@@ -54,27 +54,27 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return "SUCCESS";
     }
 
-//    @Override
-//    @Transactional
-//    public String joinSocialMember(String email, String id) {
-//
-//        // member 중복 체크
-//        memberRepository.findByEmail(email)
-//                .ifPresent(member -> {
-//
-//                    String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
-//                    return token;
-//
-//                });
-//
-//        Member member = new Member()
-//
-//        member.setPassword(encoder.encode(request.getPassword()));
-//
-//        memberRepository.save(member);
-//
-//        return "SUCCESS";
-//    }
+    // social member email, id 값을 각각 email, password에 저장 한 후 토큰 발급
+    @Override
+    @Transactional
+    public String joinSocialMember(String email, String id) {
+        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
+
+
+        if (memberRepository.existsByEmail(email)){
+            return token;
+        }
+
+        Member member = new Member();
+
+
+        member.setEmail(email);
+        member.setPassword("social_" + id);
+
+        memberRepository.save(member);
+
+        return token;
+    }
 
 
     @Override

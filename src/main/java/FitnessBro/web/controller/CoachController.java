@@ -7,6 +7,7 @@ import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.review.Entity.Review;
 import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
@@ -29,6 +30,7 @@ import java.util.List;
 public class CoachController {
     private final CoachService coachService;
     private final ReviewService reviewService;
+    private final RegisterService registerService;
 
     @GetMapping("/{coachId}/info")
     @Operation(summary = "코치 상세정보 API", description = "코치 id를 받아 코치 상세정보 전달")
@@ -56,7 +58,7 @@ public class CoachController {
     @GetMapping("/{coachId}")
     @Operation(summary = "코치 마이페이지 API")
     public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage(@PathVariable(value = "coachId") Long coachId){
-        return ApiResponse.onSuccess(CoachConverter.tocoachMyPageDTO(coachService.getCoachById(coachId), coachService.getMatchNum(coachId),coachService.getReviewNum(coachId)));
+        return ApiResponse.onSuccess(CoachConverter.tocoachMyPageDTO(coachService.getCoachById(coachId), registerService.getMatchNumCoach(coachId),reviewService.getReviewNumCoach(coachId)));
     }
 
 

@@ -4,7 +4,9 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.register.Entity.Register;
 import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.ReviewRequestDTO;
@@ -41,6 +43,7 @@ import java.util.stream.Collectors;
 public class MemberRestController {
 
     private final ReviewService reviewService;
+    private final RegisterService registerService;
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
@@ -85,7 +88,7 @@ public class MemberRestController {
     @GetMapping("/{memberId}")
     @Operation(summary = "유저 마이페이지")
     public ApiResponse<MemberResponseDTO.MemberMyPageDTO> getMemberMyPage(@PathVariable(value = "memberId") Long memberId) {
-        return ApiResponse.onSuccess(MemberConverter.toMemberMyPageDTO(memberCommandService.getMemberById(memberId),memberCommandService.getMatchNum(memberId),memberCommandService.getReviewNum(memberId)));
+        return ApiResponse.onSuccess(MemberConverter.toMemberMyPageDTO(memberCommandService.getMemberById(memberId),registerService.getMatchNumMember(memberId),reviewService.getReviewNumCoach(memberId)));
     }
     @GetMapping("/{userId}/reviews")
     public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){

@@ -9,18 +9,8 @@ import java.util.List;
 
 public interface CoachService {
 
-
     public Coach getCoachById(Long coachId);
 
-
-
-
-
     public List<Coach> getCoachList();
-
-
-    public Long getMatchNum(Long coachId);
-    public Long getReviewNum(Long coachId);
-
 
 }

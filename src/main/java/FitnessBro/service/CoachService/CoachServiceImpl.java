@@ -46,18 +46,6 @@ public class CoachServiceImpl implements CoachService{
         return coaches;
     }
 
-    @Override
-    @Transactional
-    public Long getMatchNum(Long coachId){
-        return registerRepository.countByCoachId(coachId);
-    }
-
-    @Override
-    @Transactional
-    public Long getReviewNum(Long coachId){
-        return reviewRepository.countByCoachId(coachId);
-    }
-
     public void addCoach() {
         Coach coach = new Coach();
         coach.setId(1L);

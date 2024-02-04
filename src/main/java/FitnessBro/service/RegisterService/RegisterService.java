@@ -20,4 +20,7 @@ public interface RegisterService {
     Register registerSetting(Member member, Coach coach);
 
     Register registerCoachSetting(Member member, Coach coach);
+
+    public Long getMatchNumCoach(Long coachId);
+    public Long getMatchNumMember(Long memberId);
 }

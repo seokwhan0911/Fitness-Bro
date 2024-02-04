@@ -31,14 +31,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public final RegisterRepository registerRepository;
     public final ReviewRepository reviewRepository;
 
-    public Long getReviewNum(Long memberId) {
-        return reviewRepository.countByMemberId(memberId);
-    }
-
-    public Long getMatchNum(Long memberId) {
-        return registerRepository.countByMemberId(memberId);
-    }
-
     @Override
     public Member getMemberById(Long memberId){
         Member member = memberRepository.getById(memberId);

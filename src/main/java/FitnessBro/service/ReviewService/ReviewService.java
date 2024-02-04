@@ -14,5 +14,8 @@ public interface ReviewService {
 
     void createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId);
 
+    public Long getReviewNumCoach(Long coachId);
+
+    public Long getReviewNumMember(Long memberId);
 
 }

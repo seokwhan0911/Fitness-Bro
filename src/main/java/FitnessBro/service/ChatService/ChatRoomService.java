@@ -1,13 +1,12 @@
 package FitnessBro.service.ChatService;
 
-import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
 
 import java.util.List;
 
-public interface ChatService {
+public interface ChatRoomService {
 
-    List<ChatRoom> findAllRoom();
-    ChatRoom findById(String roomId);
+   // List<ChatRoom> findAllRoom();
+    ChatRoom findById(Long roomId);
     ChatRoom createRoom(Long roomId, Long memberId, Long coachId);
 }

@@ -7,7 +7,10 @@ import lombok.Getter;
 @Builder
 public class ChatMessageDTO {
 
-    private String roomId;
-    private String writer;
+    private Long roomId;
+    private String sender;
     private String message;
+
+
+
 }

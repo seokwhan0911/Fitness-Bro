@@ -5,16 +5,17 @@ import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.common.BaseEntity;
 import FitnessBro.domain.member.Entity.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
+@AllArgsConstructor
+@Builder
 public class ChatRoom extends BaseEntity {
 
     @Id

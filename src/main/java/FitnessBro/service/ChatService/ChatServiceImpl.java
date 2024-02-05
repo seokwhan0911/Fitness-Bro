@@ -5,6 +5,8 @@ import FitnessBro.domain.Chat.ChatRoom;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.respository.ChatRoomRepository;
+import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.MemberService.MemberCommandService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.ast.tree.expression.Over;
@@ -17,7 +19,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-    private final ChatRoomRepository chatRoomRepository;
+    private final MemberCommandService memberCommandService;
+    private final CoachService coachService;
+    private final ChatRoomRepository chatRoomRepository
 
     @PostConstruct
     //의존관게 주입완료되면 실행되는 코드
@@ -43,9 +47,17 @@ public class ChatServiceImpl implements ChatService {
 
     //채팅방 생성
     @Override
-    public ChatRoom createRoom(Member member, Coach coach) {
-        ChatRoom chatRoom = ChatRoom.create(name);
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
+    public ChatRoom createRoom(Long roomId,Long memberId, Long coachId) {
+        Member member = memberCommandService.getMemberById(memberId);
+        Coach coach = coachService.getCoachById(coachId);
+        ChatRoom chatRoom = ChatRoom.builder()
+                .Id(roomId)
+                .member(member)
+                .coach(coach)
+                .build();
+
+        chatRoomRepository.save(chatRoom);
+
         return chatRoom;
     }
 }

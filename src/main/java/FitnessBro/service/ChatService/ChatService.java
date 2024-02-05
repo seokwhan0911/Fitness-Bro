@@ -9,5 +9,5 @@ public interface ChatService {
 
     List<ChatRoom> findAllRoom();
     ChatRoom findById(String roomId);
-    ChatRoom createRoom(String name);
+    ChatRoom createRoom(Long roomId, Long memberId, Long coachId);
 }

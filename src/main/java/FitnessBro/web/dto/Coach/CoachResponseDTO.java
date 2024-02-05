@@ -37,6 +37,8 @@ public class CoachResponseDTO {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CoachUpdateResponseDTO{
         private String nickname;
         private String email;

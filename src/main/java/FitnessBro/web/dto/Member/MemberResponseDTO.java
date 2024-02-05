@@ -28,6 +28,8 @@ public class MemberResponseDTO {
     }
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class MemberUpdateResponseDTO{
         private String nickname;
         private String email;

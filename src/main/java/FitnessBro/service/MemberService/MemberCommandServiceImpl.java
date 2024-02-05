@@ -73,6 +73,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return token;
     }
 
+    @Override
+    @Transactional
     public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));

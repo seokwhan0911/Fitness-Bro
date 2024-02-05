@@ -2,7 +2,11 @@ package FitnessBro.service.ChatService;
 
 import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
+import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.respository.ChatRoomRepository;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.ast.tree.expression.Over;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +14,10 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-    private Map<String, ChatRoom> chatRooms;
+    private final ChatRoomRepository chatRoomRepository;
 
     @PostConstruct
     //의존관게 주입완료되면 실행되는 코드
@@ -38,7 +43,7 @@ public class ChatServiceImpl implements ChatService {
 
     //채팅방 생성
     @Override
-    public ChatRoom createRoom(String name) {
+    public ChatRoom createRoom(Member member, Coach coach) {
         ChatRoom chatRoom = ChatRoom.create(name);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
         return chatRoom;

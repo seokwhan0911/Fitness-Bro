@@ -83,13 +83,12 @@ public class KakaoService {
             JsonParser parser1 = new JsonParser();
             JsonElement element1 = parser1.parse(result);
 
-            JsonObject properties = element1.getAsJsonObject().get("properties").getAsJsonObject();
-            JsonObject kakaoAccount = element1.getAsJsonObject().get("kakao_account").getAsJsonObject();
+            String id= element1.getAsJsonObject().get("id").getAsString();
 
-            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            JsonObject kakaoAccount = element1.getAsJsonObject().get("kakao_account").getAsJsonObject();
             String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
 
-            userInfo.put("nickname", nickname);
+            userInfo.put("id", "kakao_" + id);
             userInfo.put("email", email);
 
             br.close();

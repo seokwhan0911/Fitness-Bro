@@ -3,18 +3,27 @@ package FitnessBro.domain.Chat;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class ChatMessage {
 
     public enum MessageType {
         ENTER, TALK
     }
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private MessageType type;
     //채팅방 ID
@@ -23,4 +32,10 @@ public class ChatMessage {
     private String sender;
     //내용
     private String message;
+
+    private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private ChatRoom chatRoom;
 }

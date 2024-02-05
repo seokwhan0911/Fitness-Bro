@@ -1,23 +1,38 @@
 package FitnessBro.domain.Chat;
 
 
+import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.common.BaseEntity;
+import FitnessBro.domain.member.Entity.Member;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
-public class ChatRoom {
+@Entity
+public class ChatRoom extends BaseEntity {
 
-    private String roomId;
-    private String roomName;
+    @Id
+    @GeneratedValue
+    @Column(name = "room_id")
+    private Long Id;
 
 
-    public static ChatRoom create(String name) {
-        ChatRoom room = new ChatRoom();
-        room.roomId = UUID.randomUUID().toString();
-        room.roomName = name;
-        return room;
-    }
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessage = new ArrayList<>();
+
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
+
+    @JoinColumn(name = "coach_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Coach coach;
+
 }

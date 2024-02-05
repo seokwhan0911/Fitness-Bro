@@ -1,4 +1,4 @@
-package FitnessBro.web.dto;
+package FitnessBro.web.dto.Chat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoomRequestDTO {
+
+    private Long roomId;
 
     private Long memberId;
 

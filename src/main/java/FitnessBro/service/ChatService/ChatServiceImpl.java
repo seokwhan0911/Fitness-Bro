@@ -21,8 +21,7 @@ public class ChatServiceImpl implements ChatService {
 
     private final MemberCommandService memberCommandService;
     private final CoachService coachService;
-
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository chatRoomRepository
 
     @PostConstruct
     //의존관게 주입완료되면 실행되는 코드
@@ -48,11 +47,17 @@ public class ChatServiceImpl implements ChatService {
 
     //채팅방 생성
     @Override
-    public ChatRoom createRoom(Long memberId, Long coachId) {
+    public ChatRoom createRoom(Long roomId,Long memberId, Long coachId) {
         Member member = memberCommandService.getMemberById(memberId);
         Coach coach = coachService.getCoachById(coachId);
-        ChatRoom chatRoom = ChatRoom.
-        chatRooms.put(chatRoom.getRoomId(), chatRoom);
+        ChatRoom chatRoom = ChatRoom.builder()
+                .Id(roomId)
+                .member(member)
+                .coach(coach)
+                .build();
+
+        chatRoomRepository.save(chatRoom);
+
         return chatRoom;
     }
 }

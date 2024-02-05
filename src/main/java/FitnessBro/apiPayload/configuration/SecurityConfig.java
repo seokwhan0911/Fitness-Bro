@@ -45,7 +45,6 @@ public class SecurityConfig {
                                 .requestMatchers("/coaches/login").permitAll()
                                 .requestMatchers("/**").permitAll()
                                 .requestMatchers("/login/oauth2/code/kakao/**").permitAll()
-                                .requestMatchers("/chat/room").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -72,13 +71,24 @@ public class SecurityConfig {
 
 
 }
-.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailedAuthenticationEntryPoint()))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailedAuthenticationEntryPoint()))
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//
+//        return httpSecurity.build();
+//    }
+//
 
 
-        return httpSecurity.build();
-    }
-
-
-
-}
+//}
+//
+//class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
+//
+//    @Override
+//    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+//            throws IOException, ServletException {
+//        response.setContentType("application/json");
+//        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//        response.getWriter().write("{\"code\": \"NP\", \"message\": \"No Permission.\"}");
+//    }
+//}

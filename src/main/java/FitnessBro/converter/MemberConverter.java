@@ -1,10 +1,7 @@
 package FitnessBro.converter;
 
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Member;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
-import FitnessBro.web.dto.Member.MemberResponseDTO;
-
-import java.time.LocalDateTime;
 
 public class MemberConverter {
 

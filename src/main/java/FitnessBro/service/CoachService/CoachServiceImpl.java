@@ -1,7 +1,8 @@
 package FitnessBro.service.CoachService;
 
 
-import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.aws.s3.AmazonS3Manager;
+import FitnessBro.domain.Coach;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.GymRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,12 @@ public class CoachServiceImpl implements CoachService{
 
     private final CoachRepository coachRepository;
     private final GymRepository gymRepository;
+    private final AmazonS3Manager s3Manager;
+
     public Coach getCoachById(Long coachId){
+
         return coachRepository.getById(coachId);
     }
-
-
 
     @Override
     @Transactional

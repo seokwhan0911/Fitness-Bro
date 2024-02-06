@@ -1,7 +1,6 @@
 package FitnessBro.respository;
 
 import FitnessBro.domain.Chat.ChatRoom;
-import FitnessBro.domain.coach.Entity.Coach;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

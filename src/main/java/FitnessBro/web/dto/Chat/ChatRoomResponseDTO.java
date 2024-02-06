@@ -1,8 +1,6 @@
 package FitnessBro.web.dto.Chat;
 
-import FitnessBro.domain.Chat.ChatMessage;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.member.Entity.Member;
+
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,9 +1,11 @@
 package FitnessBro.domain.Chat;
 
 
-import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Member;
+
 import FitnessBro.domain.common.BaseEntity;
-import FitnessBro.domain.member.Entity.Member;
+
 import jakarta.persistence.*;
 import lombok.*;
 

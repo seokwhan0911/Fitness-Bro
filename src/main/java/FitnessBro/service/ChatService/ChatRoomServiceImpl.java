@@ -1,8 +1,9 @@
 package FitnessBro.service.ChatService;
 
 import FitnessBro.domain.Chat.ChatRoom;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.member.Entity.Member;
+
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Member;
 import FitnessBro.respository.ChatRoomRepository;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.MemberService.MemberCommandService;

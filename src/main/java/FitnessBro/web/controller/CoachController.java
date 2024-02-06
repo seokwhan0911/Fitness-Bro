@@ -47,12 +47,13 @@ public class CoachController {
         ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
-
     @GetMapping("/{coachId}/reviews")
     @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
-    public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>>> getReviews(@PathVariable(value = "coachId") Long coachId){
         List<Review> reviews =  reviewService.getByCoachId(coachId);
-        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviews));
+        ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> apiResponse = ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+
     }
 
     @GetMapping("/{coachId}")

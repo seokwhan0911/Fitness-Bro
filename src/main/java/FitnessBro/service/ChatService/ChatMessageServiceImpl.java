@@ -21,8 +21,8 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     @Override
     @Transactional
-    public List<ChatMessage> findAllChatByRoomId(Long roomId){
-        return chatMessageRepository.findAllByRoomId(roomId);
+    public List<ChatMessage> findAllByChatRoomId(Long roomId){
+        return chatMessageRepository.findAllByChatRoomId(roomId);
     }
 
 
@@ -35,7 +35,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
         Sort sort = Sort.by("createdAt").ascending();
         PageRequest pageRequest = PageRequest.of(page - 1, pagePerCount, sort);
 
-        List<ChatMessage> result = chatMessageRepository.findListsByRoomId(roomId, pageRequest).getContent();
+        List<ChatMessage> result = chatMessageRepository.findListsByChatRoomId(roomId, pageRequest).getContent();
 
         return result;
     }
@@ -44,6 +44,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     public ChatMessage findMessageByRoomId(Long roomId){
         return chatMessageRepository.findByChatRoomId(roomId);
     }
+
     @Override
     @Transactional
     public void ChatMessageSave(ChatMessage chatMessage){

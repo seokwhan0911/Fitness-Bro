@@ -75,10 +75,9 @@ public class ChatRoomController {
 
 
         ChatRoom chatroom = chatRoomService.findById(message.getRoomId());
-        // DB에 채팅내용 저장
-        //ChatMessageSaveDTO chatMessageSaveDTO = new ChatMessageSaveDTO(message.getRoomId(),message.getWriter(), message.getMessage());
+
         ChatMessage chatMessage = ChatConverter.toChatMessage(message, chatroom);
-        //cr.save(ChatMessageEntity.toChatEntity(chatMessageSaveDTO,chatRoomEntity));
+
         chatMessageService.ChatMessageSave(chatMessage);
 
         return message;

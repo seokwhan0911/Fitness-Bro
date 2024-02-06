@@ -1,4 +1,4 @@
-package FitnessBro.domain.coach.Entity;
+package FitnessBro.domain;
 
 import FitnessBro.apiPayload.Utill.StringUtils;
 import FitnessBro.domain.common.BaseEntity;
@@ -9,12 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coach extends BaseEntity {
 
     @Id

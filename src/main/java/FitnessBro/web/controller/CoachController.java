@@ -4,8 +4,8 @@ package FitnessBro.web.controller;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.review.Entity.Review;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
@@ -17,7 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class CoachController {
     //헬스장 id를 받지 않고 그냥 다 넘겨 줄 때
     @GetMapping("/search")
     @Operation(summary = "코치 리스트 API", description = "코치 리스트 전달")
-    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList() {
+    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList(){
 
         List<Coach> coachList = coachService.getCoachList();
         ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
@@ -49,9 +52,10 @@ public class CoachController {
     }
 
     @GetMapping("/{coachId}/reviews")
-    public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId) {
-        List<Review> reviews = reviewService.getByCoachId(coachId);
-        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
+    @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
+    public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
+        List<Review> reviews =  reviewService.getByCoachId(coachId);
+        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviews));
     }
 
     @GetMapping("/{coachId}")

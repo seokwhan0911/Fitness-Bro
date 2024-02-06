@@ -4,8 +4,8 @@ import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Member;
+import FitnessBro.domain.Coach;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
 import FitnessBro.respository.ReviewRepository;
@@ -56,6 +56,29 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         return "SUCCESS";
     }
+
+    // social member email, id 값을 각각 email, password에 저장 한 후 토큰 발급
+    @Override
+    @Transactional
+    public String joinSocialMember(String email, String id) {
+        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
+
+
+        if (memberRepository.existsByEmail(email)){
+            return token;
+        }
+
+        Member member = new Member();
+
+
+        member.setEmail(email);
+        member.setPassword("social_" + id);
+
+        memberRepository.save(member);
+
+        return token;
+    }
+
 
     @Override
     @Transactional

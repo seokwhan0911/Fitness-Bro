@@ -1,38 +1,50 @@
 package FitnessBro.service.ReviewService;
 
+import FitnessBro.aws.s3.AmazonS3Manager;
 import FitnessBro.converter.ReviewConverter;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.review.Entity.Review;
-import FitnessBro.domain.member.Entity.Member;
-import FitnessBro.respository.CoachRepository;
-import FitnessBro.respository.MemberRepository;
-import FitnessBro.respository.ReviewRepository;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Review;
+import FitnessBro.domain.Member;
+import FitnessBro.domain.common.Uuid;
+import FitnessBro.respository.*;
 import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Console;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Slf4j
 public class ReviewServiceImpl implements ReviewService {
+
     private final ReviewRepository reviewRepository;
     private  final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
 
+    private final AmazonS3Manager s3Manager;
+    private final UuidRepository uuidRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
+
+    @Override
+    @Transactional
     public List<Review> getByCoachId(Long coachId) {
+
         List<Review> result = reviewRepository.findByCoachId(coachId);
+
         return result;
     }
 
+    @Override
+    @Transactional
     public List<ReviewResponseDTO.ReviewByUserDTO> getReviews(Long userId) {
         List<Review> reviews = reviewRepository.findAllByMemberId(userId);
         return reviews.stream()
@@ -40,23 +52,37 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toList());
 
     }
-    public void createReview(ReviewRequestDTO.CreateReviewDTO createReviewDTO, Long userId){
+
+    @Override
+    @Transactional
+    public void createReviewWithFiles(ReviewRequestDTO.CreateReviewDTO request, List<MultipartFile> files, Long userId){    // 이미지 업로드 기능 추가
 
         Member member = memberRepository.getById(userId);
-        Coach coach = coachRepository.getCoachByNickname(createReviewDTO.getCoachNickname());
+        Coach coach = coachRepository.getCoachByNickname(request.getCoachNickname());
+        Review review = ReviewConverter.toReview(request, member, coach);
 
-        System.out.println(coach);
+        // file마다 유일한 URL 값 생성
+        for(MultipartFile file : files){
+            String uuid = UUID.randomUUID().toString();
+            Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
 
-        Review review = Review.builder()
-                .date(createReviewDTO.getCreatedAt())
-                .contents(createReviewDTO.getContents())
-                .rating(createReviewDTO.getRating())
-                .member(member)
-                .coach(coach)
-                .build();
+            String pictureUrl = s3Manager.uploadFile(s3Manager.generateReviewKeyName(savedUuid), file);
+
+            reviewImageRepository.save(ReviewConverter.toReviewImage(pictureUrl, review));
+        }
 
         reviewRepository.save(review);
+    }
 
+    @Override
+    @Transactional
+    public void createReview(ReviewRequestDTO.CreateReviewDTO request, Long userId) {
+
+        Member member = memberRepository.getById(userId);
+        Coach coach = coachRepository.getCoachByNickname(request.getCoachNickname());
+
+        Review review = ReviewConverter.toReview(request, member, coach);
+        reviewRepository.save(review);
     }
 
     @Override

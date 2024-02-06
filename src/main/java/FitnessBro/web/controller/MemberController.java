@@ -6,6 +6,7 @@ import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.member.Entity.Member;
 import FitnessBro.domain.register.Entity.Register;
+import FitnessBro.domain.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
@@ -14,9 +15,9 @@ import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,24 +26,17 @@ import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Member.MemberResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
-public class MemberRestController {
+public class MemberController {
 
     private final ReviewService reviewService;
     private final RegisterService registerService;
@@ -83,9 +77,7 @@ public class MemberRestController {
         return ResponseEntity.ok().body(token);
     }
 
-    private Long getCurrentMemberId(){
-        return 1l;
-    }
+
 
     @GetMapping("/{memberId}")
     @Operation(summary = "유저 마이페이지")
@@ -97,12 +89,24 @@ public class MemberRestController {
         return ApiResponse.onSuccess(reviewService.getReviews(userId));
     }
 
-    @PostMapping("/{userId}/reviews")
-    public ApiResponse<String> createReviews(
-            @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
+    @PostMapping(value = "/{userId}/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "사용자가 동네형에게 리뷰를 작성하는 API")
+    public ApiResponse<String> createReviews(@RequestPart ReviewRequestDTO.CreateReviewDTO request,
+                                             @RequestPart(value ="files", required = false) List<MultipartFile> files,
+                                             @PathVariable(value = "userId") Long userId ){
 
-        reviewService.createReview(createReviewDTO, userId);
-        return ApiResponse.onSuccess("성공적으로 성공했습니다.");
+        if(files != null) { // 리뷰에 이미지가 포함되어 있는 경우
+            reviewService.createReviewWithFiles(request, files, userId);
+        } else {    // 리뷰에 미지가 포함되어 있지 않은 경우
+            reviewService.createReview(request,userId);
+        }
+
+        return ApiResponse.onSuccess("성공적으로 리뷰 작성을 했습니다.");
+    }
+
+    // 회원 반환 임시 메서드
+    private Long getCurrentMemberId(){
+        return 1l;
     }
 
     @PatchMapping("/{memberId}")

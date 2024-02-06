@@ -1,6 +1,8 @@
 package FitnessBro.service.CoachService;
 
 
+import FitnessBro.aws.s3.AmazonS3Manager;
+import FitnessBro.domain.Coach;
 import FitnessBro.apiPayload.Utill.StringUtils;
 import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.gym.Entity.Gym;
@@ -33,6 +35,7 @@ public class CoachServiceImpl implements CoachService{
     private final GymRepository gymRepository;
     private final ReviewRepository reviewRepository;
     private final RegisterRepository registerRepository;
+    private final AmazonS3Manager s3Manager;
 
     @Override
     @Transactional
@@ -59,25 +62,6 @@ public class CoachServiceImpl implements CoachService{
         coach.update(coachUpdateRequestDTO);
         coachRepository.save(coach);
         return coach;
-    }
-
-
-    public void addCoach() {
-        Coach coach = new Coach();
-        coach.setId(1L);
-        coach.setAge(3);
-        coach.setEmail("awef");
-        coach.setAddress("awef");
-        coach.setName("awef");
-        coach.setNickname("awef");
-        coach.setRating(4L);
-        coach.setIntroduction("awef");
-        coach.setSchedule("awef");
-        coach.setPassword("awef");
-        coach.setComment("awef");
-        coach.setPrice(10000);
-
-        coachRepository.save(coach);
     }
 
 }

@@ -1,7 +1,7 @@
 package FitnessBro.web.dto;
 
 
-import FitnessBro.domain.review.Entity.Review;
+import FitnessBro.domain.Review;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,9 +16,6 @@ public class ReviewResponseDTO {
         private String nickname;
         private LocalDateTime date;
         private String contents;
-
-
-
 
     }
 

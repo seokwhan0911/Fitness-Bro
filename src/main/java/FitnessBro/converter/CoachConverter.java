@@ -1,15 +1,12 @@
 package FitnessBro.converter;
 
-import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.Coach;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CoachConverter {
-
-
-    CoachService coachService;
 
     public static CoachResponseDTO.CoachProfileDTO toCoachProfileDTO(Coach coach){
         return CoachResponseDTO.CoachProfileDTO.builder()

@@ -1,4 +1,4 @@
-package FitnessBro.domain.gym.Entity;
+package FitnessBro.domain;
 
 import FitnessBro.domain.common.Address;
 import FitnessBro.domain.common.BaseEntity;

@@ -1,8 +1,8 @@
 package FitnessBro.respository;
 
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.register.Entity.Register;
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Register;
+import FitnessBro.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import FitnessBro.domain.register.Entity.Register;
 import FitnessBro.domain.review.Entity.Review;

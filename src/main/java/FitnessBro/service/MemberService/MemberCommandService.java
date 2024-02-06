@@ -1,7 +1,7 @@
 package FitnessBro.service.MemberService;
 
 
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Member;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 
 public interface MemberCommandService {
@@ -12,4 +12,6 @@ public interface MemberCommandService {
     String login(String email, String password);
 
     public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO);
+
+    public String joinSocialMember(String email, String id);
 }

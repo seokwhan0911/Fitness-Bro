@@ -1,4 +1,4 @@
-package FitnessBro.domain.member.Entity;
+package FitnessBro.domain;
 
 import FitnessBro.apiPayload.Utill.StringUtils;
 import FitnessBro.domain.common.BaseEntity;
@@ -12,7 +12,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 
 public class Member extends BaseEntity {

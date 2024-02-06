@@ -1,6 +1,6 @@
 package FitnessBro.converter;
 
-import FitnessBro.domain.register.Entity.Register;
+import FitnessBro.domain.Register;
 import FitnessBro.web.dto.RegisterResponseDTO;
 
 import java.util.List;

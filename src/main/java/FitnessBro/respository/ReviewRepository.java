@@ -1,6 +1,6 @@
 package FitnessBro.respository;
 
-import FitnessBro.domain.review.Entity.Review;
+import FitnessBro.domain.Review;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

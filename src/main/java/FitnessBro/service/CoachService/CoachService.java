@@ -1,9 +1,10 @@
 package FitnessBro.service.CoachService;
 
 
-import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.Coach;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import FitnessBro.domain.Coach;
 
 import java.util.List;
 

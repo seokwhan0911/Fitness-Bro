@@ -1,6 +1,6 @@
 package FitnessBro.respository;
 
-import FitnessBro.domain.gym.Entity.Gym;
+import FitnessBro.domain.Gym;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

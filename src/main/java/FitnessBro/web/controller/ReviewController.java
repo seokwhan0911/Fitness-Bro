@@ -1,18 +1,9 @@
 package FitnessBro.web.controller;
 
-import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.ReviewConverter;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.review.Entity.Review;
-import FitnessBro.service.ReviewService.ReviewService;
-import FitnessBro.web.dto.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")

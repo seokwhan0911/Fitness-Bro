@@ -2,9 +2,9 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.RegisterConverter;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.register.Entity.Register;
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Register;
+import FitnessBro.domain.Member;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.MemberService.MemberCommandService;

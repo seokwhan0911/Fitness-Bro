@@ -24,28 +24,39 @@ public class LoginController {
     }
 
     @GetMapping("/oauth2/code/kakao")
-    public String KakaoLogin(@RequestParam("code") String code)  {
+    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code)  {
+
+        // member entity member_id가 String이 아니라서 개판으로 짜임
+
+
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 
-        log.info(stringResponseEntity.getBody());
         String token = stringResponseEntity.getBody();
 
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(token);
         log.info(String.valueOf(userInfo));
 
-        return stringResponseEntity.getBody();
+        String userToken = memberCommandService.joinSocialMember(String.valueOf(userInfo.get("email")), String.valueOf(userInfo.get("id")));
+
+
+        return ResponseEntity.ok().body(userToken);
     }
 
     @GetMapping("/oauth2/code/naver")
-    public String NaverLogin(@RequestParam("code") String code, @RequestParam("state") String state)  {
+    public ResponseEntity<String> NaverLogin(@RequestParam("code") String code, @RequestParam("state") String state)  {
+
+        // member entity member_id가 String이 아니라서 개판으로 짜임 
+
         ResponseEntity<String> stringResponseEntity = naverService.getKakaoAccessToken(code, state);
-        log.info(stringResponseEntity.getBody());
+
         String token = stringResponseEntity.getBody();
 
         HashMap<String, Object> userInfo = naverService.getUserInfo(token);
         log.info(String.valueOf(userInfo));
 
-        return null;
+        String userToken = memberCommandService.joinSocialMember(String.valueOf(userInfo.get("email")), String.valueOf(userInfo.get("id")));
+
+        return ResponseEntity.ok().body(userToken);
 
     }
 

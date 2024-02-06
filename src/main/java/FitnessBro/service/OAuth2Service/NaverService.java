@@ -80,24 +80,23 @@ public class NaverService {
             String result = responseSb.toString();
             log.info("responseBody = {}", result);
 
-//            JsonParser parser1 = new JsonParser();
-//            JsonElement element1 = parser1.parse(result);
-//
-//            JsonObject properties = element1.getAsJsonObject().get("properties").getAsJsonObject();
-//            JsonObject kakaoAccount = element1.getAsJsonObject().get("kakao_account").getAsJsonObject();
-//
-//            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-//            String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
-//
-//            userInfo.put("nickname", nickname);
-//            userInfo.put("email", email);
+            JsonParser parser1 = new JsonParser();
+            JsonElement element1 = parser1.parse(result);
+
+            JsonObject response = element1.getAsJsonObject().get("response").getAsJsonObject();
+
+            String id = response.getAsJsonObject().get("id").getAsString();
+            String email = response.getAsJsonObject().get("email").getAsString();
+
+            userInfo.put("id","naver_"+id);
+            userInfo.put("email", email);
 
             br.close();
 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return userInfo;
     }
 
 }

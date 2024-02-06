@@ -6,6 +6,7 @@ import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
+import FitnessBro.web.dto.RegisterResponseDTO;
 import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import jakarta.validation.Valid;
@@ -43,7 +44,7 @@ public class MemberRestController {
     private final MemberCommandService memberCommandService;
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
-    public ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> getFavoriteCoachList(){
+    public ResponseEntity<ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>>> getFavoriteCoachList(){
         try{
             Long memberId = getCurrentMemberId();
 
@@ -56,10 +57,13 @@ public class MemberRestController {
                     .collect(Collectors.toList());
 
             // 성공 응답 생성
-            return ApiResponse.onSuccess(favoriteCoachDTOList);
+            ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> apiResponse = ApiResponse.onSuccess(favoriteCoachDTOList);
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
         } catch (Exception e){
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+
         }
     }
 
@@ -81,17 +85,26 @@ public class MemberRestController {
 
     @GetMapping("/{userId}/reviews")
     @Operation(summary = "내가 쓴 리뷰 리스트")
-    public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
-        return ApiResponse.onSuccess(reviewService.getReviews(userId));
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+        try {
+            ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> apiResponse = ApiResponse.onSuccess(reviewService.getReviews(userId));
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+        }
+        catch (Exception e){
+
+            ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+        }
     }
 
     @PostMapping("/{userId}/reviews")
     @Operation(summary = "후기 쓰기")
-    public ApiResponse<String> createReviews(
+    public ResponseEntity<ApiResponse<String>> createReviews(
             @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
 
         reviewService.createReview(createReviewDTO, userId);
-        return ApiResponse.onSuccess("성공적으로 성공했습니다.");
+        ApiResponse<String> apiResponse = ApiResponse.onSuccess("성공적으로 후기를 작성했습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
 }

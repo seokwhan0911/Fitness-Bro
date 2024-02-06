@@ -50,9 +50,11 @@ public class CoachController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @GetMapping("/{coachId}/reviews")
-    public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>>> getReviews(@PathVariable(value = "coachId") Long coachId){
         List<Review> reviews =  reviewService.getByCoachId(coachId);
-        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
+        ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> apiResponse = ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+
     }
 
 

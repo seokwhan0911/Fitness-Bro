@@ -5,7 +5,10 @@ import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.Member;
+import FitnessBro.domain.Coach;
 import FitnessBro.respository.MemberRepository;
+import FitnessBro.respository.RegisterRepository;
+import FitnessBro.respository.ReviewRepository;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,20 +23,20 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberCommandServiceImpl implements MemberCommandService {
 
-    private final MemberRepository memberRepository;
+    @Value("${jwt.secret}")
+    private String key;
+    private Long expireTimeMs = 1000 *60 * 60l;
     private final BCryptPasswordEncoder encoder;
+
+    public final MemberRepository memberRepository;
+    public final RegisterRepository registerRepository;
+    public final ReviewRepository reviewRepository;
+
     @Override
     public Member getMemberById(Long memberId){
         Member member = memberRepository.getById(memberId);
         return member;
     }
-
-
-
-
-    @Value("${jwt.secret}")
-    private String key;
-    private Long expireTimeMs = 1000 *60 * 60l;
 
     @Override
     @Transactional
@@ -91,5 +94,16 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         //앞에서 Exception 안났으면 토큰 발행
         String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
         return token;
+    }
+
+    @Override
+    @Transactional
+    public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        member.update(memberUpdateRequestDTO);
+        memberRepository.save(member);
+        return member;
     }
 }

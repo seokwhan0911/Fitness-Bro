@@ -85,4 +85,15 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.save(review);
     }
 
+    @Override
+    @Transactional
+    public Long getReviewNumCoach(Long coachId){
+        return reviewRepository.countByCoachId(coachId);
+    }
+
+    @Override
+    @Transactional
+    public Long getReviewNumMember(Long memberId){
+        return reviewRepository.countByMemberId(memberId);
+    }
 }

@@ -2,6 +2,7 @@ package FitnessBro.converter;
 
 import FitnessBro.domain.Member;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
+import FitnessBro.web.dto.Member.MemberResponseDTO;
 
 public class MemberConverter {
 

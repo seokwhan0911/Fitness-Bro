@@ -1,6 +1,6 @@
 package FitnessBro.service.MemberService;
 
-import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.Coach;
 
 import java.util.List;
 

@@ -4,8 +4,8 @@ package FitnessBro.web.controller;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.review.Entity.Review;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
@@ -50,9 +50,12 @@ public class CoachController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
     @GetMapping("/{coachId}/reviews")
+    @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
     public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
+
         List<Review> reviews =  reviewService.getByCoachId(coachId);
-        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviewService.getByCoachId(coachId)));
+
+        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviews));
     }
 
 

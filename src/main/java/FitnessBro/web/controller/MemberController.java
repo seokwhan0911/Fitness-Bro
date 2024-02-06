@@ -2,8 +2,13 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
+import FitnessBro.converter.MemberConverter;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Member;
+import FitnessBro.domain.Register;
 import FitnessBro.domain.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.ReviewRequestDTO;
@@ -12,11 +17,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import FitnessBro.service.MemberService.MemberQueryService;
+import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import FitnessBro.web.dto.Member.MemberResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,13 +33,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
 
     private final ReviewService reviewService;
+    private final RegisterService registerService;
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
@@ -71,6 +79,11 @@ public class MemberController {
 
 
 
+    @GetMapping("/{memberId}")
+    @Operation(summary = "유저 마이페이지")
+    public ApiResponse<MemberResponseDTO.MemberMyPageDTO> getMemberMyPage(@PathVariable(value = "memberId") Long memberId) {
+        return ApiResponse.onSuccess(MemberConverter.toMemberMyPageDTO(memberCommandService.getMemberById(memberId),registerService.getMatchNumMember(memberId),reviewService.getReviewNumCoach(memberId)));
+    }
     @GetMapping("/{userId}/reviews")
     public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
         return ApiResponse.onSuccess(reviewService.getReviews(userId));
@@ -96,4 +109,10 @@ public class MemberController {
         return 1l;
     }
 
+    @PatchMapping("/{memberId}")
+    @Operation(summary = "멤버 정보 수정")
+    public ApiResponse<MemberResponseDTO.MemberUpdateResponseDTO> patchCoachUpdate(@PathVariable(value = "memberId") Long memberId, @RequestBody MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO) {
+        Member member = memberCommandService.updateMember(memberId,memberUpdateRequestDTO);
+        return ApiResponse.onSuccess(MemberConverter.toMemberUpdateDTO(member));
+    }
 }

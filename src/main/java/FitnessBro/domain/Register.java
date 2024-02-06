@@ -1,8 +1,8 @@
-package FitnessBro.domain.register.Entity;
+package FitnessBro.domain;
 
-import FitnessBro.domain.coach.Entity.Coach;
+import FitnessBro.domain.Coach;
 import FitnessBro.domain.common.BaseEntity;
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

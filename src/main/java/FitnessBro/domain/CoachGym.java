@@ -1,8 +1,6 @@
-package FitnessBro.domain.coachgym.Entity;
+package FitnessBro.domain;
 
-import FitnessBro.domain.coach.Entity.Coach;
 import FitnessBro.domain.common.BaseEntity;
-import FitnessBro.domain.gym.Entity.Gym;
 import jakarta.persistence.*;
 import lombok.*;
 

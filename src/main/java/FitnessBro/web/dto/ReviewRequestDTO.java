@@ -1,38 +1,31 @@
 package FitnessBro.web.dto;
 
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.review.Entity.Review;
-import FitnessBro.domain.member.Entity.Member;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 
 @Data
 public class ReviewRequestDTO {
 
-
     @Getter
+    @Builder
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateReviewDTO{
 
-
         @NotNull
-        private String coachNickname;
+        String coachNickname;
+
         @NotNull
         @Range(min = 0, max = 5)
-        private Long rating;
-        private String contents;
+        Float rating;
+
         @NotNull
-        private LocalDateTime createdAt;
-
-
-
+        String contents;
     }
-
-
 
 }

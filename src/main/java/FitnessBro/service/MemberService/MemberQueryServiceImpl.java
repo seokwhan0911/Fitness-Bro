@@ -1,11 +1,8 @@
 package FitnessBro.service.MemberService;
 
-import FitnessBro.domain.coach.Entity.Coach;
-import FitnessBro.domain.favorites.Entity.Favorites;
-import FitnessBro.domain.member.Entity.Member;
-import FitnessBro.respository.CoachRepository;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Favorites;
 import FitnessBro.respository.FavoriteRepository;
-import FitnessBro.respository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

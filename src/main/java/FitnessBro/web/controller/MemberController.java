@@ -2,18 +2,19 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
-import FitnessBro.domain.coach.Entity.Coach;
+
+import FitnessBro.domain.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
-import FitnessBro.web.dto.RegisterResponseDTO;
+
 import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 import FitnessBro.service.MemberService.MemberQueryService;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
-public class MemberRestController {
+public class MemberController {
 
     private final ReviewService reviewService;
     private final MemberQueryService memberQueryService;
@@ -68,11 +69,13 @@ public class MemberRestController {
     }
 
     @PostMapping("/sign-up")
+    @Operation(summary = "회원가입")
     public ResponseEntity<String> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
         memberCommandService.joinMember(request);
         return ResponseEntity.ok().body("회원가입에 성공했습니다.");
     }
     @PostMapping("/login")
+    @Operation(summary = "로그인")
     public ResponseEntity<String> login(@RequestBody @Valid MemberRequestDTO.loginDTO request) {
         String token = memberCommandService.login(request.getEmail(), request.getPassword());
 

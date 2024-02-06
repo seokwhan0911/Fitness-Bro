@@ -1,7 +1,7 @@
 package FitnessBro.respository;
 
 
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

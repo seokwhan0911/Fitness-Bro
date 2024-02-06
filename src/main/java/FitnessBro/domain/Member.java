@@ -1,4 +1,4 @@
-package FitnessBro.domain.member.Entity;
+package FitnessBro.domain;
 
 import FitnessBro.domain.common.BaseEntity;
 import jakarta.persistence.*;

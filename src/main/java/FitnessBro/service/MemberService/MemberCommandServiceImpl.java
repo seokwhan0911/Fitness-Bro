@@ -4,7 +4,7 @@ import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
-import FitnessBro.domain.member.Entity.Member;
+import FitnessBro.domain.Member;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;

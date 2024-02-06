@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,14 +16,15 @@ public class CoachResponseDTO {
     @Builder
     public static class CoachProfileDTO{
 
-        private String name;
-        private int age;
-        private float rating;
-        private String comment;
-        private String introduction;
-        private int price;
-        private String address;
-        private String schedule;
+        String name;
+        int age;
+        float rating;
+        String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%
+        String introduction;    // 코치 소개
+        int price;          // 시급 가격
+        String address;     // 위치
+        String schedule;
+        MultipartFile coachPicture;
 
     }
 

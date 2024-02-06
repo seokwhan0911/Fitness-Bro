@@ -80,11 +80,13 @@ public class MemberRestController {
     }
 
     @GetMapping("/{userId}/reviews")
+    @Operation(summary = "내가 쓴 리뷰 리스트")
     public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
         return ApiResponse.onSuccess(reviewService.getReviews(userId));
     }
 
     @PostMapping("/{userId}/reviews")
+    @Operation(summary = "후기 쓰기")
     public ApiResponse<String> createReviews(
             @Valid @RequestBody ReviewRequestDTO.CreateReviewDTO createReviewDTO, @PathVariable(value = "userId") Long userId ){
 

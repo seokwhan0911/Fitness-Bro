@@ -36,7 +36,7 @@ public class AmazonS3Manager {
             log.error("error at AmazonS3Manager uploadFile : {}", (Object) e.getStackTrace());
         }
 
-        return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString() + ".png";
+        return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
     }
 
     public String generateProfileKeyName(Uuid uuid){

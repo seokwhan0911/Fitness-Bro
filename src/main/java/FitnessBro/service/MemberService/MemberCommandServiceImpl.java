@@ -4,9 +4,14 @@ import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.MemberConverter;
+import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
+import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
+import FitnessBro.web.dto.Login.Role;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +26,7 @@ import java.util.Optional;
 public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
     private final BCryptPasswordEncoder encoder;
     @Override
     public Member getMemberById(Long memberId){
@@ -31,9 +37,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
 
 
+
     @Value("${jwt.secret}")
     private String key;
     private Long expireTimeMs = 1000 *60 * 60l;
+
+    @Override
+    public Claims decodeJwt(String token){
+        Claims email = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+
+        return email;
+    }
 
     @Override
     @Transactional
@@ -58,18 +72,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public String joinSocialMember(String email, String id) {
-        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
 
+        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
 
         if (memberRepository.existsByEmail(email)){
             return token;
         }
 
-        Member member = new Member();
-
-
-        member.setEmail(email);
-        member.setPassword("social_" + id);
+        Member member = Member.builder()
+                .email(email)
+                .password(id)
+                .build();
 
         memberRepository.save(member);
 
@@ -92,4 +105,27 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
         return token;
     }
+
+    @Override
+    @Transactional
+    public String classifyUsers(Claims userInfo, Role role){
+        System.out.println("시작");
+
+        String userEmail = (String) userInfo.get("email");
+        System.out.println(userEmail);
+        if (role.equals(Role.COACH)) {
+            Optional<Member> member = memberRepository.findByEmail(userEmail);
+            Coach coach = Coach.builder()
+                    .email(userEmail)
+                    .build();
+
+            coachRepository.save(coach);
+            memberRepository.deleteMemberByEmail(userEmail);
+        }
+
+
+        return "SUCCESS";
+    }
+
+
 }

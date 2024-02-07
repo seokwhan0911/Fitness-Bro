@@ -9,7 +9,7 @@ import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
-import FitnessBro.web.dto.ReviewResponseDTO;
+import FitnessBro.web.dto.review.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +29,7 @@ import java.util.List;
 @RequestMapping("/coaches")
 @RequiredArgsConstructor
 public class CoachController {
+
     private final CoachService coachService;
     private final ReviewService reviewService;
 
@@ -49,15 +50,37 @@ public class CoachController {
         ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
     @GetMapping("/{coachId}/reviews")
     @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
     public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId){
 
-        List<Review> reviews =  reviewService.getByCoachId(coachId);
+        try{
+            List<Review> reviews =  reviewService.getReviewsByCoachId(coachId);
 
-        return ApiResponse.onSuccess(ReviewConverter.toReviewByCoachDTO(reviews));
+            List<ReviewResponseDTO.ReviewByCoachDTO> reviewDTOList = ReviewConverter.toReviewByCoachDTO(reviews);
+
+            return ApiResponse.onSuccess(reviewDTOList);
+
+        }catch (Exception e){
+            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+        }
     }
 
+    @GetMapping("/reviews/{reviewId}")
+    @Operation(summary = "동네형이 받은 리뷰 상세보기를 조회하는 API")
+    public ApiResponse<ReviewResponseDTO.ReviewDetailDTO> getReviewDetails (@PathVariable (value = "reviewId") Long reviewId){
 
+        try{
+            Review review =  reviewService.getReviewById(reviewId);
 
+            ReviewResponseDTO.ReviewDetailDTO reviewDetailDTO = ReviewConverter.toReviewDetailDTO(review);
+
+            return ApiResponse.onSuccess(reviewDetailDTO);
+
+        }catch (Exception e){
+            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+        }
+
+    }
 }

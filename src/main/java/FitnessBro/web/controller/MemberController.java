@@ -6,8 +6,8 @@ import FitnessBro.domain.Coach;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
-import FitnessBro.web.dto.ReviewRequestDTO;
-import FitnessBro.web.dto.ReviewResponseDTO;
+import FitnessBro.web.dto.review.ReviewRequestDTO;
+import FitnessBro.web.dto.review.ReviewResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -72,23 +72,35 @@ public class MemberController {
 
 
     @GetMapping("/{userId}/reviews")
-    public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
-        return ApiResponse.onSuccess(reviewService.getReviews(userId));
+    @Operation(summary = "사용자가 작성한 후기 리스트 조회 API")
+    public ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+
+        try {
+            return ApiResponse.onSuccess(reviewService.getReviews(userId));
+
+        }catch (Exception e){
+            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+        }
     }
 
     @PostMapping(value = "/{userId}/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "사용자가 동네형에게 리뷰를 작성하는 API")
-    public ApiResponse<String> createReviews(@RequestPart ReviewRequestDTO.CreateReviewDTO request,
-                                             @RequestPart(value ="files", required = false) List<MultipartFile> files,
-                                             @PathVariable(value = "userId") Long userId ){
+    public ResponseEntity<ApiResponse<String>> createReviews(@RequestPart(value = "request") ReviewRequestDTO.CreateReviewDTO request,
+                                                             @RequestPart(value ="files", required = false) List<MultipartFile> files,
+                                                             @PathVariable(value = "userId") Long userId ){
+        try{
+            if(files != null) { // 리뷰에 이미지가 포함되어 있는 경우
+                reviewService.createReviewWithFiles(request, files, userId);
+            } else {    // 리뷰에 미지가 포함되어 있지 않은 경우
+                reviewService.createReview(request,userId);
+            }
+            ApiResponse<String> apiResponse = ApiResponse.onSuccess("성공적으로 리뷰 작성을 했습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
-        if(files != null) { // 리뷰에 이미지가 포함되어 있는 경우
-            reviewService.createReviewWithFiles(request, files, userId);
-        } else {    // 리뷰에 미지가 포함되어 있지 않은 경우
-            reviewService.createReview(request,userId);
+        }catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
-
-        return ApiResponse.onSuccess("성공적으로 리뷰 작성을 했습니다.");
     }
 
     // 회원 반환 임시 메서드

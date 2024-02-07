@@ -52,6 +52,7 @@ public class ReviewConverter {
                 .rating(review.getRating())
                 .nickname(review.getMember().getNickname())
                 .content(review.getContents())
+                .createdAt(review.getCreatedAt())
                 .pictureURLs(review.getReviewImageList().
                         stream().
                         map(ReviewImage::getUrl).

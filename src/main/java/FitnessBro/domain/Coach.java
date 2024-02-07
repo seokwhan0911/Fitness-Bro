@@ -1,13 +1,10 @@
 package FitnessBro.domain;
 
 import FitnessBro.domain.common.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-
+@Builder
 @Entity
 @Setter
 @Getter
@@ -16,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class Coach extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "coach_id")
     private Long id;
 

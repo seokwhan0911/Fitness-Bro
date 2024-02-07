@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 
 public class Member extends BaseEntity {

@@ -33,7 +33,7 @@ public class ChatRoomResponseDTO {
     @Getter
     public static class ChatRoomSimpleDTO{
         private Long chatRoomId;
-        private ChatMessage lastChatMessage;
+        private String lastChatMessage;
         private LocalDateTime createdAt;
         private String partnerName;
     }

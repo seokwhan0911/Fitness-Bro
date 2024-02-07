@@ -2,6 +2,7 @@ package FitnessBro.respository;
 
 
 import FitnessBro.domain.Chat.ChatMessage;
+import FitnessBro.domain.Chat.ChatRoom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,9 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage,Long> {
     Page<ChatMessage> findListsByChatRoomId(Long roomId, PageRequest pageRequest);
 
     ChatMessage findByChatRoomId(Long roomId);
+
+    List<ChatMessage> findAllTopByChatRoomOrderByCreatedAtDesc(ChatRoom chatRoom);
+
+    ChatMessage findTopByChatRoomOrderByCreatedAtDesc(ChatRoom chatRoom);
 
 }

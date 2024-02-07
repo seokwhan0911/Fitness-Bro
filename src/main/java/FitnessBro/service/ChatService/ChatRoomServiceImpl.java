@@ -86,7 +86,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             List<ChatMessage> chatMessageList = chatRoom.getChatMessage();
             if (!chatMessageList.isEmpty()) {
                 ChatMessage lastChatMessage = chatMessageList.get(chatMessageList.size() - 1);
-                chatRoom.setLastChatMessage(lastChatMessage);
+                chatRoom.setLastChatMessage(lastChatMessage.getMessage());
             }
         }
     }

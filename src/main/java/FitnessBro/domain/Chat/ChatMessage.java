@@ -4,6 +4,7 @@ package FitnessBro.domain.Chat;
 import jakarta.persistence.*;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +27,7 @@ public class ChatMessage {
     private String message;
 
     private LocalDateTime createdAt;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")

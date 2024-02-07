@@ -30,8 +30,8 @@ public class ChatRoom extends BaseEntity {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessage = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private ChatMessage lastChatMessage;
+
+    private String lastChatMessage;
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)

@@ -36,6 +36,7 @@ public class CoachController {
     public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId, Errors errors) {
 
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
+
     }
 
 
@@ -91,8 +92,7 @@ public class CoachController {
 
         @PatchMapping("/{coachId}")
         @Operation(summary = "코치 정보 수정")
-        public ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO> patchCoachUpdate
-        (@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
+        public ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO> patchCoachUpdate(@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
         coachUpdateRequestDTO){
             Coach coach = coachService.updateCoach(coachId, coachUpdateRequestDTO);
             return ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach));

@@ -3,12 +3,12 @@ package FitnessBro.service.MemberService;
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
+import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
+import FitnessBro.domain.Favorites;
 import FitnessBro.domain.Member;
 import FitnessBro.domain.Coach;
-import FitnessBro.respository.MemberRepository;
-import FitnessBro.respository.RegisterRepository;
-import FitnessBro.respository.ReviewRepository;
+import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +28,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private Long expireTimeMs = 1000 *60 * 60l;
     private final BCryptPasswordEncoder encoder;
 
-    public final MemberRepository memberRepository;
-    public final RegisterRepository registerRepository;
-    public final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public Member getMemberById(Long memberId){
@@ -77,6 +77,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.save(member);
 
         return token;
+    }
+
+    @Override
+    @Transactional
+    public void createFavoriteCoach(Long userId, Long coachId) {
+
+        // userId, coachId로 멤버와 코치 객체 가져오기
+        Member member = memberRepository.findById(userId).orElse(null);
+        Coach coach = coachRepository.findById(coachId).orElse(null);
+
+        // favorites repository에 저장
+        Favorites favorites = FavoriteConverter.toFavorite(member, coach);
+        favoriteRepository.save(favorites);
     }
 
 

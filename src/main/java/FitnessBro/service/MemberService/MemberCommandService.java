@@ -14,4 +14,6 @@ public interface MemberCommandService {
     public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO);
 
     public String joinSocialMember(String email, String id);
+
+    void createFavoriteCoach(Long userId, Long coachId);
 }

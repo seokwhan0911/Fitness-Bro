@@ -33,7 +33,7 @@ public class CoachController {
 
     @GetMapping("/{coachId}/info")
     @Operation(summary = "코치 상세정보 API", description = "코치 id를 받아 코치 상세정보 전달")
-    public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId, Errors errors) {
+    public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
 
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
 

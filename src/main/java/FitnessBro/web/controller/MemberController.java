@@ -84,7 +84,7 @@ public class MemberController {
 
     @GetMapping("/{userId}/reviews")
     @Operation(summary = "사용자가 작성한 후기 리스트 조회 API")
-    public  ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>>getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>>getReviewsByUser(@PathVariable(value = "userId") Long userId ){
 
         try {
             ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> apiResponse = ApiResponse.onSuccess(reviewService.getReviews(userId));

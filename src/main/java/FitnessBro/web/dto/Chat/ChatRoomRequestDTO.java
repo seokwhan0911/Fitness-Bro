@@ -15,8 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class ChatRoomRequestDTO {
 
-    private Long roomId;
-
     private Long memberId;
 
     private Long coachId;

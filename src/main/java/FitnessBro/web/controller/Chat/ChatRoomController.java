@@ -5,6 +5,8 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.ChatConverter;
 import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Member;
 import FitnessBro.respository.ChatRoomRepository;
 import FitnessBro.service.ChatService.ChatMessageService;
 import FitnessBro.service.ChatService.ChatRoomService;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.awt.SystemColor.info;
 
@@ -70,14 +73,18 @@ public class ChatRoomController {
     // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id, 생성 완료 메세지 리턴
     // /pub/connect 엔드포인트로 채팅하기 누를시.
     @MessageMapping("/connect")
-    @SendTo("/topic/{roomId}") // 여기를 구독하고 있어야 함
+    @SendTo("/topic/{memberId}/{coachId}") // 여기를 구독하고 있어야 함
     public ResponseEntity<ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO>> createRoom(@RequestBody @Valid ChatRoomRequestDTO request) {
 
-        ChatRoom chatRoom = chatRoomService.createRoom(request.getRoomId(), request.getMemberId(), request.getCoachId());
+        ChatRoom newChatRoom = new ChatRoom();
+        ChatRoom chatRoom = chatRoomService.findChatRoomByMemberIdAndCoachId(request.getMemberId(),request.getCoachId());
 
-        List<ChatMessage> latestChatMessages = chatMessageService.findChatMessagesWithPaging(1, request.getRoomId());
+        if(chatRoom == null){
+            chatRoom = chatRoomService.createRoom(newChatRoom.getId(), request.getMemberId(), request.getCoachId());
+        }
 
-        List<ChatMessageDTO> chatMessageDtoList = new ArrayList<>();
+        List<ChatMessage> latestChatMessages = chatMessageService.findChatMessagesWithPaging(1, chatRoom.getId());
+
         List<ChatMessageDTO> chatMessageDTOList = ChatConverter.toChatMessageListDTO(latestChatMessages);
 
         ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom, chatMessageDTOList);
@@ -93,9 +100,9 @@ public class ChatRoomController {
     public ChatMessageDTO message(@RequestBody ChatMessageDTO message) {
 
 
-        ChatRoom chatroom = chatRoomService.findById(message.getRoomId());
+        ChatRoom chatRoom = chatRoomService.findById(message.getRoomId());
 
-        ChatMessage chatMessage = ChatConverter.toChatMessage(message, chatroom);
+        ChatMessage chatMessage = ChatConverter.toChatMessage(message, chatRoom);
 
         chatMessageService.ChatMessageSave(chatMessage);
 

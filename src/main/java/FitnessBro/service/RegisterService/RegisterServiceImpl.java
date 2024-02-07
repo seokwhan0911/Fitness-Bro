@@ -3,6 +3,8 @@ package FitnessBro.service.RegisterService;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Register;
 import FitnessBro.domain.Member;
+import FitnessBro.respository.CoachRepository;
+import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,8 @@ import java.util.List;
 public class RegisterServiceImpl implements RegisterService{
 
     public final RegisterRepository registerRepository;
-
+    public final CoachRepository coachRepository;
+    public final MemberRepository memberRepository;
 
     @Override
     @Transactional
@@ -77,5 +80,17 @@ public class RegisterServiceImpl implements RegisterService{
         register.setCoachSuccess(true);
 
         return register;
+    }
+
+    @Override
+    @Transactional
+    public Long getMatchNumCoach(Long coachId){
+        return (long)successRegisterList(getRegisterListByCoach(coachRepository.getById(coachId))).size();
+    }
+
+    @Override
+    @Transactional
+    public Long getMatchNumMember(Long memberId){
+        return (long)successRegisterList(getRegisterListByMember(memberRepository.getById(memberId))).size();
     }
 }

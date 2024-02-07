@@ -18,5 +18,21 @@ public class MemberResponseDTO {
         LocalDateTime createdAt;
     }
 
-
+    @Getter
+    @Builder
+    public static class MemberMyPageDTO{
+        private String nickname;
+        private Long matchNum;
+        private Long reviewNum;
+        //private String image;
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberUpdateResponseDTO{
+        private String nickname;
+        private String email;
+        private String password;
+    }
 }

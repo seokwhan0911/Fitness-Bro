@@ -94,4 +94,14 @@ public class ReviewServiceImpl implements ReviewService {
         return review;
     }
 
+    public Long getReviewNumCoach(Long coachId){
+        return reviewRepository.countByCoachId(coachId);
+    }
+
+    @Override
+    @Transactional
+    public Long getReviewNumMember(Long memberId){
+        return reviewRepository.countByMemberId(memberId);
+    }
+
 }

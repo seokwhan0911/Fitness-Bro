@@ -1,4 +1,4 @@
-package FitnessBro.web.dto;
+package FitnessBro.web.dto.review;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -18,7 +18,7 @@ public class ReviewRequestDTO {
     public static class CreateReviewDTO{
 
         @NotNull
-        String coachNickname;
+        String nickname;    // 코치 닉네임
 
         @NotNull
         @Range(min = 0, max = 5)
@@ -26,6 +26,8 @@ public class ReviewRequestDTO {
 
         @NotNull
         String contents;
+
+        LocalDateTime createdAt;
     }
 
 }

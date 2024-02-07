@@ -13,9 +13,11 @@ import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.web.dto.Chat.ChatMessageDTO;
 import FitnessBro.web.dto.Chat.ChatRoomRequestDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -35,18 +37,35 @@ public class ChatRoomController {
     private final CoachService coachService;
     private final ChatMessageService chatMessageService;
 
-    // 채팅 리스트 화면
-//    @GetMapping("/room")
+//     채팅 리스트 화면
+//@GetMapping("/room")
 //    public String rooms(Model model) {
 //        return "/chat/room";
 //    }
 //
 //    모든 채팅방 목록 반환
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoom> room() {
-//        return chatRoomService.findAllRoom();
-//    }
+    @GetMapping("/members/chatrooms/{memberId}")
+    @Operation(summary = "멤버의 채팅방 목록 보여주기", description = "멤버의 채팅리스트 보여주기 api")
+    public ResponseEntity<ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>>> memberChatRoomList(@PathVariable(value = "memberId") Long memberId) {
+
+        List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByMemberId(memberId);
+        chatRoomService.setLastChatMessage(chatRoomsList);
+        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toMemberChatRoomSimpleListDTO(chatRoomsList));
+
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
+    @GetMapping("/coaches/chatrooms/{coachId}")
+    @Operation(summary = "코치의 채팅방 목록 보여주기", description = "코치의 채팅리스트 보여주기 api")
+    public ResponseEntity<ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>>> coachChatRoomList(@PathVariable(value = "coachId") Long coachId) {
+
+        List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByCoachId(coachId);
+        chatRoomService.setLastChatMessage(chatRoomsList);
+        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toCoachChatRoomSimpleListDTO(chatRoomsList));
+
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
 
     // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id, 생성 완료 메세지 리턴
     // /pub/connect 엔드포인트로 채팅하기 누를시.

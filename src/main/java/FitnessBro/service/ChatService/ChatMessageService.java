@@ -1,6 +1,7 @@
 package FitnessBro.service.ChatService;
 
 import FitnessBro.domain.Chat.ChatMessage;
+import FitnessBro.domain.Chat.ChatRoom;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface ChatMessageService {
     ChatMessage findMessageByRoomId(Long roomId);
 
     void ChatMessageSave(ChatMessage chatMessage);
+
+
 }

@@ -18,6 +18,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @Builder
+@Setter
 public class ChatRoom extends BaseEntity {
 
     @Id
@@ -28,6 +29,9 @@ public class ChatRoom extends BaseEntity {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessage = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private ChatMessage lastChatMessage;
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)

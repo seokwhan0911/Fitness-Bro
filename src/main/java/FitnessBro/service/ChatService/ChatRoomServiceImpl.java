@@ -1,5 +1,6 @@
 package FitnessBro.service.ChatService;
 
+import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
 
 import FitnessBro.domain.Coach;
@@ -10,6 +11,7 @@ import FitnessBro.service.MemberService.MemberCommandService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -40,6 +42,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 //
     //채팅방 하나 불러오기
     @Override
+    @Transactional
     public ChatRoom findById(Long roomId) {
 
         return chatRoomRepository.findById(roomId).orElse(null);
@@ -47,6 +50,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     //채팅방 생성
     @Override
+    @Transactional
     public ChatRoom createRoom(Long roomId,Long memberId, Long coachId) {
         Member member = memberCommandService.getMemberById(memberId);
         Coach coach = coachService.getCoachById(coachId);
@@ -60,4 +64,31 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         return chatRoom;
     }
+
+    @Override
+    @Transactional
+    public List<ChatRoom> findAllChatRoomListByMemberId(Long memberId){
+        return chatRoomRepository.findAllByMemberId(memberId);
+    }
+
+    @Override
+    @Transactional
+    public List<ChatRoom> findAllChatRoomListByCoachId(Long coachId){
+        return chatRoomRepository.findAllByCoachId(coachId);
+    }
+
+
+    @Override
+    @Transactional
+    public void setLastChatMessage(List<ChatRoom> chatRoomList)
+    {
+        for (ChatRoom chatRoom : chatRoomList) {
+            List<ChatMessage> chatMessageList = chatRoom.getChatMessage();
+            if (!chatMessageList.isEmpty()) {
+                ChatMessage lastChatMessage = chatMessageList.get(chatMessageList.size() - 1);
+                chatRoom.setLastChatMessage(lastChatMessage);
+            }
+        }
+    }
+
 }

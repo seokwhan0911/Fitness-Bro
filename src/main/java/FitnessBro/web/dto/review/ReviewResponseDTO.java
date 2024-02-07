@@ -41,6 +41,7 @@ public class ReviewResponseDTO {
         private String nickname;    // 회원 닉네임
         private String content;    // 후기 내용
         private Float rating;
+        private LocalDateTime createdAt;
         private List<String> pictureURLs;    // 후기에 사용된 이미지 리스트
     }
 }

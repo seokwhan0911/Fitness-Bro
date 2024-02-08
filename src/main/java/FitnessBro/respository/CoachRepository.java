@@ -15,4 +15,5 @@ public interface CoachRepository extends JpaRepository<Coach, Long>{
     Coach getCoachByNickname(String nickname);
 
 
+
 }

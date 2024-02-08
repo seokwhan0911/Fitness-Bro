@@ -20,4 +20,13 @@ public class MemberRequestDTO {
         String password;
     }
 
+    @Getter
+    @Builder
+    public static class MemberProfileRegisterDTO{
+
+        String nickname;    //닉네임
+        int age; // 나이
+
+    }
+
 }

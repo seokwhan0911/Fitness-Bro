@@ -8,6 +8,7 @@ import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Login.LoginRequestDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class LoginController {
     private final MemberCommandService memberCommandService;
 
     @PostMapping("/select")
+    @Operation(summary = "회원가입 동네형, 유저 선택", description ="회원가입 동네형 유저 선택" )
     public ResponseEntity<String> Select(@RequestHeader(value = "token") String token, @RequestBody @Valid LoginRequestDTO request){
 
         Claims userinfo = memberCommandService.decodeJwt(token);
@@ -42,8 +44,6 @@ public class LoginController {
 
     @GetMapping("/oauth2/code/kakao")
     public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code, @RequestBody @Valid MemberRequestDTO.JoinDTO request)  {
-
-
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 

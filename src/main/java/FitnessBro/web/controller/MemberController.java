@@ -3,8 +3,10 @@ package FitnessBro.web.controller;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.domain.Coach;
+import FitnessBro.domain.Member;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.ReviewService.ReviewService;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.ReviewRequestDTO;
 import FitnessBro.web.dto.ReviewResponseDTO;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -57,18 +60,18 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<String> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
-        memberCommandService.joinMember(request);
-        return ResponseEntity.ok().body("회원가입에 성공했습니다.");
-    }
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid MemberRequestDTO.loginDTO request) {
-        String token = memberCommandService.login(request.getEmail(), request.getPassword());
-
-        return ResponseEntity.ok().body(token);
-    }
-
+//    @PostMapping("/sign-up")
+//    public ResponseEntity<String> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
+//        memberCommandService.joinMember(request);
+//        return ResponseEntity.ok().body("회원가입에 성공했습니다.");
+//    }
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestBody @Valid MemberRequestDTO.loginDTO request) {
+//        String token = memberCommandService.login(request.getEmail(), request.getPassword());
+//
+//        return ResponseEntity.ok().body(token);
+//    }
+//
 
 
     @GetMapping("/{userId}/reviews")
@@ -96,4 +99,15 @@ public class MemberController {
         return 1l;
     }
 
+
+    @PutMapping("/{memberId}/sign-up")
+    @Operation(summary = "유저 회원가입 완료 후 첫 정보 입력 페이지")
+    public ApiResponse<String> coachSignUp(@PathVariable(value = "memberId") Long memberId,
+                                           @RequestBody @Valid MemberRequestDTO.MemberProfileRegisterDTO request){
+
+        Optional<Member> member = memberCommandService.insertInfo(memberId, request);
+
+        return ApiResponse.onSuccess("Success");
+
+    }
 }

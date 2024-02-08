@@ -15,9 +15,6 @@ import org.hibernate.validator.constraints.Range;
 public class LoginRequestDTO {
 
     @NotNull
-    String nickname;
-
-    @NotNull
     Role role;
 
 }

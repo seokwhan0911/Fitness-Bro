@@ -8,6 +8,7 @@ import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Login.Role;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import io.jsonwebtoken.Claims;
@@ -125,6 +126,23 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
 
         return "SUCCESS";
+    }
+
+    @Override
+    @Transactional
+    public Optional<Member> insertInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request){
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        member.ifPresent(t-> {
+
+            t.setNickname(request.getNickname());
+
+            t.setAge(request.getAge());
+
+            memberRepository.save(t);
+        });
+
+        return member;
     }
 
 

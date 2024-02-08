@@ -3,13 +3,17 @@ package FitnessBro.service.MemberService;
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
+import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.Coach;
+import FitnessBro.domain.Favorites;
 import FitnessBro.domain.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Login.Role;
+import FitnessBro.domain.Coach;
+import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,28 +30,21 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberCommandServiceImpl implements MemberCommandService {
 
+    @Value("${jwt.secret}")
+    private String key;
+    private Long expireTimeMs = 1000 *60 * 60l;
+    private final BCryptPasswordEncoder encoder;
+
     private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
     private final BCryptPasswordEncoder encoder;
+    private final CoachRepository coachRepository;
+    private final FavoriteRepository favoriteRepository;
+
     @Override
     public Member getMemberById(Long memberId){
         Member member = memberRepository.getById(memberId);
         return member;
-    }
-
-
-
-
-
-    @Value("${jwt.secret}")
-    private String key;
-    private Long expireTimeMs = 1000 *60 * 60l;
-
-    @Override
-    public Claims decodeJwt(String token){
-        Claims email = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-
-        return email;
     }
 
     @Override
@@ -73,7 +70,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public String joinSocialMember(String email, String id) {
-
         String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
 
         if (memberRepository.existsByEmail(email)){
@@ -88,6 +84,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.save(member);
 
         return token;
+    }
+
+    @Override
+    @Transactional
+    public void createFavoriteCoach(Long userId, Long coachId) {
+
+        // userId, coachId로 멤버와 코치 객체 가져오기
+        Member member = memberRepository.findById(userId).orElse(null);
+        Coach coach = coachRepository.findById(coachId).orElse(null);
+
+        // favorites repository에 저장
+        Favorites favorites = FavoriteConverter.toFavorite(member, coach);
+        favoriteRepository.save(favorites);
     }
 
 
@@ -105,6 +114,30 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         //앞에서 Exception 안났으면 토큰 발행
         String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
         return token;
+    }
+
+    @Override
+    @Transactional
+    public void createFavoriteCoach(Long userId, Long coachId) {
+
+        // userId, coachId로 멤버와 코치 객체 가져오기
+        Member member = memberRepository.findById(userId).orElse(null);
+        Coach coach = coachRepository.findById(coachId).orElse(null);
+
+        // favorites repository에 저장
+        Favorites favorites = FavoriteConverter.toFavorite(member, coach);
+        favoriteRepository.save(favorites);
+    }
+
+    @Override
+    @Transactional
+    public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        member.update(memberUpdateRequestDTO);
+        memberRepository.save(member);
+        return member;
     }
 
     @Override
@@ -144,6 +177,5 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         return member;
     }
-
 
 }

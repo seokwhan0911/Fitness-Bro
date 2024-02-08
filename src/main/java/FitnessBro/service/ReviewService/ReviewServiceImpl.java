@@ -7,8 +7,8 @@ import FitnessBro.domain.Review;
 import FitnessBro.domain.Member;
 import FitnessBro.domain.common.Uuid;
 import FitnessBro.respository.*;
-import FitnessBro.web.dto.ReviewRequestDTO;
-import FitnessBro.web.dto.ReviewResponseDTO;
+import FitnessBro.web.dto.review.ReviewRequestDTO;
+import FitnessBro.web.dto.review.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private  final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
 
     private final AmazonS3Manager s3Manager;
@@ -36,29 +36,29 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public List<Review> getByCoachId(Long coachId) {
+    public List<Review> getReviewsByCoachId(Long coachId) {
 
         List<Review> result = reviewRepository.findByCoachId(coachId);
-
         return result;
     }
 
     @Override
     @Transactional
     public List<ReviewResponseDTO.ReviewByUserDTO> getReviews(Long userId) {
+
         List<Review> reviews = reviewRepository.findAllByMemberId(userId);
         return reviews.stream()
-                .map(ReviewResponseDTO.ReviewByUserDTO::from)
+                .map(ReviewConverter::toReviewByUserDTO)
                 .collect(Collectors.toList());
 
     }
 
     @Override
     @Transactional
-    public void createReviewWithFiles(ReviewRequestDTO.CreateReviewDTO request, List<MultipartFile> files, Long userId){    // 이미지 업로드 기능 추가
+    public void createReviewWithFiles(ReviewRequestDTO.CreateReviewDTO request, List<MultipartFile> files, Long userId){        // 이미지가 있는 후기 추가
 
         Member member = memberRepository.getById(userId);
-        Coach coach = coachRepository.getCoachByNickname(request.getCoachNickname());
+        Coach coach = coachRepository.getCoachByNickname(request.getNickname());
         Review review = ReviewConverter.toReview(request, member, coach);
 
         // file마다 유일한 URL 값 생성
@@ -76,13 +76,32 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void createReview(ReviewRequestDTO.CreateReviewDTO request, Long userId) {
+    public void createReview(ReviewRequestDTO.CreateReviewDTO request, Long userId) {       // 이미지가 없는 후기 추가
 
         Member member = memberRepository.getById(userId);
-        Coach coach = coachRepository.getCoachByNickname(request.getCoachNickname());
+        Coach coach = coachRepository.getCoachByNickname(request.getNickname());
 
         Review review = ReviewConverter.toReview(request, member, coach);
         reviewRepository.save(review);
+    }
+
+    @Override
+    @Transactional
+    public Review getReviewById(Long reviewId) {    // 이미지 가져오기
+
+        Review review = reviewRepository.getById(reviewId);
+
+        return review;
+    }
+
+    public Long getReviewNumCoach(Long coachId){
+        return reviewRepository.countByCoachId(coachId);
+    }
+
+    @Override
+    @Transactional
+    public Long getReviewNumMember(Long memberId){
+        return reviewRepository.countByMemberId(memberId);
     }
 
 }

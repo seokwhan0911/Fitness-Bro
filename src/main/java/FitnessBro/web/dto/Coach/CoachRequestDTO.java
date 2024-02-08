@@ -1,7 +1,9 @@
 package FitnessBro.web.dto.Coach;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,6 +20,21 @@ public class CoachRequestDTO {
         String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%
         int price;          // 시급 가격
         
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CoachUpdateRequestDTO{
+        private String nickname;
+        private String email;
+        private String password;
+        private String address;
+        private String comment;
+        private int price;
+        private String schedule;
+        private String introduction;
     }
 
 }

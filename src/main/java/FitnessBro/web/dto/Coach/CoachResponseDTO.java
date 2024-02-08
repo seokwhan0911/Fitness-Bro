@@ -30,6 +30,31 @@ public class CoachResponseDTO {
 
     @Getter
     @Builder
+    public static class CoachMyPageDTO{
+
+        private String nickname;
+        private Long matchNum;
+        private Long reviewNum;
+        //private String image;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CoachUpdateResponseDTO{
+        private String nickname;
+        private String email;
+        private String password;
+        private String address;
+        private String comment;
+        private int price;
+        private String schedule;
+        private String introduction;
+    }
+
+    @Getter
+    @Builder
     public static class CoachDTO{
         private String name;
         private int age;

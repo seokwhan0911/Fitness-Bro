@@ -2,14 +2,16 @@ package FitnessBro.domain;
 
 import FitnessBro.domain.common.BaseEntity;
 import jakarta.persistence.*;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Builder
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

@@ -47,7 +47,7 @@ public class LoginController {
 
 
     @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code, @RequestBody @Valid MemberRequestDTO.JoinDTO request)  {
+    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code)  {
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 

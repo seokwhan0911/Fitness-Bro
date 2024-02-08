@@ -5,11 +5,18 @@ import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
 import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
+import FitnessBro.domain.Coach;
 import FitnessBro.domain.Favorites;
 import FitnessBro.domain.Member;
+import FitnessBro.respository.CoachRepository;
+import FitnessBro.respository.MemberRepository;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.web.dto.Login.Role;
 import FitnessBro.domain.Coach;
 import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,16 +70,14 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public String joinSocialMember(String email, String id) {
         String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
 
-
         if (memberRepository.existsByEmail(email)){
             return token;
         }
 
-        Member member = new Member();
-
-
-        member.setEmail(email);
-        member.setPassword("social_" + id);
+        Member member = Member.builder()
+                .email(email)
+                .password(id)
+                .build();
 
         memberRepository.save(member);
 
@@ -109,6 +114,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return token;
     }
 
+
     @Override
     @Transactional
     public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
@@ -119,4 +125,49 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.save(member);
         return member;
     }
+
+    @Override
+    @Transactional
+    public String classifyUsers(Claims userInfo, Role role){
+        System.out.println("시작");
+
+        String userEmail = (String) userInfo.get("email");
+        System.out.println(userEmail);
+        if (role.equals(Role.COACH)) {
+            Optional<Member> member = memberRepository.findByEmail(userEmail);
+            Coach coach = Coach.builder()
+                    .email(userEmail)
+                    .build();
+
+            coachRepository.save(coach);
+            memberRepository.deleteMemberByEmail(userEmail);
+        }
+
+
+        return "SUCCESS";
+    }
+
+    @Override
+    @Transactional
+    public Optional<Member> insertInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request){
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        member.ifPresent(t-> {
+
+            t.setNickname(request.getNickname());
+
+            t.setAge(request.getAge());
+
+            memberRepository.save(t);
+        });
+
+        return member;
+    }
+    @Override
+    public Claims decodeJwt(String token){
+        Claims email = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+
+        return email;
+    }
+
 }

@@ -16,16 +16,20 @@ import FitnessBro.respository.ReviewRepository;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static FitnessBro.converter.CoachConverter.toCoachDTO;
 import static FitnessBro.converter.CoachConverter.toCoachMyPageDTO;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +59,23 @@ public class CoachServiceImpl implements CoachService{
 
     @Override
     @Transactional
+    public Optional<Coach> insertInfo(Long coachId, CoachRequestDTO.CoachProfileRegisterDTO request){
+        Optional<Coach> coach = coachRepository.findById(coachId);
+
+        coach.ifPresent(t -> {
+            t.setNickname(request.getNickname());
+            t.setSchedule(request.getSchedule());
+            t.setComment(request.getComment());
+            t.setPrice(request.getPrice());
+
+            coachRepository.save(t);
+        });
+
+        return coach;
+    }
+
+    @Override
+    @Transactional
     public Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO){
         Coach coach = coachRepository.findById(coachId)
                 .orElseThrow(() -> new RuntimeException("Coach not found"));
@@ -63,5 +84,7 @@ public class CoachServiceImpl implements CoachService{
         coachRepository.save(coach);
         return coach;
     }
+
+
 
 }

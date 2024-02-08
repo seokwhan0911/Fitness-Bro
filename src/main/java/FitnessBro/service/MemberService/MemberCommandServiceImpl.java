@@ -37,8 +37,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
-    private final BCryptPasswordEncoder encoder;
-    private final CoachRepository coachRepository;
     private final FavoriteRepository favoriteRepository;
 
     @Override
@@ -116,18 +114,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return token;
     }
 
-    @Override
-    @Transactional
-    public void createFavoriteCoach(Long userId, Long coachId) {
-
-        // userId, coachId로 멤버와 코치 객체 가져오기
-        Member member = memberRepository.findById(userId).orElse(null);
-        Coach coach = coachRepository.findById(coachId).orElse(null);
-
-        // favorites repository에 저장
-        Favorites favorites = FavoriteConverter.toFavorite(member, coach);
-        favoriteRepository.save(favorites);
-    }
 
     @Override
     @Transactional
@@ -176,6 +162,12 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         });
 
         return member;
+    }
+    @Override
+    public Claims decodeJwt(String token){
+        Claims email = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+
+        return email;
     }
 
 }

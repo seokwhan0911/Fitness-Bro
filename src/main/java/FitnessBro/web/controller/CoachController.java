@@ -13,7 +13,6 @@ import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.review.ReviewResponseDTO;
 import FitnessBro.web.dto.Login.LoginRequestDTO;
-import FitnessBro.web.dto.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

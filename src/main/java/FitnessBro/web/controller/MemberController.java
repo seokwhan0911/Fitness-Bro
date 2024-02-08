@@ -39,6 +39,9 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
+    private Long getCurrentMemberId(){
+        return 1l;
+    }
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
     public ResponseEntity<ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>>> getFavoriteCoachList(){
@@ -67,7 +70,7 @@ public class MemberController {
     @PostMapping("{userId}/favorite/{coachId}")
     @Operation(summary = "사용자가 찜한 형 등록하기 API", description = "사용자가 찜하려는 동네형의 아이디를 입력해주세요.")
     public ResponseEntity<ApiResponse<String>> createFavoriteCoach(@PathVariable(value = "userId") Long userId,
-                                                                   @PathVariable(value = "coachId") Long coachId){
+                                                                   @PathVariable(value = "coachId") Long coachId) {
 
         try {
             memberCommandService.createFavoriteCoach(userId, coachId);
@@ -75,15 +78,17 @@ public class MemberController {
             ApiResponse<String> apiResponse = ApiResponse.onSuccess("동네형 찜 등록을 성공했습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
-        } catch(Exception e){
+        } catch (Exception e) {
             ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
+    }
+
 
 
     @GetMapping("/{userId}/reviews")
     @Operation(summary = "사용자가 작성한 후기 리스트 조회 API")
-    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>>getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
 
         try {
             ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> apiResponse = ApiResponse.onSuccess(reviewService.getReviews(userId));
@@ -131,9 +136,7 @@ public class MemberController {
 //    }
 
     // 회원 반환 임시 메서드
-    private Long getCurrentMemberId(){
-        return 1l;
-    }
+
 
 
     @PutMapping("/{memberId}/sign-up")

@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public class CoachResponseDTO {
+
     @Getter
     @Builder
     public static class CoachProfileDTO{

@@ -12,7 +12,9 @@ import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.review.ReviewResponseDTO;
+import FitnessBro.web.dto.Login.LoginRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -82,21 +85,29 @@ public class CoachController {
         }
     }
 
+    @GetMapping("/{coachId}")
+    @Operation(summary = "코치 마이페이지")
+    public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage (@PathVariable(value = "coachId") Long
+                                                                                coachId){
+        return ApiResponse.onSuccess(CoachConverter.toCoachMyPageDTO(coachService.getCoachById(coachId), registerService.getMatchNumCoach(coachId), reviewService.getReviewNumCoach(coachId)));
+    }
 
-        @GetMapping("/{coachId}")
-        @Operation(summary = "코치 마이페이지")
-        public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage (@PathVariable(value = "coachId") Long
-        coachId){
-            return ApiResponse.onSuccess(CoachConverter.toCoachMyPageDTO(coachService.getCoachById(coachId), registerService.getMatchNumCoach(coachId), reviewService.getReviewNumCoach(coachId)));
-        }
+    @PatchMapping("/{coachId}")
+    @Operation(summary = "코치 정보 수정")
+    public ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO> patchCoachUpdate(@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
+            coachUpdateRequestDTO){
+        Coach coach = coachService.updateCoach(coachId, coachUpdateRequestDTO);
+        return ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach));
+    }
 
-        @PatchMapping("/{coachId}")
-        @Operation(summary = "코치 정보 수정")
-        public ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO> patchCoachUpdate
-        (@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
-        coachUpdateRequestDTO){
-            Coach coach = coachService.updateCoach(coachId, coachUpdateRequestDTO);
-            return ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach));
+    @PutMapping("/{coachId}/sign-up")
+    @Operation(summary = "동네형 회원가입 완료 후 첫 정보 입력 페이지")
+    public ApiResponse<String> coachSignUp(@PathVariable(value = "coachId") Long coachId,
+                                           @RequestBody @Valid CoachRequestDTO.CoachProfileRegisterDTO request){
+
+        Optional<Coach> coach = coachService.insertInfo(coachId, request);
+
+        return ApiResponse.onSuccess("Success");
 
         }
 }

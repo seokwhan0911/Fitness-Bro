@@ -3,13 +3,20 @@ package FitnessBro.service.MemberService;
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
+import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
-import FitnessBro.domain.Member;
 import FitnessBro.domain.Coach;
+import FitnessBro.domain.Favorites;
+import FitnessBro.domain.Member;
+import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.respository.RegisterRepository;
-import FitnessBro.respository.ReviewRepository;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.web.dto.Login.Role;
+import FitnessBro.domain.Coach;
+import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,9 +35,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private Long expireTimeMs = 1000 *60 * 60l;
     private final BCryptPasswordEncoder encoder;
 
-    public final MemberRepository memberRepository;
-    public final RegisterRepository registerRepository;
-    public final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public Member getMemberById(Long memberId){
@@ -63,20 +70,31 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public String joinSocialMember(String email, String id) {
         String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
 
-
         if (memberRepository.existsByEmail(email)){
             return token;
         }
 
-        Member member = new Member();
-
-
-        member.setEmail(email);
-        member.setPassword("social_" + id);
+        Member member = Member.builder()
+                .email(email)
+                .password(id)
+                .build();
 
         memberRepository.save(member);
 
         return token;
+    }
+
+    @Override
+    @Transactional
+    public void createFavoriteCoach(Long userId, Long coachId) {
+
+        // userId, coachId로 멤버와 코치 객체 가져오기
+        Member member = memberRepository.findById(userId).orElse(null);
+        Coach coach = coachRepository.findById(coachId).orElse(null);
+
+        // favorites repository에 저장
+        Favorites favorites = FavoriteConverter.toFavorite(member, coach);
+        favoriteRepository.save(favorites);
     }
 
 
@@ -96,6 +114,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return token;
     }
 
+
     @Override
     @Transactional
     public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
@@ -106,4 +125,44 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         memberRepository.save(member);
         return member;
     }
+
+    @Override
+    @Transactional
+    public String classifyUsers(String Email, Role role){
+        System.out.println("시작");
+
+        String userEmail = Email;
+        System.out.println(userEmail);
+        if (role.equals(Role.COACH)) {
+            Optional<Member> member = memberRepository.findByEmail(userEmail);
+            Coach coach = Coach.builder()
+                    .email(userEmail)
+                    .build();
+
+            coachRepository.save(coach);
+            memberRepository.deleteMemberByEmail(userEmail);
+        }
+
+
+        return "SUCCESS";
+    }
+
+    @Override
+    @Transactional
+    public Optional<Member> insertInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request){
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        member.ifPresent(t-> {
+
+            t.setNickname(request.getNickname());
+
+            t.setAge(request.getAge());
+
+            memberRepository.save(t);
+        });
+
+        return member;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
+import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.OAuth2Service.KakaoService;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.OAuth2Service.NaverService;
@@ -26,16 +27,19 @@ public class LoginController {
     private final KakaoService kakaoService;
     private final NaverService naverService;
     private final MemberCommandService memberCommandService;
+    private final LoginService loginService;
 
     @PostMapping("/select")
     @Operation(summary = "회원가입 동네형, 유저 선택", description ="회원가입 동네형 유저 선택" )
     public ResponseEntity<String> Select(@RequestHeader(value = "token") String token, @RequestBody @Valid LoginRequestDTO request){
+        // 위에 RequestHeader에서 token 가져옴
+        // decodeJwt에 token 넣으면 Claim userinfo에 이메일이 저장됨.
+        Claims userEmail = loginService.decodeJwt(token);
+        // 이메일 이용해서 유저 아이디 가져올 수 있음
+        Long userId = loginService.getIdByEmail(userEmail);
 
-        Claims userinfo = memberCommandService.decodeJwt(token);
 
-//        memberCommandService.classifyUsers(userinfo, request.getRole());
-
-        memberCommandService.classifyUsers(userinfo, request.getRole());
+        memberCommandService.classifyUsers(userEmail, request.getRole());
 
         return ResponseEntity.ok().body("select 성공");
     }

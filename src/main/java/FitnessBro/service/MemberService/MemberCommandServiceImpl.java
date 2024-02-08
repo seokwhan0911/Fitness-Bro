@@ -163,11 +163,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         return member;
     }
-    @Override
-    public Claims decodeJwt(String token){
-        Claims email = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
-        return email;
-    }
 
 }

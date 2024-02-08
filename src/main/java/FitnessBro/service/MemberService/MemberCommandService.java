@@ -23,7 +23,6 @@ public interface MemberCommandService {
 
     void createFavoriteCoach(Long userId, Long coachId);
 
-    public Claims decodeJwt(String token);
 
     public String classifyUsers(Claims userInfo, Role role);
 

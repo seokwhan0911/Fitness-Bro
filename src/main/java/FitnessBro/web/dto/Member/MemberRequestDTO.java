@@ -24,6 +24,15 @@ public class MemberRequestDTO {
 
     @Getter
     @Builder
+    public static class MemberProfileRegisterDTO{
+
+        String nickname;    //닉네임
+        int age; // 나이
+
+    }
+
+    @Getter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MemberUpdateRequestDTO{

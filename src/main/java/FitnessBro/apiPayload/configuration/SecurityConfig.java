@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 .requestMatchers("/login/oauth2/code/kakao/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
+
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/kakao/*"))

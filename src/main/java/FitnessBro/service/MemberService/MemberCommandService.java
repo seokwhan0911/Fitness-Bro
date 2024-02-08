@@ -24,7 +24,7 @@ public interface MemberCommandService {
     void createFavoriteCoach(Long userId, Long coachId);
 
 
-    public String classifyUsers(Claims userInfo, Role role);
+    public String classifyUsers(String Email, Role role);
 
     public Optional<Member> insertInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request);
 

@@ -19,14 +19,16 @@ public class LoginServiceImpl implements LoginService {
     @Value("${jwt.secret}")
     private String key;
     @Override
-    public Claims decodeJwt(String token){
+    public String decodeJwt(String token){
         Claims email = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
-        return email;
+        String stringEmail = email.get("email", String.class);
+
+        return stringEmail;
     }
     @Override
-    public Long getIdByEmail(Claims email){
-        Member member = memberRepository.findByEmail(email);
+    public Long getIdByEmail(String email){
+        Member member = memberRepository.findMemberByEmail(email);
 
         Long id = member.getId();
         return id;

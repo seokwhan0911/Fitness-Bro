@@ -33,8 +33,8 @@ public class LoginController {
     @Operation(summary = "회원가입 동네형, 유저 선택", description ="회원가입 동네형 유저 선택" )
     public ResponseEntity<String> Select(@RequestHeader(value = "token") String token, @RequestBody @Valid LoginRequestDTO request){
         // 위에 RequestHeader에서 token 가져옴
-        // decodeJwt에 token 넣으면 Claim userinfo에 이메일이 저장됨.
-        Claims userEmail = loginService.decodeJwt(token);
+        // token으로 이메일 가져옴
+        String userEmail = loginService.decodeJwt(token);
         // 이메일 이용해서 유저 아이디 가져올 수 있음
         Long userId = loginService.getIdByEmail(userEmail);
 

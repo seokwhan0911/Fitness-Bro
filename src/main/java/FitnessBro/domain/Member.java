@@ -65,4 +65,8 @@ public class Member extends BaseEntity {
             this.password = memberUpdateRequestDTO.getPassword();
         }
     }
+
+    public Long getId() {
+        return id;
+    }
 }

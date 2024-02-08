@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 
 public interface LoginService {
 
-    public Claims decodeJwt(String token);
+    public String decodeJwt(String token);
 
-    public Long getIdByEmail(Claims email);
+    public Long getIdByEmail(String email);
 }

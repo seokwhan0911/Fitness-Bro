@@ -128,10 +128,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     @Transactional
-    public String classifyUsers(Claims userInfo, Role role){
+    public String classifyUsers(String Email, Role role){
         System.out.println("시작");
 
-        String userEmail = (String) userInfo.get("email");
+        String userEmail = Email;
         System.out.println(userEmail);
         if (role.equals(Role.COACH)) {
             Optional<Member> member = memberRepository.findByEmail(userEmail);

@@ -7,6 +7,7 @@ import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
@@ -33,10 +34,14 @@ public class CoachController {
     private final CoachService coachService;
     private final ReviewService reviewService;
     private final RegisterService registerService;
+    private final LoginService loginService;
 
-    @GetMapping("/{coachId}/info")
+    @GetMapping("/info")
     @Operation(summary = "코치 상세정보 API", description = "코치 id를 받아 코치 상세정보 전달")
-    public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
+    public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@RequestHeader(value = "token") String token) {
+
+        String coachEmail =  loginService.decodeJwt(token);
+        Long coachId = loginService.getIdByEmail(coachEmail);
 
         return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
     }

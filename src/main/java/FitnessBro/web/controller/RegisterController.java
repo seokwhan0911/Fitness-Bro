@@ -33,8 +33,9 @@ public class RegisterController {
     public ResponseEntity<ApiResponse<List<RegisterResponseDTO.RegisterMemberDTO>>> getMemberMatchList(@RequestHeader(value = "token")String token){
 
         String userEmail = loginService.decodeJwt(token);
-
         Long userId = loginService.getIdByEmail(userEmail);
+
+        Coach coach = coachService.getCoachById(userId);
         List<Register> registerList = registerService.getRegisterListByCoach(coach);
 
         List<Register> trueRegisterList = registerService.successRegisterList(registerList);
@@ -43,11 +44,13 @@ public class RegisterController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    @GetMapping("/member/success/{memberId}")
+    @GetMapping("/member/success")
     @Operation(summary = " 코치 성사 리스트 API", description = "유저 마이 페이지에서 '우리 형 성사 리스트' 클릭시 나타나는 코치 리스트")
-    public ResponseEntity<ApiResponse<List<RegisterResponseDTO.RegisterCoachDTO>>> getCoachMatchList(@PathVariable(value = "memberId") Long memberId){
+    public ResponseEntity<ApiResponse<List<RegisterResponseDTO.RegisterCoachDTO>>> getCoachMatchList(@RequestHeader(value = "token") String token){
 
-        Member member = memberCommandService.getMemberById(memberId);
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+        Member member = memberCommandService.getMemberById(userId);
         List<Register> registerList = registerService.getRegisterListByMember(member);
 
         List<Register> trueRegisterList = registerService.successRegisterList(registerList);
@@ -59,10 +62,14 @@ public class RegisterController {
 
 
 
-    @PostMapping("/member/{memberId}/{coachId}")
+    @PostMapping("/member/{coachId}")
     @Operation(summary = "유저가 먼저 성사버튼 클릭", description = "유저가 채팅에서 '성사 완료' 버튼 누를때 api")
-    public ResponseEntity<String> getRegisterMember(@PathVariable(value = "memberId") Long memberId, @PathVariable(value = "coachId") Long coachId){
-        Member member = memberCommandService.getMemberById(memberId);
+    public ResponseEntity<String> getRegisterMember(@RequestHeader(value = "token") String token, @PathVariable(value = "coachId") Long coachId){
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        Member member = memberCommandService.getMemberById(userId);
         Coach coach = coachService.getCoachById(coachId);
 
         Register register = registerService.registerSetting(member, coach);
@@ -70,11 +77,15 @@ public class RegisterController {
         return ResponseEntity.ok().body("코치에게 성사 요청을 보냈습니다.");
     }
 
-    @PostMapping("/coach/{coachId}/{memberId}")
+    @PostMapping("/coach/{memberId}")
     @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 성사버튼 클릭", description = "코치가 채팅에서 '성사 완료' 버튼 누를때 api")
-    public ResponseEntity<String> getRegisterCoach(@PathVariable(value = "coachId")Long coachId, @PathVariable(value = "memberId") Long memberId){
+    public ResponseEntity<String> getRegisterCoach(@RequestHeader(value = "token")String token, @PathVariable(value = "memberId") Long memberId){
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
         Member member = memberCommandService.getMemberById(memberId);
-        Coach coach = coachService.getCoachById(coachId);
+        Coach coach = coachService.getCoachById(userId);
 
         Register register = registerService.registerCoachSetting(member, coach);
 

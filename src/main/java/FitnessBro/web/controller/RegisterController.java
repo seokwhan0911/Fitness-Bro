@@ -6,6 +6,7 @@ import FitnessBro.domain.Coach;
 import FitnessBro.domain.Register;
 import FitnessBro.domain.Member;
 import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.web.dto.RegisterResponseDTO;
@@ -25,12 +26,15 @@ public class RegisterController {
     private final CoachService coachService;
     private final RegisterService registerService;
     private final MemberCommandService memberCommandService;
+    private final LoginService loginService;
 
-    @GetMapping("/coach/success/{coachId}")
+    @GetMapping("/coach/success/")
     @Operation(summary = " 유저 성사 리스트 API", description = "코치마이페이지에서 '우리회원성사리스트' 클릭시 나타나는 유저 리스트")
-    public ResponseEntity<ApiResponse<List<RegisterResponseDTO.RegisterMemberDTO>>> getMemberMatchList(@PathVariable(value = "coachId") Long coachId){
+    public ResponseEntity<ApiResponse<List<RegisterResponseDTO.RegisterMemberDTO>>> getMemberMatchList(@RequestHeader(value = "token")String token){
 
-        Coach coach = coachService.getCoachById(coachId);
+        String userEmail = loginService.decodeJwt(token);
+
+        Long userId = loginService.getIdByEmail(userEmail);
         List<Register> registerList = registerService.getRegisterListByCoach(coach);
 
         List<Register> trueRegisterList = registerService.successRegisterList(registerList);

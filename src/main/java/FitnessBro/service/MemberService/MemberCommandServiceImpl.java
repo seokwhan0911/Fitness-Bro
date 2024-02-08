@@ -9,14 +9,10 @@ import FitnessBro.domain.Coach;
 import FitnessBro.domain.Favorites;
 import FitnessBro.domain.Member;
 import FitnessBro.respository.CoachRepository;
+import FitnessBro.respository.FavoriteRepository;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Login.Role;
-import FitnessBro.domain.Coach;
-import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +24,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberCommandServiceImpl implements MemberCommandService {
+public class MemberCommandServiceImpl implements MemberCommandService{
 
     @Value("${jwt.secret}")
     private String key;

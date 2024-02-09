@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class MemberRequestDTO {
+
     @Builder
     @Getter
     public static class JoinDTO{
@@ -24,10 +25,12 @@ public class MemberRequestDTO {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class MemberProfileRegisterDTO{
 
-        String nickname;    //닉네임
-        int age; // 나이
+        String nickname;    // 회원 닉네임
+        String address;     // 회원 거주 지역
 
     }
 

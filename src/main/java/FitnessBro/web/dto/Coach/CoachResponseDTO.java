@@ -24,7 +24,7 @@ public class CoachResponseDTO {
         int price;          // 시급 가격
         String address;     // 위치
         String schedule;
-        MultipartFile coachPicture;
+        String coachPicture;
 
     }
 
@@ -75,5 +75,13 @@ public class CoachResponseDTO {
         Float rating;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CoachAlbumDTO {
 
+        Long coachId;
+        List<String> pictureURLs;    // 동네형 사진첩 이미지 리스트
+    }
 }

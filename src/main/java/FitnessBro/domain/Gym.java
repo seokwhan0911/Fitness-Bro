@@ -1,6 +1,5 @@
 package FitnessBro.domain;
 
-import FitnessBro.domain.common.Address;
 import FitnessBro.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

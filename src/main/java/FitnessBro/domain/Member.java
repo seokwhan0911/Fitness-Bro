@@ -36,6 +36,12 @@ public class Member extends BaseEntity {
     @Setter
     private int age;
 
+    @Setter
+    private String address;     // 회원 거주 지역
+
+    @Setter
+    private String pictureURL;      // 회원 사진 URL
+
     @OneToMany(mappedBy = "member",
             orphanRemoval = true,
             cascade = CascadeType.PERSIST)
@@ -51,9 +57,6 @@ public class Member extends BaseEntity {
             cascade = CascadeType.PERSIST)
     private List<Favorites> favorites = new ArrayList<>();
 
-
-
-//    private List<Image> image = new ArrayList<>();     // 추후에 이미지 엔티티 생성 예정
     public void update(MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO) {
         if (StringUtils.isNotBlank(memberUpdateRequestDTO.getNickname())) {
             this.nickname = memberUpdateRequestDTO.getNickname();
@@ -66,7 +69,4 @@ public class Member extends BaseEntity {
         }
     }
 
-    public Long getId() {
-        return id;
-    }
 }

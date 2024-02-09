@@ -57,7 +57,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public void createReviewWithFiles(ReviewRequestDTO.CreateReviewDTO request, List<MultipartFile> files, Long userId){        // 이미지가 있는 후기 추가
 
-        Member member = memberRepository.getById(userId);
+        Member member = memberRepository.findById(userId).orElse(null);
         Coach coach = coachRepository.getCoachByNickname(request.getNickname());
         Review review = ReviewConverter.toReview(request, member, coach);
 

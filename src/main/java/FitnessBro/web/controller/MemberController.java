@@ -4,28 +4,24 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
+import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.service.ReviewService.ReviewService;
-import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.review.ReviewRequestDTO;
 import FitnessBro.web.dto.review.ReviewResponseDTO;
-
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import FitnessBro.service.MemberService.MemberQueryService;
-import FitnessBro.web.dto.Coach.CoachResponseDTO;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,18 +34,18 @@ public class MemberController {
     private final ReviewService reviewService;
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
+    private final LoginService loginService;
 
-    private Long getCurrentMemberId(){
-        return 1l;
-    }
+
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
-    public ResponseEntity<ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>>> getFavoriteCoachList(){
+    public ResponseEntity<ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>>> getFavoriteCoachList(@RequestHeader(value = "token") String token){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
         try{
-            Long memberId = getCurrentMemberId();
 
             // 찜한 동네형 목록 조회
-            List<Coach> coachList = memberQueryService.getFavoriteCoachList(memberId);
+            List<Coach> coachList = memberQueryService.getFavoriteCoachList(userId);
 
             // 찜한 동네형 목록을 사용하여 DTO로 반환
             List<CoachResponseDTO.favoriteCoachDTO> favoriteCoachDTOList = coachList.stream()
@@ -67,10 +63,13 @@ public class MemberController {
         }
     }
 
-    @PostMapping("{userId}/favorite/{coachId}")
+    @PostMapping("/favorite/{coachId}")
     @Operation(summary = "사용자가 찜한 형 등록하기 API", description = "사용자가 찜하려는 동네형의 아이디를 입력해주세요.")
-    public ResponseEntity<ApiResponse<String>> createFavoriteCoach(@PathVariable(value = "userId") Long userId,
+    public ResponseEntity<ApiResponse<String>> createFavoriteCoach(@RequestHeader(value = "token") String token,
                                                                    @PathVariable(value = "coachId") Long coachId) {
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
 
         try {
             memberCommandService.createFavoriteCoach(userId, coachId);
@@ -86,10 +85,12 @@ public class MemberController {
 
 
 
-    @GetMapping("/{userId}/reviews")
+    @GetMapping("/reviews")
     @Operation(summary = "사용자가 작성한 후기 리스트 조회 API")
-    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>> getReviewsByUser(@PathVariable(value = "userId") Long userId ){
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>> getReviewsByUser(@RequestHeader(value = "token") String token){
 
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
         try {
             ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>> apiResponse = ApiResponse.onSuccess(reviewService.getReviews(userId));
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
@@ -99,11 +100,12 @@ public class MemberController {
         }
     }
 
-    @PostMapping(value = "/{userId}/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "사용자가 동네형에게 리뷰를 작성하는 API")
     public ResponseEntity<ApiResponse<String>> createReviews(@RequestPart(value = "request") ReviewRequestDTO.CreateReviewDTO request,
-            @RequestPart(value ="files", required = false) List<MultipartFile> files,
-            @PathVariable(value = "userId") Long userId ){
+            @RequestPart(value ="files", required = false) List<MultipartFile> files, @RequestHeader(value = "token") String token ){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
         try{
             if(files != null) { // 리뷰에 이미지가 포함되어 있는 경우
                 reviewService.createReviewWithFiles(request, files, userId);

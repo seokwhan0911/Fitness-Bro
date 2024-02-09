@@ -1,14 +1,10 @@
 package FitnessBro.web.controller;
 
-import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.service.LoginService.LoginService;
-import FitnessBro.service.OAuth2Service.KakaoService;
 import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.OAuth2Service.KakaoService;
 import FitnessBro.service.OAuth2Service.NaverService;
-import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Login.LoginRequestDTO;
-import FitnessBro.web.dto.Member.MemberRequestDTO;
-import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/login")
@@ -47,7 +42,7 @@ public class LoginController {
 
 
     @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code, @RequestBody @Valid MemberRequestDTO.JoinDTO request)  {
+    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code)  {
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 

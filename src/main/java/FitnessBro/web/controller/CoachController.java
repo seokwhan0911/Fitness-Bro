@@ -123,19 +123,22 @@ public class CoachController {
         }
     }
 
-    @GetMapping("/album/{coachId}")
+    @GetMapping("/album")
     @Operation(summary = "동네형의 사진첩을 조회하는 API")
-    public ApiResponse<CoachResponseDTO.CoachAlbumDTO> getCoachAlbum(@PathVariable(value = "coachId") Long coachId) {
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachAlbumDTO>> getCoachAlbum(@RequestHeader(value = "token") String token) {
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
 
         try {
-            Coach coach = coachService.getCoachById(coachId);
+            Coach coach = coachService.getCoachById(userId);
 
             CoachResponseDTO.CoachAlbumDTO coachAlbumDTO = CoachConverter.toCoachAlbumDTO(coach);
 
-            return ApiResponse.onSuccess(coachAlbumDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(coachAlbumDTO));
 
         } catch (Exception e) {
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
         }
     }
 

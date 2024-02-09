@@ -12,6 +12,8 @@ public class CoachRequestDTO {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CoachProfileRegisterDTO{
 
         String nickname;    //닉네임

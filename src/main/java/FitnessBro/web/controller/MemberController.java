@@ -121,34 +121,21 @@ public class MemberController {
         }
     }
 
-//    @PostMapping("/sign-up")
-//    @Operation(summary = "회원가입")
-//    public ResponseEntity<String> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
-//        memberCommandService.joinMember(request);
-//        return ResponseEntity.ok().body("회원가입에 성공했습니다.");
-//    }
-//
-//
-//    @PostMapping("/login")
-//    @Operation(summary = "로그인")
-//    public ResponseEntity<String> login(@RequestBody @Valid MemberRequestDTO.loginDTO request) {
-//        String token = memberCommandService.login(request.getEmail(), request.getPassword());
-//
-//        return ResponseEntity.ok().body(token);
-//    }
-
-    // 회원 반환 임시 메서드
-
-
-
-    @PutMapping("/{memberId}/sign-up")
+    @PatchMapping(value = "/{memberId}/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "유저 회원가입 완료 후 첫 정보 입력 페이지")
-    public ApiResponse<String> coachSignUp(@PathVariable(value = "memberId") Long memberId,
-                                           @RequestBody @Valid MemberRequestDTO.MemberProfileRegisterDTO request){
+    public ApiResponse<String> coachSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
+                                           @RequestPart(value = "picture", required = false) MultipartFile file,
+                                           @PathVariable(value = "memberId") Long memberId){
+        try{
+            if(file != null){   // 사용자가 본인의 이미지를 업로드 하는 경우
+                memberCommandService.insertInfoWithImage(memberId, request, file);
+            } else {    // 사용자가 본인의 이미지를 업로드 하지 않는 경우
+                memberCommandService.insertMemberInfo(memberId, request);
+            }
+            return ApiResponse.onSuccess("회원의 정보가 성공적으로 입력되었습니다.");
 
-        Optional<Member> member = memberCommandService.insertInfo(memberId, request);
-
-        return ApiResponse.onSuccess("Success");
-
+        } catch (Exception e){
+            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+        }
     }
 }

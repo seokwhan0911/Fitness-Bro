@@ -24,8 +24,8 @@ spring:
             user-name-attribute: response
         registration:
           google:
-            client-id: 293755776535-kp2pp4pfe0c4401civ1g2fum81f3etdo.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${GOOGLE_SOCIAL_CLIENT_ID}
+            client-secret: ${GOOGLE_SOCIAL_CLIENT_SECRET}
             scope:
               - profile
               - email

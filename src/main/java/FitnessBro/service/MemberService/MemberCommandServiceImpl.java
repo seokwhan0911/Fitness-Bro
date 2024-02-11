@@ -3,27 +3,28 @@ package FitnessBro.service.MemberService;
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
+import FitnessBro.aws.s3.AmazonS3Manager;
 import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Favorites;
 import FitnessBro.domain.Member;
+import FitnessBro.domain.common.Uuid;
 import FitnessBro.respository.CoachRepository;
+import FitnessBro.respository.FavoriteRepository;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.respository.UuidRepository;
 import FitnessBro.web.dto.Login.Role;
-import FitnessBro.domain.Coach;
-import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +39,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
     private final CoachRepository coachRepository;
     private final FavoriteRepository favoriteRepository;
+    private final UuidRepository uuidRepository;
+    private final AmazonS3Manager s3Manager;
 
     @Override
     public Member getMemberById(Long memberId){
@@ -68,7 +71,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public String joinSocialMember(String email, String id) {
-        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
+        String token = JwtTokenUtil.createToken(email,key,expireTimeMs);
 
         if (memberRepository.existsByEmail(email)){
             return token;
@@ -114,7 +117,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         return token;
     }
 
-
     @Override
     @Transactional
     public Member updateMember(Long memberId, MemberRequestDTO.MemberUpdateRequestDTO memberUpdateRequestDTO){
@@ -130,9 +132,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Transactional
     public String classifyUsers(String Email, Role role){
         System.out.println("시작");
-
         String userEmail = Email;
         System.out.println(userEmail);
+
         if (role.equals(Role.COACH)) {
             Optional<Member> member = memberRepository.findByEmail(userEmail);
             Coach coach = Coach.builder()
@@ -142,27 +144,32 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             coachRepository.save(coach);
             memberRepository.deleteMemberByEmail(userEmail);
         }
-
-
         return "SUCCESS";
     }
 
     @Override
     @Transactional
-    public Optional<Member> insertInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request){
-        Optional<Member> member = memberRepository.findById(memberId);
+    public void insertMemberInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request){
 
-        member.ifPresent(t-> {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        member.setNickname(request.getNickname());
+        member.setAddress(request.getAddress());
 
-            t.setNickname(request.getNickname());
-
-            t.setAge(request.getAge());
-
-            memberRepository.save(t);
-        });
-
-        return member;
     }
 
+    @Override
+    @Transactional
+    public void insertInfoWithImage(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request, MultipartFile file) {
+
+        Member member = memberRepository.findById(memberId).orElse(null);
+        member.setNickname(request.getNickname());
+        member.setAddress(request.getAddress());
+
+        String uuid = UUID.randomUUID().toString();
+        Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
+        String pictureUrl = s3Manager.uploadFile(s3Manager.generateProfileKeyName(savedUuid), file);
+        member.setPictureURL(pictureUrl);
+
+    }
 
 }

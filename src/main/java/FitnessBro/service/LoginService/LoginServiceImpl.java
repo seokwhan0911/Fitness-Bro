@@ -1,6 +1,8 @@
 package FitnessBro.service.LoginService;
 
+import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
+import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,13 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
     private final MemberRepository memberRepository;
+    private final CoachRepository coachRepository;
 
     @Value("${jwt.secret}")
     private String key;
@@ -28,9 +29,16 @@ public class LoginServiceImpl implements LoginService {
     }
     @Override
     public Long getIdByEmail(String email){
-        Member member = memberRepository.findMemberByEmail(email);
+        Long id = null;
 
-        Long id = member.getId();
+        if(memberRepository.findMemberByEmail(email) == null) {
+            Coach coach = coachRepository.findCoachByEmail(email);
+            id = coach.getId();
+        }
+        else{
+            Member member = memberRepository.findMemberByEmail(email);
+            id = member.getId();
+        }
         return id;
     }
 

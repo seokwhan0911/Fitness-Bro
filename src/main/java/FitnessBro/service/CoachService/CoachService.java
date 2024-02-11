@@ -10,14 +10,13 @@ import java.util.List;
 
 public interface CoachService {
 
-    public Coach getCoachById(Long coachId);
+    Coach getCoachById(Long coachId);
 
-    public List<Coach> getCoachList();
+    List<Coach> getCoachList();
 
     public void insertCoachInfo(Long coachId, CoachRequestDTO.CoachProfileRegisterDTO request);
 
-    public Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO);
-
+    Coach updateCoach(Long coachId, CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO);
     void insertCoachPicture(Long coachId, MultipartFile picture);
 
     void insertCoachAlbum(Long coachId, List<MultipartFile> pictureList);

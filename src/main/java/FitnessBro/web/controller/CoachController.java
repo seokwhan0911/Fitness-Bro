@@ -34,12 +34,12 @@ public class CoachController {
     private final RegisterService registerService;
     private final LoginService loginService;
 
-    @GetMapping("{coachId}/info")
-    @Operation(summary = "코치 상세정보 API", description = "코치 id를 받아 코치 상세정보 전달")
+
+    @GetMapping("/{coachId}/info")
+    @Operation(summary = "동네형 상세정보 API", description = "동네형 id(coachId)를 받아 동네형 상세정보 전달")
     public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
 
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId))));
-
 
     }
 

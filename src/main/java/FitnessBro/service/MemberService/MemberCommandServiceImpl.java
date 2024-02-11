@@ -7,19 +7,16 @@ import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.aws.s3.AmazonS3Manager;
 import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
-import FitnessBro.converter.ReviewConverter;
-import FitnessBro.domain.*;
+import FitnessBro.domain.Coach;
+import FitnessBro.domain.Favorites;
+import FitnessBro.domain.Member;
 import FitnessBro.domain.common.Uuid;
 import FitnessBro.respository.CoachRepository;
+import FitnessBro.respository.FavoriteRepository;
 import FitnessBro.respository.MemberRepository;
-import FitnessBro.web.dto.Coach.CoachRequestDTO;
+import FitnessBro.respository.UuidRepository;
 import FitnessBro.web.dto.Login.Role;
-import FitnessBro.domain.Coach;
-import FitnessBro.respository.*;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
-import FitnessBro.web.dto.review.ReviewRequestDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -76,7 +72,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public String joinSocialMember(String email, String id) {
-        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
+        String token = JwtTokenUtil.createToken(email,key,expireTimeMs);
 
         if (memberRepository.existsByEmail(email)){
             return token;
@@ -125,7 +121,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
         return token;
     }
-
 
     @Override
     @Transactional

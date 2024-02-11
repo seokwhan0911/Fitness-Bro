@@ -43,8 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/members/login").permitAll()
                                 .requestMatchers("/coaches/sign-up").permitAll()
                                 .requestMatchers("/coaches/login").permitAll()
-                                .requestMatchers("/**").permitAll()
-                                .requestMatchers("/login/oauth2/code/kakao/**").permitAll()
+                                .requestMatchers("/login/oauth2/code/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
 

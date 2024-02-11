@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -35,12 +34,11 @@ public class CoachController {
     private final RegisterService registerService;
     private final LoginService loginService;
 
-    @GetMapping("/info")
-    @Operation(summary = "코치 상세정보 API", description = "코치 id를 받아 코치 상세정보 전달")
-    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@RequestHeader(value = "token") String token) {
-        String userEmail = loginService.decodeJwt(token);
-        Long userId = loginService.getIdByEmail(userEmail);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(userId))));
+    @GetMapping("/{coachId}/info")
+    @Operation(summary = "동네형 상세정보 API", description = "동네형 id(coachId)를 받아 동네형 상세정보 전달")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId))));
     }
 
 

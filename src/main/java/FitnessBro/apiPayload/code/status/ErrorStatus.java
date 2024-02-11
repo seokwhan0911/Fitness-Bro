@@ -30,6 +30,7 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_LOGIN_FAILURE(HttpStatus.BAD_REQUEST, "MEMBER4003", "아이디 혹은 비밀번호를 잘못 입력하였습니다."),
     EMAIL_DUPLICATED(HttpStatus.CONFLICT, "MEEMBER4004", "중복된 아이디 입니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"MEMBER4005", " 패스워드가 잘못 되었습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4006", "사용자가 없습니다."),
 
 
     LOCATION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "MEMBER4003" , "동네 인증 argument가 잘못되었습니다."),
@@ -37,8 +38,16 @@ public enum ErrorStatus implements BaseErrorCode {
     // 회원가입 관련 에러
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4003", "이미 존재하는 이메일입니다."),
-    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다.");
+    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
+    INTRODUCTION_NOT_EXIST(HttpStatus.BAD_REQUEST, "SIGHUP4002","소개는 필수 입니다."),
+    SCHEDULE_NOT_EXIST(HttpStatus.BAD_REQUEST,"SIGHUP4004","스케쥴은 필수 입니다."),
+    COMMENT_NOT_EXIST(HttpStatus.BAD_REQUEST,"SIGNUP4005", "한줄 인사말은 필수 잆니다."),
+    PRICE_NOT_EXIST(HttpStatus.BAD_REQUEST, "SIGHUP4006","가격은 필수 입니다."),
+    ADDRESS_NOT_EXIST(HttpStatus.BAD_REQUEST, "SIGHUP4007", "주소는 필수 입니다."),
 
+    //리뷰 관련 에러
+    RATING_NOT_FOUND(HttpStatus.BAD_REQUEST, "REVIEW4001", "별점은 필수 입니다."),
+    CONTENTS_NOT_FOUND(HttpStatus.BAD_REQUEST, "REVIEW4002", "내용은 필수 입니다.");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

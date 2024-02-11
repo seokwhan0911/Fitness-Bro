@@ -2,10 +2,9 @@ package FitnessBro.converter;
 
 import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
-import FitnessBro.service.ChatService.ChatRoomService;
-import FitnessBro.web.dto.Chat.ChatMessageDTO;
+import FitnessBro.web.dto.Chat.ChatMessageRequestDTO;
+import FitnessBro.web.dto.Chat.ChatMessageResponseDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,29 +21,29 @@ public class ChatConverter {
                 .build();
     }
 
-    public static ChatMessageDTO toChatMessageDTO(ChatMessage chatMessage){
+    public static ChatMessageRequestDTO toChatMessageDTO(ChatMessage chatMessage){
 
-        return ChatMessageDTO.builder()
+        return ChatMessageRequestDTO.builder()
                 .message(chatMessage.getMessage())
                 .sender(chatMessage.getSender())
                 .build();
     }
 
-    public static List<ChatMessageDTO> toChatMessageListDTO(List<ChatMessage> chatMessageList){
+    public static List<ChatMessageRequestDTO> toChatMessageListDTO(List<ChatMessage> chatMessageList){
         return chatMessageList.stream()
                 .map(chatMessage -> toChatMessageDTO(chatMessage))
                 .collect(Collectors.toList());
     }
 
-    public static ChatRoomResponseDTO.ChatRoomInfoDTO toChatRoomInfoDTO(ChatRoom chatRoom, List<ChatMessageDTO> chatMessageDTOList){
+    public static ChatRoomResponseDTO.ChatRoomInfoDTO toChatRoomInfoDTO(ChatRoom chatRoom, List<ChatMessageRequestDTO> chatMessageRequestDTOList){
         return ChatRoomResponseDTO.ChatRoomInfoDTO.builder()
                 .chatRoomId(chatRoom.getId())
-                .latestChatMessages(chatMessageDTOList)
+                .latestChatMessages(chatMessageRequestDTOList)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
 
-    public static ChatMessage toChatMessage(ChatMessageDTO message, ChatRoom chatRoom){
+    public static ChatMessage toChatMessage(ChatMessageRequestDTO message, ChatRoom chatRoom){
 
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
@@ -82,5 +81,14 @@ public class ChatConverter {
         return chatRoomList.stream()
                 .map(chatRoom -> toCoachChatRoomSimpleDTO(chatRoom))
                 .collect(Collectors.toList());
+    }
+
+    public static ChatMessageResponseDTO toChatMessageResponseDTO(ChatMessage chatMessage){
+        return ChatMessageResponseDTO.builder()
+                .id(chatMessage.getId())
+                .message(chatMessage.getMessage())
+                .sender(chatMessage.getSender())
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 }

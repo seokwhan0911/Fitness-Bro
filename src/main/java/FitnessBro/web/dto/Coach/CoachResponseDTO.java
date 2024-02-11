@@ -15,7 +15,7 @@ public class CoachResponseDTO {
     @Builder
     public static class CoachProfileDTO{
 
-        String name;
+        String nickname;
         int age;
         float rating;
         String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%

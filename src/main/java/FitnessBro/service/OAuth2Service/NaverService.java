@@ -25,7 +25,7 @@ import java.util.HashMap;
 @Slf4j
 public class NaverService {
 
-    public ResponseEntity<String> getKakaoAccessToken (String code, String state)  {
+    public ResponseEntity<String> getNaverAccessToken (String code, String state)  {
         String REQUEST_URL = "https://nid.naver.com/oauth2.0/token";
         RestTemplate restTemplate=new RestTemplate();
 

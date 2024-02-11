@@ -61,16 +61,12 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public String joinSocialMember(String email, String id) {
-        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
-
+        String token = JwtTokenUtil.createToken(email,key,expireTimeMs);
 
         if (memberRepository.existsByEmail(email)){
             return token;
         }
-
         Member member = new Member();
-
-
         member.setEmail(email);
         member.setPassword("social_" + id);
 

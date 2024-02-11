@@ -67,4 +67,5 @@ public class CoachController {
         Coach coach = coachService.updateCoach(coachId,coachUpdateRequestDTO);
         return ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach));
     }
+
 }

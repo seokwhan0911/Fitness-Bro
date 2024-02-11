@@ -86,8 +86,6 @@ public class LoginController {
         System.out.println("accessTokenResponse = " + accessTokenResponse);
         String accessTokenResponseBody = accessTokenResponse.getBody();
 
-        //HashMap<String, Object> userInfo = googleService.getUserInfo(accessToken);
-        //log.info(String.valueOf(userInfo));
         HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
         String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
 

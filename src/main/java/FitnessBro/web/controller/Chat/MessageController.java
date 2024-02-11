@@ -6,7 +6,8 @@ import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
 import FitnessBro.service.ChatService.ChatMessageService;
 import FitnessBro.service.ChatService.ChatRoomService;
-import FitnessBro.web.dto.Chat.ChatMessageDTO;
+import FitnessBro.web.dto.Chat.ChatMessageRequestDTO;
+import FitnessBro.web.dto.Chat.ChatMessageResponseDTO;
 import FitnessBro.web.dto.Chat.ChatRoomRequestDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ public class MessageController {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
 
-    // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id, 생성 완료 메세지 리턴
+    // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id, 최근15개 메세지 리턴
     // /pub/connect 엔드포인트로 채팅하기 누를시.
     @MessageMapping("/connect")
     @SendTo("/queue/{memberId}/{coachId}") // 여기를 구독하고 있어야 함
@@ -39,11 +40,11 @@ public class MessageController {
             chatRoom = chatRoomService.createRoom(newChatRoom.getId(), request.getMemberId(), request.getCoachId());
         }
 
-        List<ChatMessage> latestChatMessages = chatMessageService.findChatMessagesWithPaging(1, chatRoom.getId());
+        List<ChatMessage> latestChatMessages = chatMessageService.findChatMessagesWithPaging(request.getPageNum(), chatRoom.getId());
 
-        List<ChatMessageDTO> chatMessageDTOList = ChatConverter.toChatMessageListDTO(latestChatMessages);
+        List<ChatMessageRequestDTO> chatMessageRequestDTOList = ChatConverter.toChatMessageListDTO(latestChatMessages);
 
-        ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom, chatMessageDTOList);
+        ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom, chatMessageRequestDTOList);
         ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO> apiResponse = ApiResponse.onSuccess(chatRoomInfoDto);
 
         return ResponseEntity.ok().body(apiResponse);
@@ -51,18 +52,19 @@ public class MessageController {
     }
 
     @MessageMapping("/send")
-    @SendTo("topic/chat/{roomId}")
-    //전체경로는 "/sub/topic/chat/{roomId}이다.
-    public ChatMessageDTO message(@RequestBody ChatMessageDTO message) {
+    @SendTo("queue/chat/{roomId}")//전체경로는 "/sub/queue/chat/{roomId}이다.
+    public ChatMessageResponseDTO message(@RequestBody ChatMessageRequestDTO request) {
 
 
-        ChatRoom chatRoom = chatRoomService.findById(message.getRoomId());
+        ChatRoom chatRoom = chatRoomService.findById(request.getRoomId());
 
-        ChatMessage chatMessage = ChatConverter.toChatMessage(message, chatRoom);
+        ChatMessage chatMessage = ChatConverter.toChatMessage(request, chatRoom);
 
         chatMessageService.ChatMessageSave(chatMessage);
 
-        return message;
+        ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
+
+        return chatMessageResponseDTO;
     }
 
 

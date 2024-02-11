@@ -1,10 +1,8 @@
 package FitnessBro.web.dto.Chat;
 
 
-import FitnessBro.domain.Chat.ChatMessage;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +23,7 @@ public class ChatRoomResponseDTO {
     public static class ChatRoomInfoDTO{
 
             private Long chatRoomId;
-            private List<ChatMessageDTO> latestChatMessages;
+            private List<ChatMessageRequestDTO> latestChatMessages;
             private LocalDateTime createdAt;
     }
 

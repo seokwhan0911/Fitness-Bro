@@ -7,6 +7,7 @@ import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
+import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
@@ -31,12 +32,13 @@ public class CoachController {
     private final CoachService coachService;
     private final ReviewService reviewService;
     private final RegisterService registerService;
+    private final LoginService loginService;
 
     @GetMapping("/{coachId}/info")
     @Operation(summary = "동네형 상세정보 API", description = "동네형 id(coachId)를 받아 동네형 상세정보 전달")
-    public ApiResponse<CoachResponseDTO.CoachProfileDTO> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
 
-        return ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId)));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId))));
     }
 
 
@@ -49,50 +51,57 @@ public class CoachController {
         ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
-    @GetMapping("/{coachId}/reviews")
+    @GetMapping("/reviews")
     @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
-    public ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> getReviews(@PathVariable(value = "coachId") Long coachId) {
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>>> getReviews(@RequestHeader(value = "token") String token) {
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
 
         try {
-            List<Review> reviews = reviewService.getReviewsByCoachId(coachId);
+            List<Review> reviews = reviewService.getReviewsByCoachId(userId);
 
             List<ReviewResponseDTO.ReviewByCoachDTO> reviewDTOList = ReviewConverter.toReviewByCoachDTO(reviews);
 
-            return ApiResponse.onSuccess(reviewDTOList);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDTOList));
 
         } catch (Exception e) {
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
         }
     }
 
     @GetMapping("/reviews/{reviewId}")
     @Operation(summary = "동네형이 받은 리뷰 상세보기를 조회하는 API")
-    public ApiResponse<ReviewResponseDTO.ReviewDetailDTO> getReviewDetails(@PathVariable(value = "reviewId") Long reviewId) {
+    public ResponseEntity<ApiResponse<ReviewResponseDTO.ReviewDetailDTO>> getReviewDetails(@PathVariable(value = "reviewId") Long reviewId) {
 
         try {
             Review review = reviewService.getReviewById(reviewId);
 
             ReviewResponseDTO.ReviewDetailDTO reviewDetailDTO = ReviewConverter.toReviewDetailDTO(review);
 
-            return ApiResponse.onSuccess(reviewDetailDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDetailDTO));
 
         } catch (Exception e) {
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
         }
     }
 
-    @GetMapping("/{coachId}")
-    @Operation(summary = "동네형 마이페이지")
-    public ApiResponse<CoachResponseDTO.CoachMyPageDTO> getCoachMyPage (@PathVariable(value = "coachId") Long coachId){
-        return ApiResponse.onSuccess(CoachConverter.toCoachMyPageDTO(coachService.getCoachById(coachId), registerService.getMatchNumCoach(coachId), reviewService.getReviewNumCoach(coachId)));
+    @GetMapping("")
+    @Operation(summary = "코치 마이페이지")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachMyPageDTO>> getCoachMyPage (@RequestHeader(value = "token") String token){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachMyPageDTO(coachService.getCoachById(userId), registerService.getMatchNumCoach(userId), reviewService.getReviewNumCoach(userId))));
     }
 
-    @PatchMapping("/{coachId}")
-    @Operation(summary = "동네형 정보 수정")
-    public ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO> patchCoachUpdate(@PathVariable(value = "coachId") Long coachId, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
+    @PatchMapping("")
+    @Operation(summary = "코치 정보 수정")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO>> patchCoachUpdate(@RequestHeader(value = "token") String token, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
             coachUpdateRequestDTO){
-        Coach coach = coachService.updateCoach(coachId, coachUpdateRequestDTO);
-        return ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach));
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+        Coach coach = coachService.updateCoach(userId, coachUpdateRequestDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach)));
     }
 
     @PatchMapping(value = "/{coachId}/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -113,19 +122,22 @@ public class CoachController {
         }
     }
 
-    @GetMapping("/album/{coachId}")
+    @GetMapping("/album")
     @Operation(summary = "동네형의 사진첩을 조회하는 API")
-    public ApiResponse<CoachResponseDTO.CoachAlbumDTO> getCoachAlbum(@PathVariable(value = "coachId") Long coachId) {
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachAlbumDTO>> getCoachAlbum(@RequestHeader(value = "token") String token) {
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
 
         try {
-            Coach coach = coachService.getCoachById(coachId);
+            Coach coach = coachService.getCoachById(userId);
 
             CoachResponseDTO.CoachAlbumDTO coachAlbumDTO = CoachConverter.toCoachAlbumDTO(coach);
 
-            return ApiResponse.onSuccess(coachAlbumDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(coachAlbumDTO));
 
         } catch (Exception e) {
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
         }
     }
 

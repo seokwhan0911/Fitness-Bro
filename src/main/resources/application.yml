@@ -24,14 +24,14 @@ spring:
             user-name-attribute: response
         registration:
           google:
-            client-id: ${GOOGLE_SOCIAL_CLIENT_ID}
+            client-id: ${GOOGLE_SOCIAL_CLIENT_SECRET}
             client-secret: ${GOOGLE_SOCIAL_CLIENT_SECRET}
             scope:
               - profile
               - email
           kakao:
-            client-id: 8c7208b34afec06d51425dd25d6a0a54
-            client-secret: 4qPZjYEfJ8ncAgpavX1oa3DmVrOJsYwi
+            client-id: ${KAKAO_SOCIAL_CLIENT_ID}
+            client-secret: ${KAKAO_SOCIAL_CLIENT_SECRET}
             client-authentication-method: client_secret_post
             redirect-uri: http://localhost:8080/login/oauth2/code/{registrationId}
             authorization-grant-type: authorization_code
@@ -40,8 +40,8 @@ spring:
               - account_email
               - profile_nickname
           naver:
-            client-id: k7z58EUm09UZZxaxPTxk
-            client-secret: X6Ovbl_IuM
+            client-id: ${NAVER_SOCIAL_CLIENT_ID}
+            client-secret: ${NAVER_SOCIAL_CLIENT_SECRET}
             redirect-uri: http://localhost:8080/login/oauth2/code/{registrationId}
             authorization-grant-type: authorization_code
             scope: email, name
@@ -92,5 +92,4 @@ jwt:
   #  refresh:
   #    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
   #    header: Authorization-refresh
-
 

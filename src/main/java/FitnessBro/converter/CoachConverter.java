@@ -1,6 +1,8 @@
 package FitnessBro.converter;
 
 import FitnessBro.domain.Coach;
+import FitnessBro.domain.CoachImage;
+import FitnessBro.domain.ReviewImage;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import java.util.List;
@@ -18,6 +20,7 @@ public class CoachConverter {
                 .price(coach.getPrice())
                 .address(coach.getAddress())
                 .schedule(coach.getSchedule())
+                .coachPicture(coach.getPictureURL())
                 .build();
     }
 
@@ -70,4 +73,19 @@ public class CoachConverter {
     }
 
 
+    public static CoachImage toCoachAlbum(String pictureUrl, Coach coach) {
+        return CoachImage.builder()
+                .url(pictureUrl)
+                .coach(coach)
+                .build();
+    }
+
+    public static CoachResponseDTO.CoachAlbumDTO toCoachAlbumDTO(Coach coach) {
+        return CoachResponseDTO.CoachAlbumDTO.builder()
+                .coachId(coach.getId())
+                .pictureURLs(coach.getCoachImageList().stream().
+                        map(CoachImage::getUrl).
+                        collect(Collectors.toList()))
+                .build();
+    }
 }

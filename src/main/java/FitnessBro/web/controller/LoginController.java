@@ -80,10 +80,8 @@ public class LoginController {
 
     @GetMapping("/oauth2/code/google")
     public ResponseEntity<String> GoogleLogin(@RequestParam("code") String code) {
-        System.out.println("code = " + code);
         //requestAccessToken이랑 getNaverAccessToken같은 역할
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
-        System.out.println("accessTokenResponse = " + accessTokenResponse);
         String accessTokenResponseBody = accessTokenResponse.getBody();
 
         HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);

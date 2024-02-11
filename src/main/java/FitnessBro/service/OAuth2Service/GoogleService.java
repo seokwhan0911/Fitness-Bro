@@ -101,9 +101,6 @@ public class GoogleService {
         String id = resp.getAsJsonObject().get("id").getAsString();
         String email = resp.getAsJsonObject().get("email").getAsString();
 
-        System.out.println("id = " + id);
-        System.out.println("email = " + email);
-
         userInfo.put("id", "google_" + id);
         userInfo.put("email", email);
 

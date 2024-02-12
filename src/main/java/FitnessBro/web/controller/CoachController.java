@@ -5,7 +5,6 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.Coach;
-import FitnessBro.domain.Register;
 import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.LoginService.LoginService;

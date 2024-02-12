@@ -1,19 +1,18 @@
 package FitnessBro.web.controller;
 
-import FitnessBro.service.OAuth2Service.GoogleService;
-import FitnessBro.service.OAuth2Service.KakaoService;
+import FitnessBro.converter.LoginConverter;
 import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.MemberService.MemberCommandService;
+import FitnessBro.service.OAuth2Service.GoogleService;
 import FitnessBro.service.OAuth2Service.KakaoService;
 import FitnessBro.service.OAuth2Service.NaverService;
 import FitnessBro.web.dto.Login.LoginRequestDTO;
+import FitnessBro.web.dto.LoginDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -38,6 +37,7 @@ public class LoginController {
         // 이메일 이용해서 유저 아이디 가져올 수 있음
         Long userId = loginService.getIdByEmail(userEmail);
 
+
         memberCommandService.classifyUsers(userEmail, request.getRole());
 
         return ResponseEntity.ok().body("select 성공");
@@ -46,9 +46,11 @@ public class LoginController {
 
 
     @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code)  {
+    public ResponseEntity<LoginDTO> KakaoLogin(@RequestParam("code") String code) {
 
         // member entity member_id가 String이 아니라서 개판으로 짜임
+
+
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 
         String token = stringResponseEntity.getBody();
@@ -56,7 +58,10 @@ public class LoginController {
 
         String userToken = memberCommandService.joinSocialMember(String.valueOf(userInfo.get("email")), String.valueOf(userInfo.get("id")));
 
-        return ResponseEntity.ok().body(userToken);
+        String userEmail = loginService.decodeJwt(userToken);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        return ResponseEntity.ok().body(LoginConverter.loginDTO(userToken,userId));
     }
 
     @GetMapping("/oauth2/code/naver")

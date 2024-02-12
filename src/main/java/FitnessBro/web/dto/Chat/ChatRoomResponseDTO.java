@@ -1,6 +1,7 @@
 package FitnessBro.web.dto.Chat;
 
 
+import FitnessBro.domain.Chat.ChatMessage;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -30,9 +31,11 @@ public class ChatRoomResponseDTO {
     @Builder
     @Getter
     public static class ChatRoomSimpleDTO{
+        private List<ChatMessage> chatMessageList;
         private Long chatRoomId;
         private String lastChatMessage;
-        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private String partnerName;
+        private String pictureUrl;
     }
 }

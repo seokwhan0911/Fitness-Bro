@@ -3,15 +3,12 @@ package FitnessBro.domain.Chat;
 
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
-
 import FitnessBro.domain.common.BaseEntity;
-
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)

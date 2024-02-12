@@ -126,15 +126,14 @@ public class CoachController {
 
     }
 
-    @GetMapping("/album")
+    @GetMapping("/album/{coachId}")
     @Operation(summary = "동네형의 사진첩을 조회하는 API")
-    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachAlbumDTO>> getCoachAlbum(@RequestHeader(value = "token") String token) {
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachAlbumDTO>> getCoachAlbum(@PathVariable(name = "coachId" )Long coachId) {
 
-        String userEmail = loginService.decodeJwt(token);
-        Long userId = loginService.getIdByEmail(userEmail);
+
 
         try {
-            Coach coach = coachService.getCoachById(userId);
+            Coach coach = coachService.getCoachById(coachId);
 
             CoachResponseDTO.CoachAlbumDTO coachAlbumDTO = CoachConverter.toCoachAlbumDTO(coach);
 

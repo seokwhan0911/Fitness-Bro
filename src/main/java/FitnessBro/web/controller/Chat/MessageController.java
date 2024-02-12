@@ -49,7 +49,7 @@ public class MessageController {
     }
 
     @MessageMapping("/send")
-    @SendTo("queue/chat/{roomId}")//전체경로는 "/sub/queue/chat/{roomId}이다.
+    @SendTo("queue/chat/6")//전체경로는 "/sub/queue/chat/{roomId}이다.
     public ChatMessageResponseDTO message(@RequestBody ChatMessageRequestDTO request) {
 
 

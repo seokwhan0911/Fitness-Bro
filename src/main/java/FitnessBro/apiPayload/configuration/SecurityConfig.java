@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers("/coaches/sign-up").permitAll()
                                 .requestMatchers("/coaches/login").permitAll()
                                 .requestMatchers("/login/oauth2/code/**").permitAll()
+                                .requestMatchers("/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
 

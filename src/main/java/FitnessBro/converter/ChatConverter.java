@@ -7,6 +7,7 @@ import FitnessBro.web.dto.Chat.ChatMessageResponseDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,13 +55,18 @@ public class ChatConverter {
     }
 
     public static ChatRoomResponseDTO.ChatRoomSimpleDTO toMemberChatRoomSimpleDTO(ChatRoom chatRoom){
+        List<String> stringList = new ArrayList<>();
+        for(ChatMessage chatMessage:chatRoom.getChatMessage()){
+            String message = chatMessage.getMessage();
+            stringList.add(message);
+        }
         return ChatRoomResponseDTO.ChatRoomSimpleDTO.builder()
                 .chatRoomId(chatRoom.getId())
                 .lastChatMessage(chatRoom.getLastChatMessage())
                 .partnerName(chatRoom.getCoach().getNickname())
                 .updatedAt(chatRoom.getUpdatedAt())
                 .pictureUrl(chatRoom.getCoach().getPictureURL())
-                .chatMessageList(chatRoom.getChatMessage())
+                .chatMessageList(stringList)
                 .build();
     }
 
@@ -71,12 +77,19 @@ public class ChatConverter {
     }
 
     public static ChatRoomResponseDTO.ChatRoomSimpleDTO toCoachChatRoomSimpleDTO(ChatRoom chatRoom){
+        List<String> stringList = new ArrayList<>();
+        for(ChatMessage chatMessage:chatRoom.getChatMessage()){
+            String message = chatMessage.getMessage();
+            stringList.add(message);
+        }
+
         return ChatRoomResponseDTO.ChatRoomSimpleDTO.builder()
                 .chatRoomId(chatRoom.getId())
                 .lastChatMessage(chatRoom.getLastChatMessage())
                 .partnerName(chatRoom.getMember().getNickname())
                 .updatedAt(chatRoom.getUpdatedAt())
                 .pictureUrl(chatRoom.getMember().getPictureURL())
+                .chatMessageList(stringList)
                 .build();
     }
 

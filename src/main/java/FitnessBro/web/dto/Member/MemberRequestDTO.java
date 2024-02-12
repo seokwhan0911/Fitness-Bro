@@ -13,7 +13,6 @@ public class MemberRequestDTO {
         String password;
         String nickname;
         String email;
-        int age;
     }
 
     @Builder

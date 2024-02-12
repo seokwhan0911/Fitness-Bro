@@ -51,7 +51,7 @@ public class ChatRoomController {
         List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByCoachId(userId);
         chatRoomService.setLastChatMessage(chatRoomsList);
         ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toCoachChatRoomSimpleListDTO(chatRoomsList));
-
+//
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 

@@ -16,7 +16,7 @@ public class CoachResponseDTO {
     @Builder
     public static class CoachProfileDTO{
 
-        String name;
+        String nickname;
         int age;
         float rating;
         String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%
@@ -24,7 +24,7 @@ public class CoachResponseDTO {
         int price;          // 시급 가격
         String address;     // 위치
         String schedule;
-        MultipartFile coachPicture;
+        String coachPicture;
 
     }
 
@@ -75,5 +75,13 @@ public class CoachResponseDTO {
         Float rating;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CoachAlbumDTO {
 
+        Long coachId;
+        List<String> pictureURLs;    // 동네형 사진첩 이미지 리스트
+    }
 }

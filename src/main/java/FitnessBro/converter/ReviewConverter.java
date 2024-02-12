@@ -17,6 +17,7 @@ public class ReviewConverter {
                 .map(review -> ReviewResponseDTO.ReviewByCoachDTO.builder()
                         .review_id(review.getId())
                         .nickname(review.getMember().getNickname()) // 회원 닉네임
+                        .pictureURL(review.getMember().getPictureURL())
                         .createdAt(review.getCreatedAt())
                         .build()).collect(Collectors.toList());
     }

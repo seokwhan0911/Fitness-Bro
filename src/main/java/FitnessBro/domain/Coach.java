@@ -2,15 +2,15 @@ package FitnessBro.domain;
 
 import FitnessBro.apiPayload.Utill.StringUtils;
 import FitnessBro.domain.common.BaseEntity;
+import jakarta.persistence.*;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
+import java.util.List;
 
+@Builder
 @Entity
 @Setter
 @Getter
@@ -19,12 +19,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class Coach extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "coach_id")
     private Long id;
 
     private String name;
 
+    @Setter
     private String nickname;
 
     private String email;
@@ -37,16 +38,28 @@ public class Coach extends BaseEntity {
 
     private String address;
 
+    @Setter
     private String comment;     // 한 줄 인사말
 
+    @Setter
     private int price;
 
-    private String schedule;
+    @Setter
+    private String schedule;    // 주 운동 시간
 
+    @Setter
     private String introduction;    // 선생님 소개
 
+    @Setter
+    private String pictureURL;  // 동네형 프로필 사진
 
-    // 추후에 PM 기획 후 추가 예정
+    @JoinColumn(name = "gym_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Gym gym;
+
+    @OneToMany(mappedBy = "coach", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CoachImage> coachImageList = new ArrayList<>();        // 동네형 사진첩
+
     public void update(CoachRequestDTO.CoachUpdateRequestDTO coachUpdateRequestDTO) {
         if(StringUtils.isNotBlank(coachUpdateRequestDTO.getNickname())){
             this.nickname = coachUpdateRequestDTO.getNickname();
@@ -73,4 +86,6 @@ public class Coach extends BaseEntity {
             this.introduction = coachUpdateRequestDTO.getIntroduction();
         }
     }
+
+
 }

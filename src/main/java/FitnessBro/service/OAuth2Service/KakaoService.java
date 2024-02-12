@@ -6,6 +6,7 @@ import com.nimbusds.jose.shaded.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,6 +24,12 @@ import java.util.HashMap;
 @Slf4j
 public class KakaoService {
 
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String KAKAO_SOCIAL_CLIENT_ID;
+    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+    private String KAKAO_SOCIAL_CLIENT_SECRET;
+
+
     public ResponseEntity<String> getKakaoAccessToken (String code)  {
         String REQUEST_URL = "https://kauth.kakao.com/oauth/token";
         RestTemplate restTemplate=new RestTemplate();
@@ -35,8 +42,8 @@ public class KakaoService {
         // Set parameter
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "8c7208b34afec06d51425dd25d6a0a54");
-        params.add("redirect_uri", "http://localhost:8080/login/oauth2/code/kakao");
+        params.add("client_id", KAKAO_SOCIAL_CLIENT_ID);
+        params.add("redirect_uri", "https://dev.fitness-bro.pro/login/oauth2/code/kakao");
         params.add("code", code);
         // Set http entity
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);

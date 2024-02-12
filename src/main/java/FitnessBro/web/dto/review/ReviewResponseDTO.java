@@ -15,9 +15,10 @@ public class ReviewResponseDTO {
     @Builder
     public static class ReviewByCoachDTO{   // 동네형이 받은 리스트를 보여주기 위한 DTO
 
-        private Long review_id;
-        private String nickname;    // 유저 닉네임
-        private LocalDateTime createdAt;    // 후기를 작성한 시간
+        Long review_id;
+        String nickname;    // 유저 닉네임
+        LocalDateTime createdAt;    // 후기를 작성한 시간
+        String pictureURL;  // 유저 사진
 
     }
 

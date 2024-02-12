@@ -20,8 +20,7 @@ public class ReviewRequestDTO {
         @NotNull
         String nickname;    // 코치 닉네임
 
-        @NotNull
-        @Range(min = 0, max = 5)
+        @NotNull @Range(min = 0, max = 5)
         Float rating;
 
         @NotNull

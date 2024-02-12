@@ -33,7 +33,7 @@ spring:
             client-id: ${KAKAO_SOCIAL_CLIENT_ID}
             client-secret: ${KAKAO_SOCIAL_CLIENT_SECRET}
             client-authentication-method: client_secret_post
-            redirect-uri: http:///dev.fitness-bro.pro/login/oauth2/code/{registrationId}
+            redirect-uri: https://dev.fitness-bro.pro/login/oauth2/code/{registrationId}
             authorization-grant-type: authorization_code
             client-name: kakao
             scope:
@@ -42,7 +42,7 @@ spring:
           naver:
             client-id: ${NAVER_SOCIAL_CLIENT_ID}
             client-secret: ${NAVER_SOCIAL_CLIENT_SECRET}
-            redirect-uri: http:///dev.fitness-bro.pro/login/oauth2/code/{registrationId}
+            redirect-uri: https://dev.fitness-bro.pro/login/oauth2/code/{registrationId}
             authorization-grant-type: authorization_code
             scope: email, name
 

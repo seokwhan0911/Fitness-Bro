@@ -11,7 +11,6 @@ public class MemberConverter {
         return Member.builder()
                 .password(request.getPassword())
                 .nickname(request.getNickname())
-                .age(request.getAge())
                 .email(request.getEmail())
                 .build();
     }

@@ -12,6 +12,7 @@ public class CoachConverter {
 
     public static CoachResponseDTO.CoachProfileDTO toCoachProfileDTO(Coach coach){
         return CoachResponseDTO.CoachProfileDTO.builder()
+                .coachId(coach.getId())
                 .nickname(coach.getNickname())
                 .age(coach.getAge())
                 .rating(coach.getRating())
@@ -26,6 +27,7 @@ public class CoachConverter {
 
     public static CoachResponseDTO.CoachDTO toCoachDTO(Coach coach){
         return CoachResponseDTO.CoachDTO.builder()
+                .coachId(coach.getId())
                 .name(coach.getNickname())
                 .age(coach.getAge())
                 .rating(coach.getRating())
@@ -62,7 +64,6 @@ public class CoachConverter {
     public static CoachResponseDTO.CoachUpdateResponseDTO toCoachUpdateDTO(Coach coach) {
         return CoachResponseDTO.CoachUpdateResponseDTO.builder()
                 .nickname(coach.getNickname())
-                .email(coach.getEmail())
                 .password(coach.getPassword())
                 .address(coach.getAddress())
                 .comment(coach.getComment())
@@ -83,6 +84,21 @@ public class CoachConverter {
     public static CoachResponseDTO.CoachAlbumDTO toCoachAlbumDTO(Coach coach) {
         return CoachResponseDTO.CoachAlbumDTO.builder()
                 .coachId(coach.getId())
+                .pictureURLs(coach.getCoachImageList().stream().
+                        map(CoachImage::getUrl).
+                        collect(Collectors.toList()))
+                .build();
+    }
+
+    public static CoachResponseDTO.CoachMyInfoDTO toCoachMyInfoDTO(Coach coach) {
+        return CoachResponseDTO.CoachMyInfoDTO.builder()
+                .coachPicture(coach.getPictureURL())
+                .nickname(coach.getNickname())
+                .price(coach.getPrice())
+                .age(coach.getAge())
+                .schedule(coach.getSchedule())
+                .comment(coach.getComment())
+                .introduction(coach.getIntroduction())
                 .pictureURLs(coach.getCoachImageList().stream().
                         map(CoachImage::getUrl).
                         collect(Collectors.toList()))

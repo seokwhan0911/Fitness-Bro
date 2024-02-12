@@ -33,7 +33,6 @@ public class Member extends BaseEntity {
     @Setter
     private String password;
 
-
     @Setter
     private String address;     // 회원 거주 지역
 

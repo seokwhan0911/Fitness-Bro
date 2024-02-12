@@ -57,7 +57,7 @@ public class ChatConverter {
         return ChatRoomResponseDTO.ChatRoomSimpleDTO.builder()
                 .chatRoomId(chatRoom.getId())
                 .lastChatMessage(chatRoom.getLastChatMessage())
-                .partnerName(chatRoom.getMember().getNickname())
+                .partnerName(chatRoom.getCoach().getNickname())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -72,7 +72,7 @@ public class ChatConverter {
         return ChatRoomResponseDTO.ChatRoomSimpleDTO.builder()
                 .chatRoomId(chatRoom.getId())
                 .lastChatMessage(chatRoom.getLastChatMessage())
-                .partnerName(chatRoom.getCoach().getNickname())
+                .partnerName(chatRoom.getMember().getNickname())
                 .createdAt(LocalDateTime.now())
                 .build();
     }

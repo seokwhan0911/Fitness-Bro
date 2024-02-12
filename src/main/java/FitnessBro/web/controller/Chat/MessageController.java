@@ -18,6 +18,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,7 @@ public class MessageController {
 
 
         ChatRoom chatRoom = chatRoomService.findById(request.getRoomId());
+        chatRoom.setUpdatedAt(LocalDateTime.now());
 
         ChatMessage chatMessage = ChatConverter.toChatMessage(request, chatRoom);
 

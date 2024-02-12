@@ -32,7 +32,8 @@ public class ChatRoomResponseDTO {
     public static class ChatRoomSimpleDTO{
         private Long chatRoomId;
         private String lastChatMessage;
-        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private String partnerName;
+        private String pictureUrl;
     }
 }

@@ -1,6 +1,5 @@
 package FitnessBro.web.controller.Chat;
 
-import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.ChatConverter;
 import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
@@ -12,7 +11,6 @@ import FitnessBro.web.dto.Chat.ChatRoomRequestDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -32,7 +30,7 @@ public class MessageController {
     // /pub/connect 엔드포인트로 채팅하기 누를시.
     @MessageMapping("/connect")
     @SendTo("/queue/{memberId}/{coachId}") // 여기를 구독하고 있어야 함
-    public ResponseEntity<ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO>> createRoom(@RequestBody @Valid ChatRoomRequestDTO request) {
+    public ChatRoomResponseDTO.ChatRoomInfoDTO createRoom(@RequestBody @Valid ChatRoomRequestDTO request) {
 
         ChatRoom newChatRoom = new ChatRoom();
         ChatRoom chatRoom = chatRoomService.findChatRoomByMemberIdAndCoachId(request.getMemberId(),request.getCoachId());
@@ -46,10 +44,8 @@ public class MessageController {
         List<ChatMessageRequestDTO> chatMessageRequestDTOList = ChatConverter.toChatMessageListDTO(latestChatMessages);
 
         ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom, chatMessageRequestDTOList);
-        ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO> apiResponse = ApiResponse.onSuccess(chatRoomInfoDto);
 
-        return ResponseEntity.ok().body(apiResponse);
-
+        return chatRoomInfoDto;
     }
 
     @MessageMapping("/send")

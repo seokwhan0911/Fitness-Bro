@@ -60,6 +60,7 @@ public class ChatConverter {
                 .partnerName(chatRoom.getCoach().getNickname())
                 .updatedAt(chatRoom.getUpdatedAt())
                 .pictureUrl(chatRoom.getCoach().getPictureURL())
+                .chatMessageList(chatRoom.getChatMessage())
                 .build();
     }
 

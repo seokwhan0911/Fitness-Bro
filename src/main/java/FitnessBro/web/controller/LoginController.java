@@ -38,7 +38,6 @@ public class LoginController {
         // 이메일 이용해서 유저 아이디 가져올 수 있음
         Long userId = loginService.getIdByEmail(userEmail);
 
-
         memberCommandService.classifyUsers(userEmail, request.getRole());
 
         return ResponseEntity.ok().body("select 성공");
@@ -47,11 +46,9 @@ public class LoginController {
 
 
     @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code) {
+    public ResponseEntity<String> KakaoLogin(@RequestParam("code") String code)  {
 
         // member entity member_id가 String이 아니라서 개판으로 짜임
-
-
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 
         String token = stringResponseEntity.getBody();

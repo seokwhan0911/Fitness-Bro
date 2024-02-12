@@ -71,16 +71,11 @@ public class MemberController {
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        try {
             memberCommandService.createFavoriteCoach(userId, coachId);
 
             ApiResponse<String> apiResponse = ApiResponse.onSuccess("동네형 찜 등록을 성공했습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
-        } catch (Exception e) {
-            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
-        }
     }
 
 
@@ -106,7 +101,6 @@ public class MemberController {
             @RequestPart(value ="files", required = false) List<MultipartFile> files, @RequestHeader(value = "token") String token ){
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
-        try{
             if(files != null) { // 리뷰에 이미지가 포함되어 있는 경우
                 reviewService.createReviewWithFiles(request, files, userId);
             } else {    // 리뷰에 미지가 포함되어 있지 않은 경우
@@ -115,10 +109,6 @@ public class MemberController {
             ApiResponse<String> apiResponse = ApiResponse.onSuccess("성공적으로 리뷰 작성을 했습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
-        }catch (Exception e){
-            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
-        }
     }
 
     @PatchMapping(value = "/{memberId}/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -126,7 +116,6 @@ public class MemberController {
     public ApiResponse<String> coachSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
                                            @RequestPart(value = "picture", required = false) MultipartFile file,
                                            @PathVariable(value = "memberId") Long memberId){
-        try{
             if(file != null){   // 사용자가 본인의 이미지를 업로드 하는 경우
                 memberCommandService.insertInfoWithImage(memberId, request, file);
             } else {    // 사용자가 본인의 이미지를 업로드 하지 않는 경우
@@ -134,8 +123,5 @@ public class MemberController {
             }
             return ApiResponse.onSuccess("회원의 정보가 성공적으로 입력되었습니다.");
 
-        } catch (Exception e){
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
-        }
     }
 }

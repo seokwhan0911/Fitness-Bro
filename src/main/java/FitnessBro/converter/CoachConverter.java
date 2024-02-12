@@ -12,7 +12,7 @@ public class CoachConverter {
 
     public static CoachResponseDTO.CoachProfileDTO toCoachProfileDTO(Coach coach){
         return CoachResponseDTO.CoachProfileDTO.builder()
-                .name(coach.getName())
+                .nickname(coach.getNickname())
                 .age(coach.getAge())
                 .rating(coach.getRating())
                 .comment(coach.getComment())

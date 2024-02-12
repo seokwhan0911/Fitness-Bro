@@ -34,11 +34,13 @@ public class CoachController {
     private final RegisterService registerService;
     private final LoginService loginService;
 
+
     @GetMapping("/{coachId}/info")
     @Operation(summary = "동네형 상세정보 API", description = "동네형 id(coachId)를 받아 동네형 상세정보 전달")
     public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
 
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId))));
+
     }
 
 
@@ -47,9 +49,18 @@ public class CoachController {
     @Operation(summary = "동네형 리스트 API", description = "동네형 리스트 전달")
     public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList() {
 
-        List<Coach> coachList = coachService.getCoachList();
-        ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
-        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+        try {
+
+            List<Coach> coachList = coachService.getCoachList();
+            ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
+
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
+        }
+
     }
     @GetMapping("/reviews")
     @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
@@ -58,16 +69,12 @@ public class CoachController {
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        try {
-            List<Review> reviews = reviewService.getReviewsByCoachId(userId);
+        List<Review> reviews = reviewService.getReviewsByCoachId(userId);
 
-            List<ReviewResponseDTO.ReviewByCoachDTO> reviewDTOList = ReviewConverter.toReviewByCoachDTO(reviews);
+        List<ReviewResponseDTO.ReviewByCoachDTO> reviewDTOList = ReviewConverter.toReviewByCoachDTO(reviews);
 
-            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDTOList));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDTOList));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
-        }
     }
 
     @GetMapping("/reviews/{reviewId}")
@@ -110,16 +117,13 @@ public class CoachController {
                                            @RequestPart(value = "picture", required = false) MultipartFile picture,
                                            @RequestPart(value = "album", required = false) List<MultipartFile> pictureList,
                                            @PathVariable(value = "coachId") Long coachId){
-        try{
             coachService.insertCoachInfo(coachId, request);
             if(picture != null) coachService.insertCoachPicture(coachId, picture);  // 동네형 프로필 사진이 주어졌을 때
             if(pictureList != null) coachService.insertCoachAlbum(coachId,pictureList); // 동네형 사진첩 이미지 등록
 
             return ApiResponse.onSuccess("동네형의 정보가 성공적으로 입력되었습니다.");
 
-        } catch (Exception e){
-            return ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
-        }
+
     }
 
     @GetMapping("/album")

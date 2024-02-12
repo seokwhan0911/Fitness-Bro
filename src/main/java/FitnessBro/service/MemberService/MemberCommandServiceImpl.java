@@ -3,6 +3,7 @@ package FitnessBro.service.MemberService;
 import FitnessBro.apiPayload.Utill.JwtTokenUtil;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.AppException;
+import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.aws.s3.AmazonS3Manager;
 import FitnessBro.converter.FavoriteConverter;
 import FitnessBro.converter.MemberConverter;
@@ -71,7 +72,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public String joinSocialMember(String email, String id) {
-        String token = JwtTokenUtil.createToken(email, key,expireTimeMs);
+        String token = JwtTokenUtil.createToken(email,key,expireTimeMs);
 
         if (memberRepository.existsByEmail(email)){
             return token;
@@ -95,6 +96,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         Member member = memberRepository.findById(userId).orElse(null);
         Coach coach = coachRepository.findById(coachId).orElse(null);
 
+        if(coach == null ){
+            throw new TempHandler(ErrorStatus.COACH_NOT_FOUND);
+        }
+
         // favorites repository에 저장
         Favorites favorites = FavoriteConverter.toFavorite(member, coach);
         favoriteRepository.save(favorites);
@@ -116,7 +121,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         String token = JwtTokenUtil.createToken(member.getEmail(), key,expireTimeMs);
         return token;
     }
-
 
     @Override
     @Transactional
@@ -151,6 +155,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     @Transactional
     public void insertMemberInfo(Long memberId, MemberRequestDTO.MemberProfileRegisterDTO request){
+
+        if(request.getNickname() == null){
+            throw new TempHandler(ErrorStatus.NICKNAME_NOT_EXIST);
+        }
+        if (request.getAddress()==null){
+            throw new TempHandler(ErrorStatus.ADDRESS_NOT_EXIST);
+        }
 
         Member member = memberRepository.findById(memberId).orElse(null);
         member.setNickname(request.getNickname());

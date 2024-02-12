@@ -1,5 +1,7 @@
 package FitnessBro.service.ReviewService;
 
+import FitnessBro.apiPayload.code.status.ErrorStatus;
+import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.aws.s3.AmazonS3Manager;
 import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.Coach;
@@ -45,8 +47,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public List<ReviewResponseDTO.ReviewByUserDTO> getReviews(Long userId) {
-
+        if(userId == null){
+            throw new TempHandler(ErrorStatus.EMAIL_NOT_FOUND);
+        }
         List<Review> reviews = reviewRepository.findAllByMemberId(userId);
+
+        if(reviews==null){
+            return null;
+        }
         return reviews.stream()
                 .map(ReviewConverter::toReviewByUserDTO)
                 .collect(Collectors.toList());
@@ -81,8 +89,18 @@ public class ReviewServiceImpl implements ReviewService {
         Member member = memberRepository.getById(userId);
         Coach coach = coachRepository.getCoachByNickname(request.getNickname());
 
+        if(request.getContents() == null){
+            throw new TempHandler(ErrorStatus.CONTENTS_NOT_FOUND);
+        }
+        if(request.getContents() == null){
+            throw new TempHandler(ErrorStatus.CONTENTS_NOT_FOUND);
+        }
         Review review = ReviewConverter.toReview(request, member, coach);
         reviewRepository.save(review);
+
+
+
+
     }
 
     @Override

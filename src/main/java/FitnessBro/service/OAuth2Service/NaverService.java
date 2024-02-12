@@ -45,7 +45,7 @@ public class NaverService {
         params.add("grant_type", "authorization_code");
         params.add("client_id", NAVER_SOCIAL_CLIENT_ID);
         params.add("client_secret", NAVER_SOCIAL_CLIENT_SECRET);
-        params.add("redirect_uri", "http://localhost:8080/login/oauth2/code/naver");
+        params.add("redirect_uri", "http:///dev.fitness-bro.pro/login/oauth2/code/naver");
         params.add("code", code);
         params.add("state", state);
         // Set http entity

@@ -23,8 +23,6 @@ public class Coach extends BaseEntity {
     @Column(name = "coach_id")
     private Long id;
 
-    private String name;
-
     @Setter
     private String nickname;
 

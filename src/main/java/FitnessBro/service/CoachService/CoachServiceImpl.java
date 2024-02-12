@@ -1,6 +1,8 @@
 package FitnessBro.service.CoachService;
 
 
+import FitnessBro.apiPayload.code.status.ErrorStatus;
+import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.aws.s3.AmazonS3Manager;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
@@ -16,6 +18,7 @@ import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.context.TenantIdentifierMismatchException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +44,10 @@ public class CoachServiceImpl implements CoachService{
     @Transactional
     public Coach getCoachById(Long coachId){
         Coach coach = coachRepository.findById(coachId).orElse(null);
+
+        if(coach == null){
+            throw new TempHandler(ErrorStatus.COACH_NOT_FOUND);
+        }
         return coach;
     }
 
@@ -57,11 +64,26 @@ public class CoachServiceImpl implements CoachService{
     @Override
     @Transactional
     public void insertCoachInfo(Long coachId, CoachRequestDTO.CoachProfileRegisterDTO request){
+
+        if(request.getNickname() == null){
+            throw new TempHandler(ErrorStatus.NICKNAME_NOT_EXIST);
+        }
+        if (request.getIntroduction() == null){
+            throw new TempHandler(ErrorStatus.INTRODUCTION_NOT_EXIST);
+        }
+        if (request.getSchedule() == null){
+            throw new TempHandler(ErrorStatus.SCHEDULE_NOT_EXIST);
+        }
+        if (request.getComment() == null){
+            throw new TempHandler(ErrorStatus.COMMENT_NOT_EXIST);
+        }
+
         Coach coach = coachRepository.findById(coachId).orElse(null);
         coach.setNickname(request.getNickname());
         coach.setIntroduction(request.getIntroduction());   // 선생님 소개
         coach.setSchedule(request.getSchedule());   // 주 운동 시간
-        coach.setComment(request.getComment());     // 한 줄 인사말
+        coach.setComment(request.getComment());// 한 줄 인사말
+        coach.setPrice(request.getPrice());
     }
 
     @Override

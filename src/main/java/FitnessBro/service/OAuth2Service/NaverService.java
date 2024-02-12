@@ -5,6 +5,7 @@ import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.nimbusds.jose.shaded.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,6 +26,12 @@ import java.util.HashMap;
 @Slf4j
 public class NaverService {
 
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String NAVER_SOCIAL_CLIENT_ID;
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    private String NAVER_SOCIAL_CLIENT_SECRET;
+
+
     public ResponseEntity<String> getNaverAccessToken (String code, String state)  {
         String REQUEST_URL = "https://nid.naver.com/oauth2.0/token";
         RestTemplate restTemplate=new RestTemplate();
@@ -36,8 +43,8 @@ public class NaverService {
         // Set parameter
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "k7z58EUm09UZZxaxPTxk");
-        params.add("client_secret", "X6Ovbl_IuM");
+        params.add("client_id", NAVER_SOCIAL_CLIENT_ID);
+        params.add("client_secret", NAVER_SOCIAL_CLIENT_SECRET);
         params.add("redirect_uri", "http://localhost:8080/login/oauth2/code/naver");
         params.add("code", code);
         params.add("state", state);

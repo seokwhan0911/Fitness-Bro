@@ -66,7 +66,6 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod("PATCH"); // Add PATCH method
         corsConfiguration.addAllowedMethod("DELETE");
         corsConfiguration.addAllowedOrigin("http://localhost3000");
-        corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

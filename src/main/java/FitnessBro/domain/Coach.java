@@ -22,7 +22,6 @@ public class Coach extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "coach_id")
     private Long id;
-
     @Setter
     private String nickname;
 
@@ -33,8 +32,10 @@ public class Coach extends BaseEntity {
     private int age;
 
     private float rating;
-
     private String address;
+    private String region;
+    private String subAddress;
+    private String detailAddress;
 
     @Setter
     private String comment;     // 한 줄 인사말
@@ -84,6 +85,9 @@ public class Coach extends BaseEntity {
             this.introduction = coachUpdateRequestDTO.getIntroduction();
         }
     }
+
+
+
 
 
 }

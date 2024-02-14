@@ -12,7 +12,7 @@ public interface CoachService {
 
     Coach getCoachById(Long coachId);
 
-    List<Coach> getCoachList();
+    public List<Coach> getCoachList();
 
     public void insertCoachInfo(Long coachId, CoachRequestDTO.CoachProfileRegisterDTO request);
 
@@ -22,5 +22,7 @@ public interface CoachService {
     void insertCoachAlbum(Long coachId, List<MultipartFile> pictureList);
 
     void deleteCoachPictures(Long userId);
+
+
 
 }

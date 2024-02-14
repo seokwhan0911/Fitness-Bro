@@ -26,9 +26,20 @@ public class CoachResponseDTO {
         String address;     // 위치
         String schedule;
         String coachPicture;
-
         // 리뷰 수 추가해야 됨
 
+    }
+
+    @Getter
+    @Builder
+    public static class CoachListDTO{
+        Long coachId;
+        String nickname;
+        String region;
+        String subAddress;
+        String detailAddress;
+        int age;
+        float rating;
     }
 
     @Getter

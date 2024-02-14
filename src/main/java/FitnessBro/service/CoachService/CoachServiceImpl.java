@@ -12,6 +12,7 @@ import FitnessBro.domain.Coach;
 import FitnessBro.domain.common.Uuid;
 import FitnessBro.respository.*;
 
+import FitnessBro.service.GymService.GymService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
@@ -39,6 +40,7 @@ public class CoachServiceImpl implements CoachService{
     private final CoachImageRepository coachImageRepository;
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
+    private final GymService gymService;
 
     @Override
     @Transactional
@@ -56,8 +58,10 @@ public class CoachServiceImpl implements CoachService{
     public List<Coach> getCoachList(){
 
         List<Coach> coaches = coachRepository.findAll();
+
         return coaches;
     }
+
 
     @Override
     @Transactional
@@ -83,6 +87,16 @@ public class CoachServiceImpl implements CoachService{
         coach.setSchedule(request.getSchedule());   // 주 운동 시간
         coach.setComment(request.getComment());// 한 줄 인사말
         coach.setPrice(request.getPrice());
+
+        String address = request.getAddress();
+        Gym gym = gymService.getGymByAddress(address);
+
+        coach.setAddress(gym.getAddress());
+        coach.setRegion(gym.getRegion());
+        coach.setSubAddress(gym.getSub_address());
+        coach.setDetailAddress(gym.getDetail_address());
+        coach.setGym(gym);
+
     }
 
     @Override
@@ -156,5 +170,6 @@ public class CoachServiceImpl implements CoachService{
         coachRepository.save(coach);
         return coach;
     }
+
 
 }

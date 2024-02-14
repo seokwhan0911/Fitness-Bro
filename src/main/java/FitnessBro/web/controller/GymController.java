@@ -2,9 +2,13 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
+import FitnessBro.converter.GymConverter;
 import FitnessBro.domain.Coach;
+import FitnessBro.domain.Gym;
 import FitnessBro.service.GymService.GymService;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
+import FitnessBro.web.dto.Gym.GymResponseDTO;
+import FitnessBro.web.dto.review.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,8 +29,19 @@ public class GymController {
 
     @GetMapping("/search")
     @Operation(summary = "헬스장 검색어 넣었을 때 반환해주는 API")
-    public String search(@RequestParam(value = "keyword") String Keyword){
-        return null;
+    public ResponseEntity<ApiResponse<List<GymResponseDTO.GymListDTO>>> search(@RequestParam(value = "keyword") String keyword){
+
+        try {
+            List<Gym> gyms = gymService.getGymListByKeyWord(keyword);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(GymConverter.toGymListDTOS(gyms)));
+
+        } catch (Exception e){
+            ApiResponse<List<GymResponseDTO.GymListDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+
+
     }
 
 }

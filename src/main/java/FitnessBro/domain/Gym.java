@@ -17,4 +17,11 @@ public class Gym extends BaseEntity {
     private Long id;
 
     private String address;
+    private String region;
+    private String sub_address;
+    private String detail_address;
+    private String name;
+    private String phone_number;
+    private String postal_code;
+
 }

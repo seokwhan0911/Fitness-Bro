@@ -2,6 +2,7 @@ package FitnessBro.respository;
 
 
 import FitnessBro.domain.Coach;
+import FitnessBro.domain.Gym;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,6 @@ public interface CoachRepository extends JpaRepository<Coach, Long>{
 
     Coach findCoachByEmail(String email);
 
-
+    List<Coach> findCoachesByGym(Gym gym);
 
 }

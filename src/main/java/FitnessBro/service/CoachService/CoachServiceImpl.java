@@ -51,15 +51,15 @@ public class CoachServiceImpl implements CoachService{
         return coach;
     }
 
-
-
     @Override
     @Transactional
     public List<Coach> getCoachList(){
-
         List<Coach> coaches = coachRepository.findAll();
+
         return coaches;
     }
+
+
 
     @Override
     @Transactional
@@ -85,6 +85,19 @@ public class CoachServiceImpl implements CoachService{
         coach.setSchedule(request.getSchedule());   // 주 운동 시간
         coach.setComment(request.getComment());// 한 줄 인사말
         coach.setPrice(request.getPrice());
+
+        coach.setAddress(request.getAddress());
+        coach.setDetailAddress(request.getDetailAddress());
+
+        String[] addressParts = request.getAddress().split(" ");
+
+        if (addressParts.length > 0) {
+            String region = addressParts[0];
+            String subAddres = addressParts[0];
+            coach.setRegion(region);
+            coach.setSubAddress(subAddres);
+        }
+
     }
 
     @Override
@@ -148,8 +161,6 @@ public class CoachServiceImpl implements CoachService{
         coachRepository.save(coach);
         return coach;
     }
-
-
 
 
 }

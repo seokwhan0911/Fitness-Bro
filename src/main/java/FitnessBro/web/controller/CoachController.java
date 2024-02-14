@@ -38,16 +38,17 @@ public class CoachController {
     //헬스장 id를 받지 않고 그냥 다 넘겨 줄 때
     @GetMapping("/search")
     @Operation(summary = "동네형 리스트 조회하기 API", description = "로그인하지 않은 사용자 조회 가능")
-    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList() {
+    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachListDTO>>> getCoachList() {
 
         try {
             List<Coach> coachList = coachService.getCoachList();
-            ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
+
+            ApiResponse<List<CoachResponseDTO.CoachListDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
 
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
         } catch (Exception e) {
-            ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            ApiResponse<List<CoachResponseDTO.CoachListDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }

@@ -177,11 +177,37 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         member.setNickname(request.getNickname());
         member.setAddress(request.getAddress());
 
+        if(member.getPictureURL() != null){      // 이미 프로필 이미지가 존재하는 경우 AmazonS3에서 지우는 코드
+            String memberPictureURL = member.getPictureURL();
+            String savedUuid = memberPictureURL.substring(memberPictureURL.lastIndexOf("/profile/") + "/profile/".length());
+            Uuid uuid = uuidRepository.findByUuid(savedUuid);
+
+            s3Manager.deleteFile(s3Manager.generateProfileKeyName(uuid));
+            uuidRepository.deleteByUuid(savedUuid);
+            member.setPictureURL(null);
+        }
+
         String uuid = UUID.randomUUID().toString();
         Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
         String pictureUrl = s3Manager.uploadFile(s3Manager.generateProfileKeyName(savedUuid), file);
         member.setPictureURL(pictureUrl);
 
+    }
+
+    @Override
+    public void deleteMemberPicture(Long userId) {
+
+        Member member = memberRepository.findById(userId).orElse(null);
+
+        if(member.getPictureURL() != null){      // 이미 프로필 이미지가 존재하는 경우 AmazonS3에서 지우는 코드
+            String memberPictureURL = member.getPictureURL();
+            String savedUuid = memberPictureURL.substring(memberPictureURL.lastIndexOf("/profile/") + "/profile/".length());
+            Uuid uuid = uuidRepository.findByUuid(savedUuid);
+
+            s3Manager.deleteFile(s3Manager.generateProfileKeyName(uuid));
+            uuidRepository.deleteByUuid(savedUuid);
+            member.setPictureURL(null);
+        }
     }
 
 }

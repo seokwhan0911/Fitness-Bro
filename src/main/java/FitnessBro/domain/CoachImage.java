@@ -18,7 +18,7 @@ public class CoachImage {   // 동네형 사진첩
     private String url;
 
     @JoinColumn(name = "coach_id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Coach coach;
 
 }

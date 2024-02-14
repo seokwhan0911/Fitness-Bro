@@ -52,7 +52,7 @@ public class Coach extends BaseEntity {
     private String pictureURL;  // 동네형 프로필 사진
 
     @JoinColumn(name = "gym_id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Gym gym;
 
     @OneToMany(mappedBy = "coach", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

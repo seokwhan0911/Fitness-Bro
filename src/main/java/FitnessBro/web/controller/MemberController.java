@@ -8,6 +8,7 @@ import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.service.ReviewService.ReviewService;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.review.ReviewRequestDTO;
@@ -81,8 +82,6 @@ public class MemberController {
         }
     }
 
-
-
     @GetMapping("/reviews")
     @Operation(summary = "사용자가 작성한 후기 리스트 조회하기 API")
     public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>> getReviewsByUser(@RequestHeader(value = "token") String token){
@@ -121,9 +120,9 @@ public class MemberController {
         }
     }
 
-    @PostMapping(value = "/{memberId}/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "유저 회원가입 완료 후 첫 정보 입력 페이지")
-    public ResponseEntity<ApiResponse<String>> coachSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
+    @PostMapping(value = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "사용자 회원가입 완료 후 첫 정보 입력 API")
+    public ResponseEntity<ApiResponse<String>> memberSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
                                                            @RequestPart(value = "picture", required = false) MultipartFile file,
                                                            @RequestHeader(value = "token") String token){
 
@@ -137,6 +136,29 @@ public class MemberController {
                 memberCommandService.insertMemberInfo(userId, request);
             }
             ApiResponse<String> apiResponse = ApiResponse.onSuccess("회원의 정보가 성공적으로 입력되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+        } catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "사용자 내 정보 수정하기 API")
+    public ResponseEntity<ApiResponse<String>> memberUpdate(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
+                                                           @RequestPart(value = "picture", required = false) MultipartFile file,
+                                                           @RequestHeader(value = "token") String token){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            memberCommandService.deleteMemberPicture(userId);
+            if(file != null){   // 사용자가 본인의 이미지를 업로드 하는 경우
+                memberCommandService.insertInfoWithImage(userId, request, file);
+            } else {    // 사용자가 본인의 이미지를 업로드 하지 않는 경우
+                memberCommandService.insertMemberInfo(userId, request);
+            }
+            ApiResponse<String> apiResponse = ApiResponse.onSuccess("회원의 정보가 성공적으로 수정되었습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
         } catch (Exception e){
             ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);

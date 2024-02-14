@@ -20,4 +20,7 @@ public interface CoachService {
     void insertCoachPicture(Long coachId, MultipartFile picture);
 
     void insertCoachAlbum(Long coachId, List<MultipartFile> pictureList);
+
+    void deleteCoachPictures(Long userId);
+
 }

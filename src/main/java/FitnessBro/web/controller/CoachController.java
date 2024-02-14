@@ -5,7 +5,6 @@ import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.Coach;
-import FitnessBro.domain.Register;
 import FitnessBro.domain.Review;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.LoginService.LoginService;
@@ -194,11 +193,12 @@ public class CoachController {
         Long userId = loginService.getIdByEmail(userEmail);
 
         try {
+            coachService.deleteCoachPictures(userId);   // 동네형 사진, 사진첩 지우기
             coachService.insertCoachInfo(userId, request);
-            if(picture != null) coachService.insertCoachPicture(userId, picture);  // 동네형 프로필 사진이 주어졌을 때
+            if(picture != null) coachService.insertCoachPicture(userId, picture);
             if(pictureList != null) coachService.insertCoachAlbum(userId,pictureList); // 동네형 사진첩 이미지 등록
 
-            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess("동네형의 정보가 성공적으로 입력되었습니다."));
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess("동네형의 정보가 성공적으로 수정되었습니다."));
         } catch (Exception e){
             ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);

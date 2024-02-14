@@ -64,6 +64,7 @@ cloud:
       path:
         profile: profile
         reviews: reviews
+        album: album
     region:
       static: ap-northeast-2
     stack:

@@ -54,11 +54,11 @@ public class CoachServiceImpl implements CoachService{
     @Override
     @Transactional
     public List<Coach> getCoachList(){
+
         List<Coach> coaches = coachRepository.findAll();
 
         return coaches;
     }
-
 
 
     @Override
@@ -118,35 +118,45 @@ public class CoachServiceImpl implements CoachService{
     public void insertCoachAlbum(Long coachId, List<MultipartFile> pictureList) {   // 동네형 사진첩 삽입
 
         Coach coach = coachRepository.findById(coachId).orElse(null);
-//        Boolean isExist = coachImageRepository.existsByCoach(coach);
 
-//        if(isExist){    // 이미 앨범에 있는 사진이 존재할 경우 모두 지우기
-//            List<CoachImage> coachImageList = coachImageRepository.findAllbyCoach(coach);
-//            for(CoachImage coachImage: coachImageList){
-//
-//            }
-//
-//            List<Uuid> uuidList =
-//
-//            // 데이터베이스에서 UUID에 해당하는 데이터 삭제
-//            Uuid uuidEntity = uuidRepository.findByUuid(uuid);
-//            if (uuidEntity != null) {
-//                uuidRepository.delete(uuidEntity);
-//            }
-//
-//            // S3에서 이미지 삭제
-//            String reviewKeyName = s3Manager.generateReviewKeyName(uuidEntity);
-//            s3Manager.deleteFile(reviewKeyName);
-//
-//        }
-
-        // picture마다 유일한 URL 값 생성
-        for(MultipartFile picture : pictureList){
+        for(MultipartFile picture : pictureList){   // picture마다 유일한 URL 값 생성
             String uuid = UUID.randomUUID().toString();
             Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
 
-            String pictureUrl = s3Manager.uploadFile(s3Manager.generateReviewKeyName(savedUuid), picture);
+            String pictureUrl = s3Manager.uploadFile(s3Manager.generateAlbumKeyName(savedUuid), picture);
             coachImageRepository.save(CoachConverter.toCoachAlbum(pictureUrl, coach));
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteCoachPictures(Long userId) {
+
+        Coach coach = coachRepository.findById(userId).orElse(null);
+        Boolean isExist = coachImageRepository.existsByCoachId(userId);
+
+        if(coach.getPictureURL() != null){      // 이미 프로필 이미지가 존재하는 경우 AmazonS3에서 지우는 코드
+            String coachPictureURL = coach.getPictureURL();
+            String savedUuid = coachPictureURL.substring(coachPictureURL.lastIndexOf("/profile/") + "/profile/".length());
+            Uuid uuid = uuidRepository.findByUuid(savedUuid);
+
+            s3Manager.deleteFile(s3Manager.generateProfileKeyName(uuid));
+            uuidRepository.deleteByUuid(savedUuid);
+            coach.setPictureURL(null);
+        }
+
+        if(isExist){    // 이미 앨범에 사진이 존재할 경우 모두 지우기
+            List<CoachImage> coachImageList = coachImageRepository.findByCoachId(userId);
+            for(CoachImage coachImage : coachImageList){
+                String pictureUrl = coachImage.getUrl();
+                String savedUuid = pictureUrl.substring(pictureUrl.lastIndexOf("/album/") + "/album/".length());
+                Uuid uuid = uuidRepository.findByUuid(savedUuid);
+
+                s3Manager.deleteFile(s3Manager.generateAlbumKeyName(uuid));
+                uuidRepository.deleteByUuid(savedUuid);
+                coachImageRepository.deleteById(coachImage.getId());
+            }
         }
 
     }

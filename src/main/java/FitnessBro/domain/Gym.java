@@ -29,4 +29,5 @@ public class Gym extends BaseEntity {
     private String subAddress;
     //도로명
     private String detailAddress;
+
 }

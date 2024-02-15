@@ -24,8 +24,9 @@ public class ChatRoomResponseDTO {
     public static class ChatRoomInfoDTO{
 
             private Long chatRoomId;
-            private List<ChatMessageRequestDTO> latestChatMessages;
-            private LocalDateTime createdAt;
+            private String senderName;
+            private String partnerName;
+            private String lastChatMessage;
     }
 
     @Builder

@@ -15,7 +15,4 @@ public class ChatRoomRequestDTO {
 
     private Long coachId;
 
-    private int pageNum;
-
-
 }

@@ -4,6 +4,7 @@ package FitnessBro.web.controller.Chat;
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.ChatConverter;
 import FitnessBro.domain.Chat.ChatRoom;
+import FitnessBro.service.ChatService.ChatMessageService;
 import FitnessBro.service.ChatService.ChatRoomService;
 import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
+    private final ChatMessageService chatMessageService;
     private final LoginService loginService;
 
 //     채팅 리스트 화면
@@ -36,8 +38,10 @@ public class ChatRoomController {
 
         List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByMemberId(userId);
         chatRoomService.setLastChatMessage(chatRoomsList);
-        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toMemberChatRoomSimpleListDTO(chatRoomsList));
+        List<ChatRoomResponseDTO.ChatRoomSimpleDTO> chatRoomSimpleDTOList = ChatConverter.toMemberChatRoomSimpleListDTO(chatRoomsList);
+        chatMessageService.sortChatMessageDTO(chatRoomSimpleDTOList);
 
+        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toMemberChatRoomSimpleListDTO(chatRoomsList));
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 

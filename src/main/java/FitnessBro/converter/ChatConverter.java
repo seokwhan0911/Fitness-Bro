@@ -35,11 +35,11 @@ public class ChatConverter {
                 .collect(Collectors.toList());
     }
 
-    public static ChatRoomResponseDTO.ChatRoomInfoDTO toChatRoomInfoDTO(ChatRoom chatRoom, List<ChatMessageRequestDTO> chatMessageRequestDTOList){
+    public static ChatRoomResponseDTO.ChatRoomInfoDTO toChatRoomInfoDTO(ChatRoom chatRoom){
         return ChatRoomResponseDTO.ChatRoomInfoDTO.builder()
                 .chatRoomId(chatRoom.getId())
-                .latestChatMessages(chatMessageRequestDTOList)
-                .createdAt(LocalDateTime.now())
+                .senderName(chatRoom.getMember().getNickname())
+                .partnerName(chatRoom.getCoach().getNickname())
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class ChatConverter {
         return ChatRoomResponseDTO.ChatMessageDTO.builder()
                 .message(chatMessage.getMessage())
                 .sender(chatMessage.getSender())
-                .createdAt(LocalDateTime.now())
+                .createdAt(chatMessage.getCreatedAt())
                 .build();
     }
 

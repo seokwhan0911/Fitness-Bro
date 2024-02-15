@@ -1,21 +1,14 @@
 package FitnessBro.service.ChatService;
 
 
-import FitnessBro.converter.ChatConverter;
 import FitnessBro.domain.Chat.ChatMessage;
-import FitnessBro.domain.Chat.ChatRoom;
 import FitnessBro.respository.ChatMessageRepository;
-import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.beans.Transient;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,7 +49,6 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     public void ChatMessageSave(ChatMessage chatMessage){
         chatMessageRepository.save(chatMessage);
     }
-
 
 
 

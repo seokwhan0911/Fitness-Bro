@@ -1,19 +1,19 @@
 package FitnessBro.service.ChatService;
 
+import FitnessBro.apiPayload.code.status.ErrorStatus;
+import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.domain.Chat.ChatMessage;
 import FitnessBro.domain.Chat.ChatRoom;
-
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
 import FitnessBro.respository.ChatRoomRepository;
 import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.MemberService.MemberCommandService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 
 
 @Service
@@ -68,12 +68,20 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     @Transactional
     public List<ChatRoom> findAllChatRoomListByMemberId(Long memberId){
+
+        if(chatRoomRepository.findAllByMemberId(memberId).isEmpty()){
+            throw new TempHandler(ErrorStatus.CHATTING_LIST_NOT_FOUND);
+        }
         return chatRoomRepository.findAllByMemberId(memberId);
     }
 
     @Override
     @Transactional
     public List<ChatRoom> findAllChatRoomListByCoachId(Long coachId){
+
+        if(chatRoomRepository.findAllByMemberId(coachId).isEmpty()){
+            throw new TempHandler(ErrorStatus.CHATTING_LIST_NOT_FOUND);
+        }
         return chatRoomRepository.findAllByCoachId(coachId);
     }
 

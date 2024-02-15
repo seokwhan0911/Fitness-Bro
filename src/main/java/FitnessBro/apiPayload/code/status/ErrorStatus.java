@@ -50,7 +50,10 @@ public enum ErrorStatus implements BaseErrorCode {
     CONTENTS_NOT_FOUND(HttpStatus.BAD_REQUEST, "REVIEW4002", "내용은 필수 입니다."),
 
     //성사 관련 에러
-    REGISTER_NOT_FOUND(HttpStatus.BAD_REQUEST, "REGISTER4001","성사가 없습니다");
+    REGISTER_NOT_FOUND(HttpStatus.BAD_REQUEST, "REGISTER4001","성사가 없습니다"),
+
+    //채팅 관련 에러
+    CHATTING_LIST_NOT_FOUND(HttpStatus.BAD_REQUEST, "CHAT40001", "채팅리스트가 없습니다");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

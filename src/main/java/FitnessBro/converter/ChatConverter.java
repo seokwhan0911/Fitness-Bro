@@ -7,6 +7,7 @@ import FitnessBro.web.dto.Chat.ChatMessageResponseDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,10 +46,15 @@ public class ChatConverter {
 
     public static ChatMessage toChatMessage(ChatMessageRequestDTO message, ChatRoom chatRoom){
 
+        ZoneId seoulZoneId = ZoneId.of("Asia/Seoul");
+
+        // 현재 시간 가져오기
+        LocalDateTime now = LocalDateTime.now(seoulZoneId);
+
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
                 .message(message.getMessage())
-                .createdAt(LocalDateTime.now())
+                .createdAt(now)
                 .sender(message.getSender())
                 .build();
     }

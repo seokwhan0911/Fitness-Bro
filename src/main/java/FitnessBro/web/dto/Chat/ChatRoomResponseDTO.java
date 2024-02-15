@@ -31,6 +31,7 @@ public class ChatRoomResponseDTO {
     @Getter
     public static class ChatRoomSimpleDTO{
         private Long chatRoomId;
+        private String partnerName;
         List<ChatMessageDTO> chatMessageDTOList;
         private String lastChatMessage;
         private String pictureUrl;

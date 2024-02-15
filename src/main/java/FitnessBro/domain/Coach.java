@@ -22,9 +22,6 @@ public class Coach extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "coach_id")
     private Long id;
-
-    private String name;
-
     @Setter
     private String nickname;
 
@@ -35,8 +32,10 @@ public class Coach extends BaseEntity {
     private int age;
 
     private float rating;
-
     private String address;
+    private String region;
+    private String subAddress;
+    private String detailAddress;
 
     @Setter
     private String comment;     // 한 줄 인사말
@@ -52,6 +51,10 @@ public class Coach extends BaseEntity {
 
     @Setter
     private String pictureURL;  // 동네형 프로필 사진
+
+    @JoinColumn(name = "gym_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Gym gym;
 
     @OneToMany(mappedBy = "coach", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CoachImage> coachImageList = new ArrayList<>();        // 동네형 사진첩
@@ -82,6 +85,9 @@ public class Coach extends BaseEntity {
             this.introduction = coachUpdateRequestDTO.getIntroduction();
         }
     }
+
+
+
 
 
 }

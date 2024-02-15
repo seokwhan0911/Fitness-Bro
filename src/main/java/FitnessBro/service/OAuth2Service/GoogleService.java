@@ -39,7 +39,7 @@ public class GoogleService {
     private String GOOGLE_SOCIAL_CLIENT_SECRET;
 
     private final String GOOGLE_SOCIAL_LOGIN_URL = "https://accounts.google.com/o/oauth2/v2/auth";
-    private final String GOOGLE_SOCIAL_REDIRECT_URL = "http://localhost:8080/login/oauth2/code/google";
+    private final String GOOGLE_SOCIAL_REDIRECT_URL = "https://dev.fitness-bro.pro/login/oauth2/code/google";
     private final String GOOGLE_SOCIAL_TOKEN_URL = "https://oauth2.googleapis.com/token";
     private final String GOOGLE_SOCIAL_API = "https://www.googleapis.com/oauth2/v2/userinfo";
 

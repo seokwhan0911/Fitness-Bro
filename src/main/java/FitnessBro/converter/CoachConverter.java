@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 public class CoachConverter {
 
+
     public static CoachResponseDTO.CoachProfileDTO toCoachProfileDTO(Coach coach){
         return CoachResponseDTO.CoachProfileDTO.builder()
+                .coachId(coach.getId())
                 .nickname(coach.getNickname())
                 .age(coach.getAge())
                 .rating(coach.getRating())
@@ -26,7 +28,8 @@ public class CoachConverter {
 
     public static CoachResponseDTO.CoachDTO toCoachDTO(Coach coach){
         return CoachResponseDTO.CoachDTO.builder()
-                .name(coach.getName())
+                .coachId(coach.getId())
+                .name(coach.getNickname())
                 .age(coach.getAge())
                 .rating(coach.getRating())
                 .comment(coach.getComment())
@@ -35,11 +38,20 @@ public class CoachConverter {
                 .build();
     }
 
-    public static List<CoachResponseDTO.CoachDTO> toCoachListDTO(List<Coach> coaches) {
-        // Coach 엔티티 리스트를 CoachDTO 리스트로 변환
-        return coaches.stream()
-                .map(coach -> toCoachDTO(coach)) // toCoachDTO 메서드를 사용하여 Coach를 CoachDTO로 변환
-                .collect(Collectors.toList()); // collect를 사용하여 리스트로 반환.
+    public static List<CoachResponseDTO.CoachListDTO> toCoachListDTO(List<Coach> coaches) {
+
+            List<CoachResponseDTO.CoachListDTO> coachList = coaches.stream()
+                                        .map(coach -> CoachResponseDTO.CoachListDTO.builder()
+                                                .coachId(coach.getId())
+                                                .nickname(coach.getNickname())
+                                                .region(coach.getRegion())
+                                                .subAddress(coach.getSubAddress())
+                                                .detailAddress(coach.getDetailAddress())
+                                                .age(coach.getAge())
+                                                .rating(coach.getRating())
+                                                .build()).collect(Collectors.toList());
+
+            return coachList;
     }
 
     public static CoachResponseDTO.CoachMyPageDTO toCoachMyPageDTO(Coach coach, Long matchNum, Long reviewNum){
@@ -62,7 +74,6 @@ public class CoachConverter {
     public static CoachResponseDTO.CoachUpdateResponseDTO toCoachUpdateDTO(Coach coach) {
         return CoachResponseDTO.CoachUpdateResponseDTO.builder()
                 .nickname(coach.getNickname())
-                .email(coach.getEmail())
                 .password(coach.getPassword())
                 .address(coach.getAddress())
                 .comment(coach.getComment())
@@ -83,6 +94,21 @@ public class CoachConverter {
     public static CoachResponseDTO.CoachAlbumDTO toCoachAlbumDTO(Coach coach) {
         return CoachResponseDTO.CoachAlbumDTO.builder()
                 .coachId(coach.getId())
+                .pictureURLs(coach.getCoachImageList().stream().
+                        map(CoachImage::getUrl).
+                        collect(Collectors.toList()))
+                .build();
+    }
+
+    public static CoachResponseDTO.CoachMyInfoDTO toCoachMyInfoDTO(Coach coach) {
+        return CoachResponseDTO.CoachMyInfoDTO.builder()
+                .coachPicture(coach.getPictureURL())
+                .nickname(coach.getNickname())
+                .price(coach.getPrice())
+                .age(coach.getAge())
+                .schedule(coach.getSchedule())
+                .comment(coach.getComment())
+                .introduction(coach.getIntroduction())
                 .pictureURLs(coach.getCoachImageList().stream().
                         map(CoachImage::getUrl).
                         collect(Collectors.toList()))

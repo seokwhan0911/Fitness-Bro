@@ -16,16 +16,30 @@ public class CoachResponseDTO {
     @Builder
     public static class CoachProfileDTO{
 
+        Long coachId;
         String nickname;
-        int age;
+        Integer age;
         float rating;
         String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%
         String introduction;    // 코치 소개
-        int price;          // 시급 가격
+        Integer price;          // 시급 가격
         String address;     // 위치
         String schedule;
         String coachPicture;
+        // 리뷰 수 추가해야 됨
 
+    }
+
+    @Getter
+    @Builder
+    public static class CoachListDTO{
+        Long coachId;
+        String nickname;
+        String region;
+        String subAddress;
+        String detailAddress;
+        int age;
+        float rating;
     }
 
     @Getter
@@ -44,7 +58,6 @@ public class CoachResponseDTO {
     @NoArgsConstructor
     public static class CoachUpdateResponseDTO{
         private String nickname;
-        private String email;
         private String password;
         private String address;
         private String comment;
@@ -56,6 +69,7 @@ public class CoachResponseDTO {
     @Getter
     @Builder
     public static class CoachDTO{
+        private Long coachId;
         private String name;
         private int age;
         private float rating;
@@ -83,5 +97,22 @@ public class CoachResponseDTO {
 
         Long coachId;
         List<String> pictureURLs;    // 동네형 사진첩 이미지 리스트
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CoachMyInfoDTO {
+
+        String coachPicture;
+        String nickname;
+        Integer age;
+        String schedule;
+        Integer price;
+        String comment;
+        String introduction;
+        List<String> pictureURLs;
+
     }
 }

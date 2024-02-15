@@ -34,51 +34,61 @@ public class CoachController {
     private final RegisterService registerService;
     private final LoginService loginService;
 
-
-    @GetMapping("/{coachId}/info")
-    @Operation(summary = "동네형 상세정보 API", description = "동네형 id(coachId)를 받아 동네형 상세정보 전달")
-    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachProfileDTO(coachService.getCoachById(coachId))));
-
-    }
-
-
     //헬스장 id를 받지 않고 그냥 다 넘겨 줄 때
     @GetMapping("/search")
-    @Operation(summary = "동네형 리스트 API", description = "동네형 리스트 전달")
-    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachDTO>>> getCoachList() {
+    @Operation(summary = "동네형 리스트 조회하기 API", description = "로그인하지 않은 사용자 조회 가능")
+    public ResponseEntity<ApiResponse<List<CoachResponseDTO.CoachListDTO>>> getCoachList() {
 
         try {
-
             List<Coach> coachList = coachService.getCoachList();
-            ApiResponse<List<CoachResponseDTO.CoachDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
+
+            ApiResponse<List<CoachResponseDTO.CoachListDTO>> apiResponse = ApiResponse.onSuccess(CoachConverter.toCoachListDTO(coachList));
 
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
+            ApiResponse<List<CoachResponseDTO.CoachListDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
-
     }
-    @GetMapping("/reviews")
-    @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API")
-    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>>> getReviews(@RequestHeader(value = "token") String token) {
 
-        String userEmail = loginService.decodeJwt(token);
-        Long userId = loginService.getIdByEmail(userEmail);
+    @GetMapping("/{coachId}/info")
+    @Operation(summary = "동네형 상세 정보 조회하기 API", description = "동네형 id(coachId)를 받아 동네형 상세 정보 전달, 로그인하지 않은 사용자도 조회 가능")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachProfileDTO>> getCoachInfo(@PathVariable(value = "coachId") Long coachId) {
+        try {
+            Coach coach = coachService.getCoachById(coachId);
 
-        List<Review> reviews = reviewService.getReviewsByCoachId(userId);
+            CoachResponseDTO.CoachProfileDTO coachProfileDTO = CoachConverter.toCoachProfileDTO(coach);
 
-        List<ReviewResponseDTO.ReviewByCoachDTO> reviewDTOList = ReviewConverter.toReviewByCoachDTO(reviews);
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(coachProfileDTO));
 
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDTOList));
+        }catch (Exception e){
+            ApiResponse<CoachResponseDTO.CoachProfileDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+
+    @GetMapping("/{coachId}/reviews")
+    @Operation(summary = "동네형이 받은 리뷰들을 조회 하는 API", description = "동네형 id(coachId)를 받아 동네형이 받은 리뷰 리스트 전달, 로그인하지 않은 사용자도 조회 가능")
+    public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>>> getReviews(@PathVariable(value = "coachId") Long coachId) {
+
+        try {
+            List<Review> reviews = reviewService.getReviewsByCoachId(coachId);
+
+            List<ReviewResponseDTO.ReviewByCoachDTO> reviewDTOList = ReviewConverter.toReviewByCoachDTO(reviews);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDTOList));
+
+        } catch (Exception e){
+            ApiResponse<List<ReviewResponseDTO.ReviewByCoachDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
 
     }
 
     @GetMapping("/reviews/{reviewId}")
-    @Operation(summary = "동네형이 받은 리뷰 상세보기를 조회하는 API")
+    @Operation(summary = "동네형이 받은 리뷰 상세보기를 조회하는 API", description = "리뷰 id(reviewId)를 받아 동네형이 받은 리뷰 상세 정보 전달, 로그인하지 않은 사용자도 조회 가능")
     public ResponseEntity<ApiResponse<ReviewResponseDTO.ReviewDetailDTO>> getReviewDetails(@PathVariable(value = "reviewId") Long reviewId) {
 
         try {
@@ -89,61 +99,112 @@ public class CoachController {
             return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(reviewDetailDTO));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
+            ApiResponse<ReviewResponseDTO.ReviewDetailDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
 
-    @GetMapping("")
-    @Operation(summary = "코치 마이페이지")
-    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachMyPageDTO>> getCoachMyPage (@RequestHeader(value = "token") String token){
-        String userEmail = loginService.decodeJwt(token);
-        Long userId = loginService.getIdByEmail(userEmail);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachMyPageDTO(coachService.getCoachById(userId), registerService.getMatchNumCoach(userId), reviewService.getReviewNumCoach(userId))));
-    }
-
-    @PatchMapping("")
-    @Operation(summary = "코치 정보 수정")
-    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachUpdateResponseDTO>> patchCoachUpdate(@RequestHeader(value = "token") String token, @RequestBody CoachRequestDTO.CoachUpdateRequestDTO
-            coachUpdateRequestDTO){
-        String userEmail = loginService.decodeJwt(token);
-        Long userId = loginService.getIdByEmail(userEmail);
-        Coach coach = coachService.updateCoach(userId, coachUpdateRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(CoachConverter.toCoachUpdateDTO(coach)));
-    }
-
-    @PatchMapping(value = "/{coachId}/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "동네형 회원가입 완료 후 첫 정보 입력 페이지")
-    public ApiResponse<String> coachSignUp(@RequestPart(value = "request") CoachRequestDTO.CoachProfileRegisterDTO request,
-                                           @RequestPart(value = "picture", required = false) MultipartFile picture,
-                                           @RequestPart(value = "album", required = false) List<MultipartFile> pictureList,
-                                           @PathVariable(value = "coachId") Long coachId){
-            coachService.insertCoachInfo(coachId, request);
-            if(picture != null) coachService.insertCoachPicture(coachId, picture);  // 동네형 프로필 사진이 주어졌을 때
-            if(pictureList != null) coachService.insertCoachAlbum(coachId,pictureList); // 동네형 사진첩 이미지 등록
-
-            return ApiResponse.onSuccess("동네형의 정보가 성공적으로 입력되었습니다.");
-
-
-    }
-
-    @GetMapping("/album")
-    @Operation(summary = "동네형의 사진첩을 조회하는 API")
-    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachAlbumDTO>> getCoachAlbum(@RequestHeader(value = "token") String token) {
-
-        String userEmail = loginService.decodeJwt(token);
-        Long userId = loginService.getIdByEmail(userEmail);
+    @GetMapping("/album/{coachId}")
+    @Operation(summary = "동네형의 사진첩을 조회하는 API", description = "동네형 id(coachId)를 받아 동네형의 사진첩 조회, 로그인하지 않은 사용자도 조회 가능")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachAlbumDTO>> getCoachAlbum(@PathVariable(value = "coachId") Long coachId) {
 
         try {
-            Coach coach = coachService.getCoachById(userId);
+            Coach coach = coachService.getCoachById(coachId);
 
             CoachResponseDTO.CoachAlbumDTO coachAlbumDTO = CoachConverter.toCoachAlbumDTO(coach);
 
             return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(coachAlbumDTO));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null));
+            ApiResponse<CoachResponseDTO.CoachAlbumDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
+
+    @GetMapping("/my-page")
+    @Operation(summary = "동네형 마이페이지 API")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachMyPageDTO>> getCoachMyPage(@RequestHeader(value = "token") String token){
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+        System.out.println(userId);
+
+        try {
+            Coach coach = coachService.getCoachById(userId);
+            Long matchNum = registerService.getMatchNumCoach(userId);
+            Long reviewNum = reviewService.getReviewNumCoach(userId);
+
+            CoachResponseDTO.CoachMyPageDTO coachMyPageDTO = CoachConverter.toCoachMyPageDTO(coach, matchNum, reviewNum);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(coachMyPageDTO));
+        } catch (Exception e){
+            ApiResponse<CoachResponseDTO.CoachMyPageDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+    @GetMapping("/my-info")
+    @Operation(summary = "동네형 내 정보 조회하기 API")
+    public ResponseEntity<ApiResponse<CoachResponseDTO.CoachMyInfoDTO>> getCoachMyInfo(@RequestHeader(value = "token") String token){
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            Coach coach = coachService.getCoachById(userId);
+            CoachResponseDTO.CoachMyInfoDTO coachMyInfoDTO = CoachConverter.toCoachMyInfoDTO(coach);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(coachMyInfoDTO));
+
+        } catch (Exception e){
+            ApiResponse<CoachResponseDTO.CoachMyInfoDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+    @PostMapping(value = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "동네형 회원가입 완료 후 첫 정보 입력 API")
+    public ResponseEntity<ApiResponse<String>> coachSignUp(@RequestPart(value = "request") CoachRequestDTO.CoachProfileRegisterDTO request,
+                                                           @RequestPart(value = "picture", required = false) MultipartFile picture,
+                                                           @RequestPart(value = "album", required = false) List<MultipartFile> pictureList,
+                                                           @RequestHeader(value = "token") String token){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            coachService.insertCoachInfo(userId, request);
+            if(picture != null) coachService.insertCoachPicture(userId, picture);  // 동네형 프로필 사진이 주어졌을 때
+            if(pictureList != null) coachService.insertCoachAlbum(userId,pictureList); // 동네형 사진첩 이미지 등록
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess("동네형의 정보가 성공적으로 입력되었습니다."));
+        } catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "동네형 내 정보 수정하기 API")
+    public ResponseEntity<ApiResponse<String>> coachUpdate(@RequestPart(value = "request") CoachRequestDTO.CoachProfileRegisterDTO request,
+                                                                                                 @RequestPart(value = "picture", required = false) MultipartFile picture,
+                                                                                                 @RequestPart(value = "album", required = false) List<MultipartFile> pictureList,
+                                                                                                 @RequestHeader(value = "token") String token){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            coachService.deleteCoachPictures(userId);   // 동네형 사진, 사진첩 지우기
+            coachService.insertCoachInfo(userId, request);
+            if(picture != null) coachService.insertCoachPicture(userId, picture);
+            if(pictureList != null) coachService.insertCoachAlbum(userId,pictureList); // 동네형 사진첩 이미지 등록
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess("동네형의 정보가 성공적으로 수정되었습니다."));
+        } catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
 
 
 }

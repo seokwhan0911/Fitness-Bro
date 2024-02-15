@@ -8,6 +8,7 @@ import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.service.ReviewService.ReviewService;
+import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.review.ReviewRequestDTO;
@@ -40,10 +41,11 @@ public class MemberController {
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
     public ResponseEntity<ApiResponse<List<CoachResponseDTO.favoriteCoachDTO>>> getFavoriteCoachList(@RequestHeader(value = "token") String token){
+
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
-        try{
 
+        try{
             // 찜한 동네형 목록 조회
             List<Coach> coachList = memberQueryService.getFavoriteCoachList(userId);
 
@@ -67,21 +69,21 @@ public class MemberController {
     @Operation(summary = "사용자가 찜한 형 등록하기 API", description = "사용자가 찜하려는 동네형의 아이디를 입력해주세요.")
     public ResponseEntity<ApiResponse<String>> createFavoriteCoach(@RequestHeader(value = "token") String token,
                                                                    @PathVariable(value = "coachId") Long coachId) {
-
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
+        try{
             memberCommandService.createFavoriteCoach(userId, coachId);
-
             ApiResponse<String> apiResponse = ApiResponse.onSuccess("동네형 찜 등록을 성공했습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
-
+        }catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
 
-
-
     @GetMapping("/reviews")
-    @Operation(summary = "사용자가 작성한 후기 리스트 조회 API")
+    @Operation(summary = "사용자가 작성한 후기 리스트 조회하기 API")
     public ResponseEntity<ApiResponse<List<ReviewResponseDTO.ReviewByUserDTO>>> getReviewsByUser(@RequestHeader(value = "token") String token){
 
         String userEmail = loginService.decodeJwt(token);
@@ -98,9 +100,13 @@ public class MemberController {
     @PostMapping(value = "/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "사용자가 동네형에게 리뷰를 작성하는 API")
     public ResponseEntity<ApiResponse<String>> createReviews(@RequestPart(value = "request") ReviewRequestDTO.CreateReviewDTO request,
-            @RequestPart(value ="files", required = false) List<MultipartFile> files, @RequestHeader(value = "token") String token ){
+                                                             @RequestPart(value ="files", required = false) List<MultipartFile> files,
+                                                             @RequestHeader(value = "token") String token){
+
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
+
+        try{
             if(files != null) { // 리뷰에 이미지가 포함되어 있는 경우
                 reviewService.createReviewWithFiles(request, files, userId);
             } else {    // 리뷰에 미지가 포함되어 있지 않은 경우
@@ -108,20 +114,55 @@ public class MemberController {
             }
             ApiResponse<String> apiResponse = ApiResponse.onSuccess("성공적으로 리뷰 작성을 했습니다.");
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
-
+        }catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
 
-    @PatchMapping(value = "/{memberId}/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "유저 회원가입 완료 후 첫 정보 입력 페이지")
-    public ApiResponse<String> coachSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
-                                           @RequestPart(value = "picture", required = false) MultipartFile file,
-                                           @PathVariable(value = "memberId") Long memberId){
-            if(file != null){   // 사용자가 본인의 이미지를 업로드 하는 경우
-                memberCommandService.insertInfoWithImage(memberId, request, file);
-            } else {    // 사용자가 본인의 이미지를 업로드 하지 않는 경우
-                memberCommandService.insertMemberInfo(memberId, request);
-            }
-            return ApiResponse.onSuccess("회원의 정보가 성공적으로 입력되었습니다.");
+    @PostMapping(value = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "사용자 회원가입 완료 후 첫 정보 입력 API")
+    public ResponseEntity<ApiResponse<String>> memberSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
+                                                           @RequestPart(value = "picture", required = false) MultipartFile file,
+                                                           @RequestHeader(value = "token") String token){
 
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try{
+            if(file != null){   // 사용자가 본인의 이미지를 업로드 하는 경우
+                memberCommandService.insertInfoWithImage(userId, request, file);
+            } else {    // 사용자가 본인의 이미지를 업로드 하지 않는 경우
+                memberCommandService.insertMemberInfo(userId, request);
+            }
+            ApiResponse<String> apiResponse = ApiResponse.onSuccess("회원의 정보가 성공적으로 입력되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+        } catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "사용자 내 정보 수정하기 API")
+    public ResponseEntity<ApiResponse<String>> memberUpdate(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
+                                                           @RequestPart(value = "picture", required = false) MultipartFile file,
+                                                           @RequestHeader(value = "token") String token){
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            memberCommandService.deleteMemberPicture(userId);
+            if(file != null){   // 사용자가 본인의 이미지를 업로드 하는 경우
+                memberCommandService.insertInfoWithImage(userId, request, file);
+            } else {    // 사용자가 본인의 이미지를 업로드 하지 않는 경우
+                memberCommandService.insertMemberInfo(userId, request);
+            }
+            ApiResponse<String> apiResponse = ApiResponse.onSuccess("회원의 정보가 성공적으로 수정되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+        } catch (Exception e){
+            ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
 }

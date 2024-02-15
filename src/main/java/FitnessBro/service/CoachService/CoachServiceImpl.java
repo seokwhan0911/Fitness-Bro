@@ -12,6 +12,7 @@ import FitnessBro.domain.Coach;
 import FitnessBro.domain.common.Uuid;
 import FitnessBro.respository.*;
 
+import FitnessBro.service.GymService.GymService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
@@ -39,6 +40,7 @@ public class CoachServiceImpl implements CoachService{
     private final CoachImageRepository coachImageRepository;
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
+    private final GymService gymService;
 
     @Override
     @Transactional
@@ -51,15 +53,15 @@ public class CoachServiceImpl implements CoachService{
         return coach;
     }
 
-
-
     @Override
     @Transactional
     public List<Coach> getCoachList(){
 
         List<Coach> coaches = coachRepository.findAll();
+
         return coaches;
     }
+
 
     @Override
     @Transactional
@@ -80,10 +82,21 @@ public class CoachServiceImpl implements CoachService{
 
         Coach coach = coachRepository.findById(coachId).orElse(null);
         coach.setNickname(request.getNickname());
+        coach.setAge(request.getAge());
         coach.setIntroduction(request.getIntroduction());   // 선생님 소개
         coach.setSchedule(request.getSchedule());   // 주 운동 시간
         coach.setComment(request.getComment());// 한 줄 인사말
         coach.setPrice(request.getPrice());
+
+        String address = request.getAddress();
+        Gym gym = gymService.getGymByAddress(address);
+
+        coach.setAddress(gym.getAddress());
+        coach.setRegion(gym.getRegion());
+        coach.setSubAddress(gym.getSub_address());
+        coach.setDetailAddress(gym.getDetail_address());
+        coach.setGym(gym);
+
     }
 
     @Override
@@ -105,13 +118,44 @@ public class CoachServiceImpl implements CoachService{
 
         Coach coach = coachRepository.findById(coachId).orElse(null);
 
-        // picture마다 유일한 URL 값 생성
-        for(MultipartFile picture : pictureList){
+        for(MultipartFile picture : pictureList){   // picture마다 유일한 URL 값 생성
             String uuid = UUID.randomUUID().toString();
             Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
 
-            String pictureUrl = s3Manager.uploadFile(s3Manager.generateReviewKeyName(savedUuid), picture);
+            String pictureUrl = s3Manager.uploadFile(s3Manager.generateAlbumKeyName(savedUuid), picture);
             coachImageRepository.save(CoachConverter.toCoachAlbum(pictureUrl, coach));
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteCoachPictures(Long userId) {
+
+        Coach coach = coachRepository.findById(userId).orElse(null);
+        Boolean isExist = coachImageRepository.existsByCoachId(userId);
+
+        if(coach.getPictureURL() != null){      // 이미 프로필 이미지가 존재하는 경우 AmazonS3에서 지우는 코드
+            String coachPictureURL = coach.getPictureURL();
+            String savedUuid = coachPictureURL.substring(coachPictureURL.lastIndexOf("/profile/") + "/profile/".length());
+            Uuid uuid = uuidRepository.findByUuid(savedUuid);
+
+            s3Manager.deleteFile(s3Manager.generateProfileKeyName(uuid));
+            uuidRepository.deleteByUuid(savedUuid);
+            coach.setPictureURL(null);
+        }
+
+        if(isExist){    // 이미 앨범에 사진이 존재할 경우 모두 지우기
+            List<CoachImage> coachImageList = coachImageRepository.findByCoachId(userId);
+            for(CoachImage coachImage : coachImageList){
+                String pictureUrl = coachImage.getUrl();
+                String savedUuid = pictureUrl.substring(pictureUrl.lastIndexOf("/album/") + "/album/".length());
+                Uuid uuid = uuidRepository.findByUuid(savedUuid);
+
+                s3Manager.deleteFile(s3Manager.generateAlbumKeyName(uuid));
+                uuidRepository.deleteByUuid(savedUuid);
+                coachImageRepository.deleteById(coachImage.getId());
+            }
         }
 
     }
@@ -126,8 +170,6 @@ public class CoachServiceImpl implements CoachService{
         coachRepository.save(coach);
         return coach;
     }
-
-
 
 
 }

@@ -17,9 +17,12 @@ public class CoachRequestDTO {
     public static class CoachProfileRegisterDTO{
 
         String nickname;    //닉네임
+        Integer age;
         String introduction;    //선생님 소개
         String schedule;    // 주 운동 시간
         String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%
+        String address;
+        String detailAddress;
         int price;          // 시급 가격
         
     }

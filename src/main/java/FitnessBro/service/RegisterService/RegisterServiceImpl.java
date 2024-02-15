@@ -1,5 +1,7 @@
 package FitnessBro.service.RegisterService;
 
+import FitnessBro.apiPayload.code.status.ErrorStatus;
+import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Register;
 import FitnessBro.domain.Member;
@@ -55,6 +57,9 @@ public class RegisterServiceImpl implements RegisterService{
                 // 유저와 코치가 모두 '성사' 상태일 때만 리스트에 추가
                 trueRegisterList.add(register);
             }
+        }
+        if(trueRegisterList.isEmpty()){
+            throw new TempHandler(ErrorStatus.REGISTER_NOT_FOUND);
         }
         return trueRegisterList;
     }

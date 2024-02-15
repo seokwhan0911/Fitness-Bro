@@ -79,7 +79,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Transactional
     public List<ChatRoom> findAllChatRoomListByCoachId(Long coachId){
 
-        if(chatRoomRepository.findAllByMemberId(coachId).isEmpty()){
+        if(chatRoomRepository.findAllByCoachId(coachId).isEmpty()){
             throw new TempHandler(ErrorStatus.CHATTING_LIST_NOT_FOUND);
         }
         return chatRoomRepository.findAllByCoachId(coachId);

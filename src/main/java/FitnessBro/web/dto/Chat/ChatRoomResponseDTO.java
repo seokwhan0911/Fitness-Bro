@@ -30,11 +30,17 @@ public class ChatRoomResponseDTO {
     @Builder
     @Getter
     public static class ChatRoomSimpleDTO{
-        private List<String> chatMessageList;
         private Long chatRoomId;
+        List<ChatMessageDTO> chatMessageDTOList;
         private String lastChatMessage;
-        private LocalDateTime updatedAt;
-        private String partnerName;
         private String pictureUrl;
+    }
+
+    @Builder
+    @Getter
+    public static class ChatMessageDTO{
+        private String sender;
+        private String message;
+        private LocalDateTime createdAt;
     }
 }

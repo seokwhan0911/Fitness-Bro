@@ -55,14 +55,4 @@ public class ChatRoomController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-
-
-
-    // 채팅방 입장 화면
-//    @GetMapping("/room/enter/{roomId}")
-//    public String roomDetail(Model model, @PathVariable String roomId) {
-//        model.addAttribute("roomId", roomId);
-//        return "/chat/roomdetail";
-//    }
-
 }

@@ -22,6 +22,8 @@ public class CoachRequestDTO {
         String schedule;    // 주 운동 시간
         String comment;     // 한줄 인사말 ex) 운동 3년차, 체지방률 14%
         String address;
+        String region;
+        String subAddress;
         String detailAddress;
         int price;          // 시급 가격
         

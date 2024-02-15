@@ -48,9 +48,6 @@ public class LoginController {
     @GetMapping("/oauth2/code/kakao")
     public ResponseEntity<LoginDTO> KakaoLogin(@RequestParam("code") String code) {
 
-        // member entity member_id가 String이 아니라서 개판으로 짜임
-
-
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 
         String token = stringResponseEntity.getBody();

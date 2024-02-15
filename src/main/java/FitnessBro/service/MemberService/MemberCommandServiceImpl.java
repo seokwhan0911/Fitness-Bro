@@ -74,9 +74,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public String joinSocialMember(String email, String id) {
         String token = JwtTokenUtil.createToken(email,key,expireTimeMs);
 
-        if (memberRepository.existsByEmail(email)){
+        if (memberRepository.existsByEmail(email) || coachRepository.existsByEmail(email)){
             return token;
         }
+
 
         Member member = Member.builder()
                 .email(email)

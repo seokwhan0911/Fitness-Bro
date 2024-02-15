@@ -57,7 +57,7 @@ public class ChatConverter {
         return ChatRoomResponseDTO.ChatMessageDTO.builder()
                 .message(chatMessage.getMessage())
                 .sender(chatMessage.getSender())
-                .createdAt(LocalDateTime.now())
+                .createdAt(chatMessage.getCreatedAt())
                 .build();
     }
 

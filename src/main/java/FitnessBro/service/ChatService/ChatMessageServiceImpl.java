@@ -58,6 +58,9 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     @Transactional
     public List<ChatRoomResponseDTO.ChatRoomSimpleDTO> sortChatMessageDTO(List<ChatRoomResponseDTO.ChatRoomSimpleDTO> chatRoomSimpleDTOList){
         // Comparator를 사용하여 createdAt 속성을 기준으로 정렬
+
+
+
         for(ChatRoomResponseDTO.ChatRoomSimpleDTO chatRoomSimpleDTO : chatRoomSimpleDTOList){
 
             Comparator<ChatRoomResponseDTO.ChatMessageDTO> comparator = Comparator.comparing(ChatRoomResponseDTO.ChatMessageDTO::getCreatedAt);

@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,6 +26,7 @@ public class MessageController {
 
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
+    private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id, 최근15개 메세지 리턴
     // /pub/connect 엔드포인트로 채팅하기 누를시.
@@ -48,10 +50,8 @@ public class MessageController {
         return chatRoomInfoDto;
     }
 
-    @MessageMapping("/send")
-    @SendTo("queue/chat/6")//전체경로는 "/sub/queue/chat/{roomId}이다.
-    public ChatMessageResponseDTO message(@RequestBody ChatMessageRequestDTO request) {
-
+    @MessageMapping("/send") //전체경로는 "/sub/queue/chat/{roomId}이다.
+    public void message(@RequestBody ChatMessageRequestDTO request) {
 
         ChatRoom chatRoom = chatRoomService.findById(request.getRoomId());
         chatRoom.setUpdatedAt(LocalDateTime.now());
@@ -62,7 +62,8 @@ public class MessageController {
 
         ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
 
-        return chatMessageResponseDTO;
+        simpMessageSendingOperations.convertAndSend("sub/queue/chat" + request.getRoomId(),chatMessageResponseDTO); //전체경로는 "/sub/queue/chat/{roomId}이다.
+
     }
 
 

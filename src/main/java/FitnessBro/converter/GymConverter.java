@@ -14,9 +14,9 @@ public class GymConverter {
                         .id(gym.getId())
                         .name(gym.getName())
                         .region(gym.getRegion())
-                        .subAddress(gym.getSub_address())
-                        .detailAddress(gym.getDetail_address())
-                        .postal_code(gym.getPostal_code())
+                        .subAddress(gym.getSubAddress())
+                        .detailAddress(gym.getDetailAddress())
+                        .postal_code(gym.getPostalCode())
                         .build()).collect(Collectors.toList());
     }
 

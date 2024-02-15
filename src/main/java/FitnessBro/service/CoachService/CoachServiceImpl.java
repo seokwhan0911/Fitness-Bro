@@ -93,8 +93,8 @@ public class CoachServiceImpl implements CoachService{
 
         coach.setAddress(gym.getAddress());
         coach.setRegion(gym.getRegion());
-        coach.setSubAddress(gym.getSub_address());
-        coach.setDetailAddress(gym.getDetail_address());
+        coach.setSubAddress(gym.getSubAddress());
+        coach.setDetailAddress(gym.getDetailAddress());
         coach.setGym(gym);
 
     }

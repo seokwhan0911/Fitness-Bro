@@ -46,7 +46,7 @@ public class ChatRoomController {
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByMemberId(userId);
+        List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByCoachId(userId);
         chatRoomService.setLastChatMessage(chatRoomsList);
         List<ChatRoomResponseDTO.ChatRoomSimpleDTO> chatRoomSimpleDTOList = ChatConverter.toCoachChatRoomSimpleListDTO(chatRoomsList);
         chatMessageService.sortChatMessageDTO(chatRoomSimpleDTOList);
@@ -64,10 +64,5 @@ public class ChatRoomController {
 //        model.addAttribute("roomId", roomId);
 //        return "/chat/roomdetail";
 //    }
-//    특정 채팅방 조회
-//    @GetMapping("/room/{roomId}")
-//    @ResponseBody
-//    public ChatRoom roomInfo(@PathVariable String roomId) {
-//        return chatRoomService.findById(roomId);
-//    }
+
 }

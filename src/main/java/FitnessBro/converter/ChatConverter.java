@@ -108,11 +108,15 @@ public class ChatConverter {
     }
 
     public static ChatMessageResponseDTO toChatMessageResponseDTO(ChatMessage chatMessage){
+        ZoneId seoulZoneId = ZoneId.of("Asia/Seoul");
+
+        // 현재 시간 가져오기
+        LocalDateTime now = LocalDateTime.now(seoulZoneId);
         return ChatMessageResponseDTO.builder()
                 .id(chatMessage.getId())
                 .message(chatMessage.getMessage())
                 .sender(chatMessage.getSender())
-                .createdAt(LocalDateTime.now())
+                .createdAt(now)
                 .build();
     }
 }

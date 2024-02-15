@@ -26,7 +26,7 @@ public class MessageController {
     private final ChatMessageService chatMessageService;
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
-    // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id, 최근15개 메세지 리턴
+    // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id
     // /pub/connect 엔드포인트로 채팅하기 누를시.
     @MessageMapping("/connect")
     public void createRoom(@RequestBody @Valid ChatRoomRequestDTO request) {

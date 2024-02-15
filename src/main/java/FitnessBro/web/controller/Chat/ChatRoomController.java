@@ -22,13 +22,7 @@ public class ChatRoomController {
     private final ChatMessageService chatMessageService;
     private final LoginService loginService;
 
-//     채팅 리스트 화면
-//@GetMapping("/room")
-//    public String rooms(Model model) {
-//        return "/chat/room";
-//    }
-//
-//    모든 채팅방 목록 반환
+
     @GetMapping("/members/chatrooms")
     @Operation(summary = "멤버의 채팅방 목록 보여주기", description = "멤버의 채팅리스트 보여주기 api")
     public ResponseEntity<ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>>> memberChatRoomList(@RequestHeader(value = "token") String token) {
@@ -41,7 +35,7 @@ public class ChatRoomController {
         List<ChatRoomResponseDTO.ChatRoomSimpleDTO> chatRoomSimpleDTOList = ChatConverter.toMemberChatRoomSimpleListDTO(chatRoomsList);
         chatMessageService.sortChatMessageDTO(chatRoomSimpleDTOList);
 
-        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toMemberChatRoomSimpleListDTO(chatRoomsList));
+        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(chatRoomSimpleDTOList);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
@@ -52,10 +46,12 @@ public class ChatRoomController {
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByCoachId(userId);
+        List<ChatRoom> chatRoomsList = chatRoomService.findAllChatRoomListByMemberId(userId);
         chatRoomService.setLastChatMessage(chatRoomsList);
-        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(ChatConverter.toCoachChatRoomSimpleListDTO(chatRoomsList));
-//
+        List<ChatRoomResponseDTO.ChatRoomSimpleDTO> chatRoomSimpleDTOList = ChatConverter.toCoachChatRoomSimpleListDTO(chatRoomsList);
+        chatMessageService.sortChatMessageDTO(chatRoomSimpleDTOList);
+
+        ApiResponse<List<ChatRoomResponseDTO.ChatRoomSimpleDTO>> apiResponse = ApiResponse.onSuccess(chatRoomSimpleDTOList);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 

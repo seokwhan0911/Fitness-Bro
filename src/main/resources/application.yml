@@ -28,6 +28,7 @@ spring:
           google:
             client-id: ${GOOGLE_SOCIAL_CLIENT_ID}
             client-secret: ${GOOGLE_SOCIAL_CLIENT_SECRET}
+            redirect-uri: https://dev.fitness-bro.pro/login/oauth2/code/google
             scope:
               - profile
               - email

@@ -1,7 +1,7 @@
 package FitnessBro.service.ChatService;
 
 import FitnessBro.domain.Chat.ChatMessage;
-import FitnessBro.domain.Chat.ChatRoom;
+import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface ChatMessageService {
 
     void ChatMessageSave(ChatMessage chatMessage);
 
-
+    List<ChatRoomResponseDTO.ChatRoomSimpleDTO> sortChatMessageDTO(List<ChatRoomResponseDTO.ChatRoomSimpleDTO> chatRoomSimpleDTOList);
 }

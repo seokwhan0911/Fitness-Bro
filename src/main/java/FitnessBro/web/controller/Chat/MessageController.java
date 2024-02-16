@@ -11,6 +11,7 @@ import FitnessBro.web.dto.Chat.ChatRoomRequestDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MessageController {
 
     private final ChatRoomService chatRoomService;
@@ -58,7 +60,8 @@ public class MessageController {
         ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
 
         //simpMessageSendingOperations.convertAndSend("/sub/queue/chat/" + request.getRoomId(),chatMessageResponseDTO); //전체경로는 "/sub/queue/chat/{roomId}이다.
-        simpMessagingTemplate.convertAndSend("/sub/queue/chat/" + request.getRoomId(),chatMessageResponseDTO);
+        simpMessagingTemplate.convertAndSend("/sub/queue/chat/" + 7,chatMessageResponseDTO);
+        log.info("메시지를 전송했습니다: {}", chatMessageResponseDTO);
     }
 
 

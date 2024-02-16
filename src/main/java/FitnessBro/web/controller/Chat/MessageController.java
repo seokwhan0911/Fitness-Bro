@@ -40,7 +40,7 @@ public class MessageController {
 
         ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom);
 
-        simpMessageSendingOperations.convertAndSend("sub/queue/" + request.getMemberId() + request.getCoachId(),chatRoomInfoDto);
+        simpMessageSendingOperations.convertAndSend("/sub/queue/" + request.getMemberId() + request.getCoachId(),chatRoomInfoDto);
 
     }
 
@@ -56,7 +56,7 @@ public class MessageController {
 
         ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
 
-        simpMessageSendingOperations.convertAndSend("sub/queue/chat" + request.getRoomId(),chatMessageResponseDTO); //전체경로는 "/sub/queue/chat/{roomId}이다.
+        simpMessageSendingOperations.convertAndSend("/sub/queue/chat" + request.getRoomId(),chatMessageResponseDTO); //전체경로는 "/sub/queue/chat/{roomId}이다.
 
     }
 

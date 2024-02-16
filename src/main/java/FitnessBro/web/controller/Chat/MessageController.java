@@ -12,7 +12,6 @@ import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +24,7 @@ public class MessageController {
 
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
-    private final SimpMessageSendingOperations simpMessageSendingOperations;
+   // private final SimpMessageSendingOperations simpMessageSendingOperations;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     // 채팅방 생성 : memberId와 coachId로 채팅방 생성 후 채팅방 id
@@ -42,7 +41,7 @@ public class MessageController {
 
         ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom);
 
-        simpMessageSendingOperations.convertAndSend("/sub/queue/" + request.getMemberId() + "/" + request.getCoachId(),chatRoomInfoDto);
+       // simpMessageSendingOperations.convertAndSend("/sub/queue/" + request.getMemberId() + "/" + request.getCoachId(),chatRoomInfoDto);
 
     }
 

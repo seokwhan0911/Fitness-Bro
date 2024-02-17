@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatRoomRequestDTO {
 
-    private Long memberId;
-
     private Long coachId;
 
 }

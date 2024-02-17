@@ -27,6 +27,7 @@ public class ChatRoomResponseDTO {
             private String senderName;
             private String partnerName;
             private String lastChatMessage;
+            private String pictureUrl;
     }
 
     @Builder
@@ -37,6 +38,7 @@ public class ChatRoomResponseDTO {
         private String partnerName;
         List<ChatMessageDTO> chatMessageDTOList;
         private String lastChatMessage;
+        private LocalDateTime lastChatTime;
         private String pictureUrl;
     }
 

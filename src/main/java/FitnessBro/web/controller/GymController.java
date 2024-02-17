@@ -1,14 +1,10 @@
 package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
-import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.GymConverter;
-import FitnessBro.domain.Coach;
 import FitnessBro.domain.Gym;
 import FitnessBro.service.GymService.GymService;
-import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Gym.GymResponseDTO;
-import FitnessBro.web.dto.review.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,7 +36,6 @@ public class GymController {
             ApiResponse<List<GymResponseDTO.GymListDTO>> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
-
 
     }
 

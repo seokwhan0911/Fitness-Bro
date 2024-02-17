@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,7 +31,11 @@ public class MessageController {
     public ChatMessageRequestDTO message(@RequestBody ChatMessageRequestDTO request) {
 
         ChatRoom chatRoom = chatRoomService.findById(request.getChatRoomId());
-        chatRoom.setUpdatedAt(LocalDateTime.now());
+
+        ZoneId seoulZoneId = ZoneId.of("Asia/Seoul");
+        // 현재 시간 가져오기
+        LocalDateTime now = LocalDateTime.now(seoulZoneId);
+        chatRoom.setUpdatedAt(now);
 
         ChatMessage chatMessage = ChatConverter.toChatMessage(request, chatRoom);
 

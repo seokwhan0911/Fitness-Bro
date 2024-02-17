@@ -58,13 +58,17 @@ public class ChatRoomController {
     }
 
     @PostMapping("/chat/connect")
-    public ResponseEntity<ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO>> createRoom(@RequestBody @Valid ChatRoomRequestDTO request) {
+    @Operation(summary = "멤버가 채팅리스트에 추가하기 눌렀을때", description = " 멤버가 채팅리스트에 추가하기 눌렀을때 채팅방 생성api")
+    public ResponseEntity<ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO>> createRoom(@RequestHeader(value = "token") String token,@RequestBody @Valid ChatRoomRequestDTO request) {
+
+        String userEmail = loginService.decodeJwt(token);
+        Long memberId = loginService.getIdByEmail(userEmail);
 
         ChatRoom newChatRoom = new ChatRoom();
-        ChatRoom chatRoom = chatRoomService.findChatRoomByMemberIdAndCoachId(request.getMemberId(),request.getCoachId());
+        ChatRoom chatRoom = chatRoomService.findChatRoomByMemberIdAndCoachId(memberId,request.getCoachId());
 
         if(chatRoom == null){
-            chatRoom = chatRoomService.createRoom(newChatRoom.getId(), request.getMemberId(), request.getCoachId());
+            chatRoom = chatRoomService.createRoom(newChatRoom.getId(), memberId, request.getCoachId());
         }
 
         ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom);

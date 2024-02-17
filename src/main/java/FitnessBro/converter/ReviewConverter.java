@@ -41,6 +41,7 @@ public class ReviewConverter {
     public static ReviewResponseDTO.ReviewByUserDTO toReviewByUserDTO(Review review){
 
         return ReviewResponseDTO.ReviewByUserDTO.builder()
+                .coachImage(review.getCoach().getPictureURL())
                 .review_id(review.getId())
                 .nickname(review.getCoach().getNickname())
                 .createdAt(review.getCreatedAt())

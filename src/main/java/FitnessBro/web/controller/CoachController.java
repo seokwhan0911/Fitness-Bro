@@ -127,7 +127,6 @@ public class CoachController {
 
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
-        System.out.println(userId);
 
         try {
             Coach coach = coachService.getCoachById(userId);

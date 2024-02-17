@@ -26,11 +26,10 @@ public class ReviewResponseDTO {
     @Builder
     public static class ReviewByUserDTO{    // 회원이 작성한 후기 리스트를 보여주기 위한 DTO
 
-        private Long review_id;
-        private String nickname;    // 동네형 닉네임
-        private LocalDateTime createdAt;     // 후기를 작성한 시간
-
-        // s3 회원 이미지 추가 해야함
+        Long review_id;
+        String nickname;    // 동네형 닉네임
+        String coachImage;
+        LocalDateTime createdAt;     // 후기를 작성한 시간
 
     }
 

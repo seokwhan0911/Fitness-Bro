@@ -2,15 +2,18 @@ package FitnessBro.web.controller;
 
 import FitnessBro.apiPayload.ApiResponse;
 import FitnessBro.converter.CoachConverter;
+import FitnessBro.converter.MemberConverter;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
 import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.MemberService.MemberQueryService;
+import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
 import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
+import FitnessBro.web.dto.Member.MemberResponseDTO;
 import FitnessBro.web.dto.review.ReviewRequestDTO;
 import FitnessBro.web.dto.review.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +39,7 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
     private final LoginService loginService;
-
+    private final RegisterService registerService;
 
     @GetMapping("/favorites")
     @Operation(summary = "사용자가 찜한 동네형 목록 조회 API")
@@ -162,6 +165,47 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
         } catch (Exception e){
             ApiResponse<String> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+    @GetMapping("/my-page")
+    @Operation(summary = "회원 마이페이지 API")
+    public ResponseEntity<ApiResponse<MemberResponseDTO.MemberMyPageDTO>> getMemberMyPage(@RequestHeader(value = "token") String token){
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            Member coach = memberCommandService.getMemberById(userId);
+            Long matchNum = registerService.getMatchNumMember(userId);
+            Long reviewNum = reviewService.getReviewNumMember(userId);
+
+            MemberResponseDTO.MemberMyPageDTO memberMyPageDTO = MemberConverter.toMemberMyPageDTO(coach, matchNum, reviewNum);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(memberMyPageDTO));
+        } catch (Exception e){
+            ApiResponse<MemberResponseDTO.MemberMyPageDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
+    }
+
+
+    @GetMapping("/my-info")
+    @Operation(summary = "회원 내 정보 조회하기 API")
+    public ResponseEntity<ApiResponse<MemberResponseDTO.MemberMyInfoDTO>> getMemberMyInfo(@RequestHeader(value = "token") String token){
+
+        String userEmail = loginService.decodeJwt(token);
+        Long userId = loginService.getIdByEmail(userEmail);
+
+        try {
+            Member member = memberCommandService.getMemberById(userId);
+            MemberResponseDTO.MemberMyInfoDTO memberMyInfoDTO = MemberConverter.toMemberMyInfoDTO(member);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(memberMyInfoDTO));
+
+        } catch (Exception e){
+            ApiResponse<MemberResponseDTO.MemberMyInfoDTO> apiResponse = ApiResponse.onFailure(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }

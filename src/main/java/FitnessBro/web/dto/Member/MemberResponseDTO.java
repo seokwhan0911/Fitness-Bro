@@ -9,22 +9,13 @@ import java.time.LocalDateTime;
 
 public class MemberResponseDTO {
 
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class JoinResultDTO{
-        Long email;
-        LocalDateTime createdAt;
-    }
-
     @Getter
     @Builder
     public static class MemberMyPageDTO{
-        private String nickname;
-        private Long matchNum;
-        private Long reviewNum;
-        //private String image;
+        String nickname;
+        Long matchNum;
+        Long reviewNum;
+        String memberImage;
     }
     @Getter
     @Builder
@@ -34,5 +25,15 @@ public class MemberResponseDTO {
         private String nickname;
         private String email;
         private String password;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemberMyInfoDTO {
+        String nickname;    // 회원 닉네임
+        String address;     // 회원 거주 지역
+        String memberImage;
     }
 }

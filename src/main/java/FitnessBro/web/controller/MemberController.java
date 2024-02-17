@@ -10,23 +10,19 @@ import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.MemberService.MemberQueryService;
 import FitnessBro.service.RegisterService.RegisterService;
 import FitnessBro.service.ReviewService.ReviewService;
-import FitnessBro.web.dto.Coach.CoachRequestDTO;
 import FitnessBro.web.dto.Coach.CoachResponseDTO;
 import FitnessBro.web.dto.Member.MemberRequestDTO;
 import FitnessBro.web.dto.Member.MemberResponseDTO;
 import FitnessBro.web.dto.review.ReviewRequestDTO;
 import FitnessBro.web.dto.review.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -100,7 +96,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping(value = "/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/reviews", consumes = "multipart/form-data")
     @Operation(summary = "사용자가 동네형에게 리뷰를 작성하는 API")
     public ResponseEntity<ApiResponse<String>> createReviews(@RequestPart(value = "request") ReviewRequestDTO.CreateReviewDTO request,
                                                              @RequestPart(value ="files", required = false) List<MultipartFile> files,
@@ -123,7 +119,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping(value = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/sign-up", consumes = "multipart/form-data")
     @Operation(summary = "사용자 회원가입 완료 후 첫 정보 입력 API")
     public ResponseEntity<ApiResponse<String>> memberSignUp(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
                                                            @RequestPart(value = "picture", required = false) MultipartFile file,
@@ -146,7 +142,7 @@ public class MemberController {
         }
     }
 
-    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", consumes = "multipart/form-data")
     @Operation(summary = "사용자 내 정보 수정하기 API")
     public ResponseEntity<ApiResponse<String>> memberUpdate(@RequestPart(value = "request") MemberRequestDTO.MemberProfileRegisterDTO request,
                                                            @RequestPart(value = "picture", required = false) MultipartFile file,

@@ -16,7 +16,6 @@ import FitnessBro.web.dto.review.ReviewResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -161,7 +160,7 @@ public class CoachController {
         }
     }
 
-    @PostMapping(value = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/sign-up", consumes = "multipart/form-data")
     @Operation(summary = "동네형 회원가입 완료 후 첫 정보 입력 API")
     public ResponseEntity<ApiResponse<String>> coachSignUp(@RequestPart(value = "request") CoachRequestDTO.CoachProfileRegisterDTO request,
                                                            @RequestPart(value = "picture", required = false) MultipartFile picture,
@@ -182,7 +181,7 @@ public class CoachController {
         }
     }
 
-    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", consumes = "multipart/form-data")
     @Operation(summary = "동네형 내 정보 수정하기 API")
     public ResponseEntity<ApiResponse<String>> coachUpdate(@RequestPart(value = "request") CoachRequestDTO.CoachProfileRegisterDTO request,
                                                                                                  @RequestPart(value = "picture", required = false) MultipartFile picture,

@@ -48,9 +48,9 @@ public class MessageController {
     }
 
     @MessageMapping("/send")
-    public ChatMessageResponseDTO message(@RequestBody ChatMessageRequestDTO request) {
+    public ChatMessageRequestDTO message(@RequestBody ChatMessageRequestDTO request) {
 
-        ChatRoom chatRoom = chatRoomService.findById(request.getRoomId());
+        ChatRoom chatRoom = chatRoomService.findById(request.getChatRoomId());
         chatRoom.setUpdatedAt(LocalDateTime.now());
 
         ChatMessage chatMessage = ChatConverter.toChatMessage(request, chatRoom);
@@ -60,10 +60,10 @@ public class MessageController {
         ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
 
         //simpMessageSendingOperations.convertAndSend("/sub/queue/chat/" + request.getRoomId(),chatMessageResponseDTO); //전체경로는 "/sub/queue/chat/{roomId}이다.
-        simpMessagingTemplate.convertAndSendToUser(request.getRoomId().toString(),"/private",chatMessageResponseDTO); // "/user/7/private" 7은 String임
+        simpMessagingTemplate.convertAndSendToUser(request.getChatRoomId().toString(),"/private",request); // "/user/7/private" 7은 String임
         log.info("메시지를 전송했습니다: {}", chatMessageResponseDTO);
 
-        return chatMessageResponseDTO;
+        return request;
     }
 
 

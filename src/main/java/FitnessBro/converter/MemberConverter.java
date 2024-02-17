@@ -17,6 +17,7 @@ public class MemberConverter {
 
     public static MemberResponseDTO.MemberMyPageDTO toMemberMyPageDTO(Member member, Long matchNum, Long reviewNum) {
         return MemberResponseDTO.MemberMyPageDTO.builder()
+                .memberImage(member.getPictureURL())
                 .nickname(member.getNickname())
                 .matchNum(matchNum)
                 .reviewNum(reviewNum)
@@ -28,6 +29,14 @@ public class MemberConverter {
                 .nickname(member.getNickname())
                 .email(member.getEmail())
                 .password(member.getPassword())
+                .build();
+    }
+
+    public static MemberResponseDTO.MemberMyInfoDTO toMemberMyInfoDTO(Member member) {
+        return MemberResponseDTO.MemberMyInfoDTO.builder()
+                .memberImage(member.getPictureURL())
+                .address(member.getAddress())
+                .nickname(member.getNickname())
                 .build();
     }
 }

@@ -46,10 +46,10 @@ public class CoachResponseDTO {
     @Builder
     public static class CoachMyPageDTO{
 
-        private String nickname;
-        private Long matchNum;
-        private Long reviewNum;
-        //private String image;
+        String nickname;
+        Long matchNum;
+        Long reviewNum;
+        String coachImage;
     }
 
     @Getter
@@ -87,6 +87,7 @@ public class CoachResponseDTO {
         String nickname;
         String address;
         Float rating;
+        String coachImage;
     }
 
     @Builder

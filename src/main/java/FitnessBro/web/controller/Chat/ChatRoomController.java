@@ -7,8 +7,10 @@ import FitnessBro.domain.Chat.ChatRoom;
 import FitnessBro.service.ChatService.ChatMessageService;
 import FitnessBro.service.ChatService.ChatRoomService;
 import FitnessBro.service.LoginService.LoginService;
+import FitnessBro.web.dto.Chat.ChatRoomRequestDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,4 +57,18 @@ public class ChatRoomController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
+    @PostMapping("/chat/connect")
+    public ResponseEntity<ApiResponse<ChatRoomResponseDTO.ChatRoomInfoDTO>> createRoom(@RequestBody @Valid ChatRoomRequestDTO request) {
+
+        ChatRoom newChatRoom = new ChatRoom();
+        ChatRoom chatRoom = chatRoomService.findChatRoomByMemberIdAndCoachId(request.getMemberId(),request.getCoachId());
+
+        if(chatRoom == null){
+            chatRoom = chatRoomService.createRoom(newChatRoom.getId(), request.getMemberId(), request.getCoachId());
+        }
+
+        ChatRoomResponseDTO.ChatRoomInfoDTO chatRoomInfoDto = ChatConverter.toChatRoomInfoDTO(chatRoom);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(chatRoomInfoDto));
+    }
 }

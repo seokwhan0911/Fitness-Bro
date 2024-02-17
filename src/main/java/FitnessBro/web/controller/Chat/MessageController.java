@@ -6,7 +6,6 @@ import FitnessBro.domain.Chat.ChatRoom;
 import FitnessBro.service.ChatService.ChatMessageService;
 import FitnessBro.service.ChatService.ChatRoomService;
 import FitnessBro.web.dto.Chat.ChatMessageRequestDTO;
-import FitnessBro.web.dto.Chat.ChatMessageResponseDTO;
 import FitnessBro.web.dto.Chat.ChatRoomRequestDTO;
 import FitnessBro.web.dto.Chat.ChatRoomResponseDTO;
 import jakarta.validation.Valid;
@@ -57,11 +56,11 @@ public class MessageController {
 
         chatMessageService.ChatMessageSave(chatMessage);
 
-        ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
+       // ChatMessageResponseDTO chatMessageResponseDTO = ChatConverter.toChatMessageResponseDTO(chatMessage);
 
         //simpMessageSendingOperations.convertAndSend("/sub/queue/chat/" + request.getRoomId(),chatMessageResponseDTO); //전체경로는 "/sub/queue/chat/{roomId}이다.
         simpMessagingTemplate.convertAndSendToUser(request.getChatRoomId().toString(),"/private",request); // "/user/7/private" 7은 String임
-        log.info("메시지를 전송했습니다: {}", chatMessageResponseDTO);
+        log.info("메시지를 전송했습니다: {}", request);
 
         return request;
     }

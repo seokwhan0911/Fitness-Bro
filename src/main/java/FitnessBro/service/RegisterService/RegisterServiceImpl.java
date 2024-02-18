@@ -5,6 +5,7 @@ import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Register;
 import FitnessBro.domain.Member;
+import FitnessBro.domain.RegisterStatus;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
@@ -71,6 +72,7 @@ public class RegisterServiceImpl implements RegisterService{
                 .member(member)
                 .coach(coach)
                 .memberSuccess(true)
+                .registerStatus(RegisterStatus.WAITING)
                 .build();
 
         registerRepository.save(register);
@@ -80,12 +82,21 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     @Transactional
-    public Register registerCoachSetting(Member member, Coach coach){
+    public void registerApproveSetting(Member member, Coach coach){
         Register register = getRegisterByMemberCoach(member, coach);
         register.setCoachSuccess(true);
+        register.setRegisterStatus(RegisterStatus.APPROVED);
 
-        return register;
     }
+
+    @Override
+    @Transactional
+    public void registerRejectSetting(Member member, Coach coach){
+        Register register = getRegisterByMemberCoach(member, coach);
+        register.setMemberSuccess(false);
+        register.setRegisterStatus(RegisterStatus.UNSUCCESS);
+    }
+
 
     @Override
     @Transactional
@@ -97,5 +108,24 @@ public class RegisterServiceImpl implements RegisterService{
     @Transactional
     public Long getMatchNumMember(Long memberId){
         return (long)successRegisterList(getRegisterListByMember(memberRepository.getById(memberId))).size();
+    }
+
+    @Override
+    @Transactional
+    public List<Register> getRequestRegisterList(List<Register> registerList){
+
+        List<Register> requestRegisterList = new ArrayList<>();
+
+        for (Register register : registerList) {
+
+            if (register.getMemberSuccess() && !register.getCoachSuccess()) {
+                // 유저와 코치가 모두 '성사' 상태일 때만 리스트에 추가
+                requestRegisterList.add(register);
+            }
+        }
+        if(requestRegisterList.isEmpty()){
+            throw new TempHandler(ErrorStatus.REGISTER_NOT_FOUND);
+        }
+        return requestRegisterList;
     }
 }

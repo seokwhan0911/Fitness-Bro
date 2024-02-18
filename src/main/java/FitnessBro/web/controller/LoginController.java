@@ -84,8 +84,13 @@ public class LoginController {
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 
-    @GetMapping("/oauth2/code/google/token/{accessToken}")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@PathVariable(value = "accessToken") String accessToken) {
+    @GetMapping("/oauth2/code/google")
+    public ResponseEntity<ApiResponse<String>> GoogleCode(@RequestParam(value = "code") String code) {
+        return ResponseEntity.ok().body(ApiResponse.onSuccess("code : " + code));
+    }
+
+    @GetMapping("/oauth2/code/google/token")
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam(value = "accessToken") String accessToken) {
 
         HashMap<String,String> userInfo = googleService.getUserInfo(accessToken);
         String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));

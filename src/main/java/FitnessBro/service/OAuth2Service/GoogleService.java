@@ -59,7 +59,7 @@ public class GoogleService {
 
     public ResponseEntity<String> requestAccessToken(String code) {
         RestTemplate restTemplate=new RestTemplate();
-
+        
         //MultiValueMap으로 매개변수 설정.
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.set("code", code);

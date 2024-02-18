@@ -11,13 +11,16 @@ import FitnessBro.web.dto.Login.LoginRequestDTO;
 import FitnessBro.web.dto.Login.Role;
 import FitnessBro.web.dto.LoginDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
@@ -46,12 +49,11 @@ public class LoginController {
     }
 
 
-
     @GetMapping("/oauth2/code/kakao")
     public ResponseEntity<ApiResponse<LoginDTO>> KakaoLogin(@RequestParam("code") String code) {
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
-
+//
         String token = stringResponseEntity.getBody();
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(token);
 
@@ -63,7 +65,6 @@ public class LoginController {
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
-
     @GetMapping("/oauth2/code/naver")
     public ResponseEntity<ApiResponse<LoginDTO>> NaverLogin(@RequestParam("code") String code, @RequestParam("state") String state) {
 
@@ -84,8 +85,7 @@ public class LoginController {
     }
 
     @GetMapping("/oauth2/code/google")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code) {
-        //requestAccessToken이랑 getNaverAccessToken같은 역할
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam("code") String code) {
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
         String accessTokenResponseBody = accessTokenResponse.getBody();
 
@@ -98,4 +98,21 @@ public class LoginController {
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
+//    @PostMapping("/oauth2/code/google")
+//    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestBody Map<String, String> body) {
+//        String code = body.get("code");
+//        //requestAccessToken이랑 getNaverAccessToken같은 역할
+//        ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
+//        String accessTokenResponseBody = accessTokenResponse.getBody();
+//
+//        HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
+//        String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
+//
+//        String userEmail = loginService.decodeJwt(userToken);
+//        Long userId = loginService.getIdByEmail(userEmail);
+//        Role role = loginService.getRoleByEmail(userEmail);
+//
+//        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
+//    }
+
 }

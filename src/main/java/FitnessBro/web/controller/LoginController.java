@@ -8,6 +8,7 @@ import FitnessBro.service.OAuth2Service.GoogleService;
 import FitnessBro.service.OAuth2Service.KakaoService;
 import FitnessBro.service.OAuth2Service.NaverService;
 import FitnessBro.web.dto.Login.LoginRequestDTO;
+import FitnessBro.web.dto.Login.Role;
 import FitnessBro.web.dto.LoginDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -58,8 +59,9 @@ public class LoginController {
 
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
+        Role role = loginService.getRoleByEmail(userEmail);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId)));
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 
     @GetMapping("/oauth2/code/naver")
@@ -76,8 +78,9 @@ public class LoginController {
 
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
+        Role role = loginService.getRoleByEmail(userEmail);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId)));
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 
     @GetMapping("/oauth2/code/google")
@@ -91,7 +94,8 @@ public class LoginController {
 
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
+        Role role = loginService.getRoleByEmail(userEmail);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId)));
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 }

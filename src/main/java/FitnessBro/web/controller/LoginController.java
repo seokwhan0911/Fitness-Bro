@@ -84,7 +84,7 @@ public class LoginController {
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 
-    @GetMapping("/oauth2/code/google")
+    @GetMapping("/oauth2/code/google/token")
     public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam("accessToken") String accessToken) {
 
         HashMap<String,String> userInfo = googleService.getUserInfo(accessToken);

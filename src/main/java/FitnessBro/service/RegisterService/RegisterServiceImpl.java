@@ -116,7 +116,7 @@ public class RegisterServiceImpl implements RegisterService{
         for (Register register : registerList) {
 
             if (register.getMemberSuccess() && !register.getCoachSuccess()) {
-                // 유저와 코치가 모두 '성사' 상태일 때만 리스트에 추가
+
                 requestRegisterList.add(register);
             }
         }

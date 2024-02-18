@@ -78,7 +78,7 @@ public class RegisterController {
     }
 
     @PostMapping("/coach/approve/{memberId}")
-    @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 성사버튼 클릭", description = "코치가 채팅에서 '성사 완료' 버튼 누를때 api")
+    @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 성사버튼 클릭", description = "코치가 요청에대한 '수락' 버튼 누를때 api")
     public ResponseEntity<String> getApproveRegisterCoach(@RequestHeader(value = "token")String token, @PathVariable(value = "memberId") Long memberId){
 
         String userEmail = loginService.decodeJwt(token);
@@ -89,11 +89,11 @@ public class RegisterController {
 
         registerService.registerApproveSetting(member, coach);
 
-        return ResponseEntity.ok().body(member.getNickname() + "님의 요청을 거절 했습니다.");
+        return ResponseEntity.ok().body(member.getNickname() + "님과 성사가 되었습니다.");
     }
 
     @PostMapping("/coach/reject/{memberId}")
-    @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 성사버튼 클릭", description = "코치가 채팅에서 '성사 완료' 버튼 누를때 api")
+    @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 거절버튼 클릭", description = "코치가 요청에 대한 '거절' 버튼 누를때 api")
     public ResponseEntity<String> setRejectRegisterCoach(@RequestHeader(value = "token")String token, @PathVariable(value = "memberId") Long memberId){
 
         String userEmail = loginService.decodeJwt(token);
@@ -104,7 +104,7 @@ public class RegisterController {
 
         registerService.registerRejectSetting(member, coach);
 
-        return ResponseEntity.ok().body(member.getNickname() + "님과 성사가 되었습니다.");
+        return ResponseEntity.ok().body(member.getNickname() + "님의 요청을 거절 했습니다.");
     }
 
 
@@ -125,6 +125,7 @@ public class RegisterController {
 
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(requestRegisterListDTO));
     }
+
 
 
 

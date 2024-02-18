@@ -85,10 +85,8 @@ public class LoginController {
     }
 
 
-    @PostMapping("/oauth2/code/google")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestBody Map<String, String> body) {
-        String code = body.get("code");
-        System.out.println(code);
+    @GetMapping("/oauth2/code/google")
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code) {
 
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
         String accessTokenResponseBody = accessTokenResponse.getBody();

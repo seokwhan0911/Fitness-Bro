@@ -47,10 +47,10 @@ public class LoginController {
 
 
     @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<ApiResponse<LoginDTO>> KakaoLogin(@RequestBody String code) {
+    public ResponseEntity<ApiResponse<LoginDTO>> KakaoLogin(@RequestParam("code") String code) {
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
-
+//
         String token = stringResponseEntity.getBody();
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(token);
 

@@ -24,6 +24,8 @@ public class RegisterResponseDTO {
     @Builder
     @Getter
     public static class RequestRegisterDTO{
+
+        Long memberId;
         String memberNickname;
     }
 }

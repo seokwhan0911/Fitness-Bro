@@ -36,6 +36,7 @@ public class RegisterConverter {
 
     public static RegisterResponseDTO.RequestRegisterDTO torequestRegisterDTO(Register register){
         return RegisterResponseDTO.RequestRegisterDTO.builder()
+                .memberId(register.getMember().getId())
                 .memberNickname(register.getMember().getNickname())
                 .build();
     }

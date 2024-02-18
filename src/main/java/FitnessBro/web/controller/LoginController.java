@@ -95,7 +95,7 @@ public class LoginController {
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
         Role role = loginService.getRoleByEmail(userEmail);
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(code + ", code 수신 완료,userId : "+userId + ", role : " + role));
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(code + ", code 수신 완료,userId : "+userId.toString() + ", role : " + role.toString()));
     }
 
     @PostMapping("/oauth2/code/google")

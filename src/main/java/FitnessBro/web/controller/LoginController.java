@@ -89,7 +89,7 @@ public class LoginController {
     public ResponseEntity<ApiResponse<String>> GoogleToken(@RequestParam("code") String code) {
         return ResponseEntity.ok().body(ApiResponse.onSuccess("code 수신 완료"));
     }
-    @PostMapping("/oauth2/code/token/google")
+    @PostMapping("/oauth2/code/google")
     public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestBody String code) {
         //requestAccessToken이랑 getNaverAccessToken같은 역할
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);

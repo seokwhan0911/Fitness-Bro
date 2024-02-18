@@ -86,7 +86,7 @@ public class LoginController {
 
 
     @PostMapping("/oauth2/code/google")
-    public String GoogleLogin(@RequestBody Map<String, String> body) {
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestBody Map<String, String> body) {
         String code = body.get("code");
         System.out.println(code);
 
@@ -101,7 +101,7 @@ public class LoginController {
         Long userId = loginService.getIdByEmail(userEmail);
         Role role = loginService.getRoleByEmail(userEmail);
 
-        return code;
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 /*
 @GetMapping("/oauth2/code/google")

@@ -72,6 +72,7 @@ public class RegisterServiceImpl implements RegisterService{
                 .member(member)
                 .coach(coach)
                 .memberSuccess(true)
+                .coachSuccess(false)
                 .registerStatus(RegisterStatus.WAITING)
                 .build();
 

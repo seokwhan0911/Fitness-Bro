@@ -84,23 +84,33 @@ public class LoginController {
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 
-
     @GetMapping("/oauth2/code/google")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code) {
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam("accessToken") String accessToken) {
 
-        ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
-        String accessTokenResponseBody = accessTokenResponse.getBody();
-        System.out.println(accessTokenResponseBody);
-
-        HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
+        HashMap<String,String> userInfo = googleService.getUserInfo(accessToken);
         String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
 
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
         Role role = loginService.getRoleByEmail(userEmail);
-
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
+
+//    @PostMapping("/oauth2/code/google")
+//    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestBody Map<String, String> body) {
+//        String code = body.get("code");
+//        ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
+//        String accessTokenResponseBody = accessTokenResponse.getBody();
+//
+//        HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
+//        String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
+//
+//        String userEmail = loginService.decodeJwt(userToken);
+//        Long userId = loginService.getIdByEmail(userEmail);
+//        Role role = loginService.getRoleByEmail(userEmail);
+//
+//        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
+//    }
 /*
 @GetMapping("/oauth2/code/google")
     public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam("code") String code) {

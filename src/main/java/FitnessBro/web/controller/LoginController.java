@@ -49,8 +49,10 @@ public class LoginController {
     }
 
 
-    @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<ApiResponse<LoginDTO>> KakaoLogin(@RequestParam("code") String code) {
+    @PostMapping("/oauth2/code/kakao")
+    public ResponseEntity<ApiResponse<LoginDTO>> KakaoLogin(@RequestBody Map<String, String> body) {
+
+        String code = body.get("code");
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 
@@ -65,6 +67,7 @@ public class LoginController {
 
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
+
     @GetMapping("/oauth2/code/naver")
     public ResponseEntity<ApiResponse<LoginDTO>> NaverLogin(@RequestParam("code") String code, @RequestParam("state") String state) {
 

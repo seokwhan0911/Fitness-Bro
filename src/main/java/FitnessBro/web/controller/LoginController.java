@@ -46,7 +46,13 @@ public class LoginController {
 
 
     @GetMapping("/oauth2/code/kakao")
-    public ResponseEntity<LoginDTO> KakaoLogin(@RequestParam("code") String code) {
+    public ResponseEntity<LoginDTO> KakaoAuthCode() {
+
+        return null;
+    }
+
+    @PostMapping("/oauth2/code/token/kakao")
+    public ResponseEntity<LoginDTO> KakaoLogin(@RequestBody String code) {
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
 
@@ -57,9 +63,9 @@ public class LoginController {
 
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
-
         return ResponseEntity.ok().body(LoginConverter.loginDTO(userToken,userId));
     }
+
 
     @GetMapping("/oauth2/code/naver")
     public ResponseEntity<LoginDTO> NaverLogin(@RequestParam("code") String code, @RequestParam("state") String state) {

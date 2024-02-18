@@ -88,7 +88,18 @@ public class LoginController {
     @PostMapping("/oauth2/code/google")
     public String GoogleLogin(@RequestBody Map<String, String> body) {
         String code = body.get("code");
+        System.out.println(code);
 
+        ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
+        String accessTokenResponseBody = accessTokenResponse.getBody();
+        System.out.println(accessTokenResponseBody);
+
+        HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
+        String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
+
+        String userEmail = loginService.decodeJwt(userToken);
+        Long userId = loginService.getIdByEmail(userEmail);
+        Role role = loginService.getRoleByEmail(userEmail);
 
         return code;
     }

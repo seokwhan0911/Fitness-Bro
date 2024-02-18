@@ -88,14 +88,20 @@ public class CoachServiceImpl implements CoachService{
         coach.setComment(request.getComment());// 한 줄 인사말
         coach.setPrice(request.getPrice());
 
-        String address = request.getAddress();
-        Gym gym = gymService.getGymByAddress(address);
+        String region = request.getRegion();
+        String subAddress = request.getSubAddress();
+        String detailAddress = request.getDetailAddress();
 
-        coach.setAddress(gym.getAddress());
-        coach.setRegion(gym.getRegion());
-        coach.setSubAddress(gym.getSubAddress());
-        coach.setDetailAddress(gym.getDetailAddress());
-        coach.setGym(gym);
+            if(region != null && subAddress != null && detailAddress != null)
+        {
+            Gym gym = gymService.getGymByAddress(region, subAddress, detailAddress);
+            coach.setAddress(gym.getAddress());
+            coach.setRegion(gym.getRegion());
+            coach.setSubAddress(gym.getSubAddress());
+            coach.setDetailAddress(gym.getDetailAddress());
+            coach.setGym(gym);
+        }
+
 
     }
 

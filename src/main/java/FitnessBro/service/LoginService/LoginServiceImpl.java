@@ -4,6 +4,7 @@ import FitnessBro.domain.Coach;
 import FitnessBro.domain.Member;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
+import FitnessBro.web.dto.Login.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,21 @@ public class LoginServiceImpl implements LoginService {
         }
         return id;
     }
+
+    @Override
+    public Role getRoleByEmail(String email){
+        Role role = null;
+        if(memberRepository.findMemberByEmail(email) == null) {
+            Coach coach = coachRepository.findCoachByEmail(email);
+            role = Role.COACH;
+        }
+        else{
+            Member member = memberRepository.findMemberByEmail(email);
+            role = Role.MEMBER;
+        }
+
+        return role;
+    }
+
 
 }

@@ -23,8 +23,8 @@ public class GymServiceImpl implements GymService{
     }
     @Override
     @Transactional
-    public Gym getGymByAddress(String address){
-        Gym gym = gymRepository.findGymByAddress(address);
+    public Gym getGymByAddress(String region, String subAddress, String detailAddress){
+        Gym gym = gymRepository.findGymByRegionSubAddressDetailAddress(region, subAddress, detailAddress);
 
         return gym;
     }

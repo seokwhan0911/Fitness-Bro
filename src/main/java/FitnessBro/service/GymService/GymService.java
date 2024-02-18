@@ -9,6 +9,6 @@ public interface GymService {
 
     public List<Gym> getGymListByKeyWord(String keyword);
 
-    Gym getGymByAddress(String address);
+    Gym getGymByAddress(String region, String subAddress, String detailAddress);
 
 }

@@ -86,7 +86,16 @@ public class LoginController {
 
     @GetMapping("/oauth2/code/google")
     public ResponseEntity<ApiResponse<String>> GoogleToken(@RequestParam("code") String code) {
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(code + "code 수신 완료"));
+        ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
+        String accessTokenResponseBody = accessTokenResponse.getBody();
+
+        HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
+        String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
+
+        String userEmail = loginService.decodeJwt(userToken);
+        Long userId = loginService.getIdByEmail(userEmail);
+        Role role = loginService.getRoleByEmail(userEmail);
+        return ResponseEntity.ok().body(ApiResponse.onSuccess(code + ", code 수신 완료,userId : "+userId + ", role : " + role));
     }
 
     @PostMapping("/oauth2/code/google")

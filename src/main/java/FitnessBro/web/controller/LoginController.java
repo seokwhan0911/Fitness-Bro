@@ -53,7 +53,7 @@ public class LoginController {
     public ResponseEntity<ApiResponse<LoginDTO>> KakaoLogin(@RequestParam("code") String code) {
 
         ResponseEntity<String> stringResponseEntity = kakaoService.getKakaoAccessToken(code);
-//
+
         String token = stringResponseEntity.getBody();
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(token);
 
@@ -84,8 +84,13 @@ public class LoginController {
         return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
     }
 
-    @GetMapping("/oauth2/code/google")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam("code") String code) {
+//    @PostMapping("/oauth2/code/google")
+//    public ResponseEntity<ApiResponse<String>> GoogleToken(@RequestParam("code") String code) {
+//        return ResponseEntity.ok().body(ApiResponse.onSuccess("code 수신 완료"));
+//    }
+
+    @PostMapping("/oauth2/code/google")
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code) {
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
         String accessTokenResponseBody = accessTokenResponse.getBody();
 
@@ -114,5 +119,10 @@ public class LoginController {
 //
 //        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId,role)));
 //    }
+
+//    @GetMapping("/oauth2/code/google")
+//    public ResponseEntity<ApiResponse<String>> GoogleToken(@RequestParam("code") String code) {
+//          return ResponseEntity.ok().body("code 수신 완료");
+
 
 }

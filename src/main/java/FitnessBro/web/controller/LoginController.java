@@ -10,12 +10,14 @@ import FitnessBro.service.OAuth2Service.NaverService;
 import FitnessBro.web.dto.Login.LoginRequestDTO;
 import FitnessBro.web.dto.LoginDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -81,7 +83,7 @@ public class LoginController {
     }
 
     @GetMapping("/oauth2/code/google")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code) {
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
         //requestAccessToken이랑 getNaverAccessToken같은 역할
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
         String accessTokenResponseBody = accessTokenResponse.getBody();
@@ -92,6 +94,9 @@ public class LoginController {
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        return ResponseEntity.ok().body(ApiResponse.onSuccess(LoginConverter.loginDTO(userToken,userId)));
+        String frontendURL = "http://localhost:3000/"; // 프론트엔드 URL
+        response.sendRedirect(frontendURL + "?token=" + userToken + "&userId=" + userId);
+        return ResponseEntity.ok().build();
     }
+
 }

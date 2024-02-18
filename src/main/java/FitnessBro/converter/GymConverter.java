@@ -13,6 +13,7 @@ public class GymConverter {
                 .map(gym -> GymResponseDTO.GymListDTO.builder()
                         .id(gym.getId())
                         .name(gym.getName())
+                        .address(gym.getAddress())
                         .region(gym.getRegion())
                         .subAddress(gym.getSubAddress())
                         .detailAddress(gym.getDetailAddress())

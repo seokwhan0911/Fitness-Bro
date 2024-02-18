@@ -11,6 +11,7 @@ public class GymResponseDTO {
     public static class GymListDTO{
         Long id;
         String name;
+        String address;
         String region;
         String subAddress;
         String detailAddress;

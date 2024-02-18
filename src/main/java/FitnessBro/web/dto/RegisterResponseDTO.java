@@ -20,4 +20,10 @@ public class RegisterResponseDTO {
         String nickname;
         LocalDateTime createdAt;
     }
+
+    @Builder
+    @Getter
+    public static class RequestRegisterDTO{
+        String memberNickname;
+    }
 }

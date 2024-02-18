@@ -9,8 +9,10 @@ import FitnessBro.service.CoachService.CoachService;
 import FitnessBro.service.LoginService.LoginService;
 import FitnessBro.service.MemberService.MemberCommandService;
 import FitnessBro.service.RegisterService.RegisterService;
+import FitnessBro.web.dto.RegisterRequestDTO;
 import FitnessBro.web.dto.RegisterResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,29 +64,29 @@ public class RegisterController {
 
 
 
-    @PostMapping("/member/{coachId}")
+    @PostMapping("/member")
     @Operation(summary = "유저가 먼저 성사버튼 클릭", description = "유저가 채팅에서 '성사 완료' 버튼 누를때 api")
-    public ResponseEntity<String> getRegisterMember(@RequestHeader(value = "token") String token, @PathVariable(value = "coachId") Long coachId){
+    public ResponseEntity<String> getRegisterMember(@RequestHeader(value = "token") String token, @RequestBody @Valid RegisterRequestDTO.CoachRequestDTO request){
 
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
         Member member = memberCommandService.getMemberById(userId);
-        Coach coach = coachService.getCoachById(coachId);
+        Coach coach = coachService.getCoachById(request.getCoachId());
 
         registerService.registerSetting(member, coach);
 
         return ResponseEntity.ok().body("코치에게 성사 요청을 보냈습니다.");
     }
 
-    @PostMapping("/coach/approve/{memberId}")
+    @PostMapping("/coach/approve")
     @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 성사버튼 클릭", description = "코치가 요청에대한 '수락' 버튼 누를때 api")
-    public ResponseEntity<String> getApproveRegisterCoach(@RequestHeader(value = "token")String token, @PathVariable(value = "memberId") Long memberId){
+    public ResponseEntity<String> getApproveRegisterCoach(@RequestHeader(value = "token")String token, @RequestBody @Valid RegisterRequestDTO.MemberRequestDTO request){
 
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        Member member = memberCommandService.getMemberById(memberId);
+        Member member = memberCommandService.getMemberById(request.getMemberId());
         Coach coach = coachService.getCoachById(userId);
 
         registerService.registerApproveSetting(member, coach);
@@ -92,14 +94,14 @@ public class RegisterController {
         return ResponseEntity.ok().body(member.getNickname() + "님과 성사가 되었습니다.");
     }
 
-    @PostMapping("/coach/reject/{memberId}")
+    @PostMapping("/coach/reject")
     @Operation(summary = "유저가 먼저 요청한 성사 요청 -> 코치가 거절버튼 클릭", description = "코치가 요청에 대한 '거절' 버튼 누를때 api")
-    public ResponseEntity<String> setRejectRegisterCoach(@RequestHeader(value = "token")String token, @PathVariable(value = "memberId") Long memberId){
+    public ResponseEntity<String> setRejectRegisterCoach(@RequestHeader(value = "token")String token, @RequestBody @Valid RegisterRequestDTO.MemberRequestDTO request){
 
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
 
-        Member member = memberCommandService.getMemberById(memberId);
+        Member member = memberCommandService.getMemberById(request.getMemberId());
         Coach coach = coachService.getCoachById(userId);
 
         registerService.registerRejectSetting(member, coach);

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
@@ -88,7 +89,8 @@ public class LoginController {
         return ResponseEntity.ok().body(ApiResponse.onSuccess("code 수신 완료"));
     }
     @PostMapping("/oauth2/code/google")
-    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestParam("code") String code) {
+    public ResponseEntity<ApiResponse<LoginDTO>> GoogleLogin(@RequestBody Map<String, String> body) {
+        String code = body.get("code");
         //requestAccessToken이랑 getNaverAccessToken같은 역할
         ResponseEntity<String> accessTokenResponse = googleService.requestAccessToken(code);
         String accessTokenResponseBody = accessTokenResponse.getBody();

@@ -126,8 +126,4 @@ public class RegisterController {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.onSuccess(requestRegisterListDTO));
     }
 
-
-
-
-
 }

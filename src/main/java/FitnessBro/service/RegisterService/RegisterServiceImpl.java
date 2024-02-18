@@ -64,6 +64,13 @@ public class RegisterServiceImpl implements RegisterService{
     @Override
     @Transactional
     public Register registerSetting(Member member, Coach coach){
+        Register existRegister = registerRepository.findByMemberAndCoach(member,coach);
+        if(existRegister != null){
+            existRegister.setMemberSuccess(true);
+            existRegister.setCoachSuccess(false);
+            existRegister.setRegisterStatus(RegisterStatus.WAITING);
+            return existRegister;
+        }
         Register register = Register.builder()
                 .member(member)
                 .coach(coach)
@@ -79,19 +86,22 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     @Transactional
-    public void registerApproveSetting(Member member, Coach coach){
+    public Register registerApproveSetting(Member member, Coach coach){
+
         Register register = getRegisterByMemberCoach(member, coach);
         register.setCoachSuccess(true);
         register.setRegisterStatus(RegisterStatus.APPROVED);
-
+        return register;
     }
 
     @Override
     @Transactional
-    public void registerRejectSetting(Member member, Coach coach){
+    public Register registerRejectSetting(Member member, Coach coach){
         Register register = getRegisterByMemberCoach(member, coach);
         register.setMemberSuccess(false);
         register.setRegisterStatus(RegisterStatus.UNSUCCESS);
+
+        return register;
     }
 
 
@@ -116,7 +126,7 @@ public class RegisterServiceImpl implements RegisterService{
         for (Register register : registerList) {
 
             if (register.getMemberSuccess() && !register.getCoachSuccess()) {
-
+                // 유저와 코치가 모두 '성사' 상태일 때만 리스트에 추가
                 requestRegisterList.add(register);
             }
         }

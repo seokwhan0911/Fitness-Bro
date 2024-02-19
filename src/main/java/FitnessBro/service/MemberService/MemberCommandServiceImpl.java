@@ -34,7 +34,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Value("${jwt.secret}")
     private String key;
-    private Long expireTimeMs = 1000 *60 * 60l;
+    private Long expireTimeMs = 10000 *60 * 60l;
     private final BCryptPasswordEncoder encoder;
 
     private final MemberRepository memberRepository;

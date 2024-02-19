@@ -33,4 +33,17 @@ public class RegisterConverter {
                 .map(register -> toRegisterCoachDTO(register))
                 .collect(Collectors.toList());
     }
+
+    public static RegisterResponseDTO.RequestRegisterDTO torequestRegisterDTO(Register register){
+        return RegisterResponseDTO.RequestRegisterDTO.builder()
+                .memberId(register.getMember().getId())
+                .memberNickname(register.getMember().getNickname())
+                .build();
+    }
+
+    public static List<RegisterResponseDTO.RequestRegisterDTO> toRequestRegisterListDTO(List<Register> registerList){
+        return registerList.stream()
+                .map(register -> torequestRegisterDTO(register))
+                .collect(Collectors.toList());
+    }
 }

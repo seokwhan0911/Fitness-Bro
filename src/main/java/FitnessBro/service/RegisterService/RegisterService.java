@@ -19,8 +19,13 @@ public interface RegisterService {
 
     Register registerSetting(Member member, Coach coach);
 
-    Register registerCoachSetting(Member member, Coach coach);
+    Register registerApproveSetting(Member member, Coach coach);
 
     public Long getMatchNumCoach(Long coachId);
     public Long getMatchNumMember(Long memberId);
+
+    List<Register> getRequestRegisterList(List<Register> registerList);
+
+    Register registerRejectSetting(Member member, Coach coach);
+
 }

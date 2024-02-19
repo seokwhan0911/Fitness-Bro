@@ -59,7 +59,7 @@ public class GoogleService {
 
     public ResponseEntity<String> requestAccessToken(String code) {
         RestTemplate restTemplate=new RestTemplate();
-
+        
         //MultiValueMap으로 매개변수 설정.
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.set("code", code);
@@ -71,11 +71,11 @@ public class GoogleService {
         return restTemplate.postForEntity(GOOGLE_SOCIAL_TOKEN_URL, queryParams, String.class);
     }
 
-    public HashMap<String, String> getUserInfo(String accessTokenResponseBody) {
+    public HashMap<String, String> getUserInfo(String accessToken) {
         //accessToken이 포함된 response body(json파일)를 전달받아서 파싱후 access_token 추출
         JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(accessTokenResponseBody);
-        String accessToken = element.getAsJsonObject().get("access_token").getAsString();
+//        JsonElement element = parser.parse(accessTokenResponseBody);
+//        String accessToken = element.getAsJsonObject().get("access_token").getAsString();
 
         //RestTemplate으로 Google API 서버에 유저 정보를 HTTP GET 요청
         RestTemplate restTemplate = new RestTemplate();

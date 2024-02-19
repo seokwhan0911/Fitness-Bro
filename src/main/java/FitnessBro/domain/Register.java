@@ -1,8 +1,6 @@
 package FitnessBro.domain;
 
-import FitnessBro.domain.Coach;
 import FitnessBro.domain.common.BaseEntity;
-import FitnessBro.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +32,7 @@ public class Register extends BaseEntity {
     private Boolean  memberSuccess = false;
 
     private Boolean coachSuccess = false;
+
+    @Enumerated(EnumType.STRING)
+    private RegisterStatus registerStatus = RegisterStatus.UNSUCCESS;
 }

@@ -1,10 +1,9 @@
 package FitnessBro.service.RegisterService;
 
-import FitnessBro.apiPayload.code.status.ErrorStatus;
-import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.domain.Coach;
-import FitnessBro.domain.Register;
 import FitnessBro.domain.Member;
+import FitnessBro.domain.Register;
+import FitnessBro.domain.RegisterStatus;
 import FitnessBro.respository.CoachRepository;
 import FitnessBro.respository.MemberRepository;
 import FitnessBro.respository.RegisterRepository;
@@ -58,19 +57,26 @@ public class RegisterServiceImpl implements RegisterService{
                 trueRegisterList.add(register);
             }
         }
-        if(trueRegisterList.isEmpty()){
-            throw new TempHandler(ErrorStatus.REGISTER_NOT_FOUND);
-        }
+
         return trueRegisterList;
     }
 
     @Override
     @Transactional
     public Register registerSetting(Member member, Coach coach){
+        Register existRegister = registerRepository.findByMemberAndCoach(member,coach);
+        if(existRegister != null){
+            existRegister.setMemberSuccess(true);
+            existRegister.setCoachSuccess(false);
+            existRegister.setRegisterStatus(RegisterStatus.WAITING);
+            return existRegister;
+        }
         Register register = Register.builder()
                 .member(member)
                 .coach(coach)
                 .memberSuccess(true)
+                .coachSuccess(false)
+                .registerStatus(RegisterStatus.WAITING)
                 .build();
 
         registerRepository.save(register);
@@ -80,12 +86,24 @@ public class RegisterServiceImpl implements RegisterService{
 
     @Override
     @Transactional
-    public Register registerCoachSetting(Member member, Coach coach){
+    public Register registerApproveSetting(Member member, Coach coach){
+
         Register register = getRegisterByMemberCoach(member, coach);
         register.setCoachSuccess(true);
+        register.setRegisterStatus(RegisterStatus.APPROVED);
+        return register;
+    }
+
+    @Override
+    @Transactional
+    public Register registerRejectSetting(Member member, Coach coach){
+        Register register = getRegisterByMemberCoach(member, coach);
+        register.setMemberSuccess(false);
+        register.setRegisterStatus(RegisterStatus.UNSUCCESS);
 
         return register;
     }
+
 
     @Override
     @Transactional
@@ -97,5 +115,22 @@ public class RegisterServiceImpl implements RegisterService{
     @Transactional
     public Long getMatchNumMember(Long memberId){
         return (long)successRegisterList(getRegisterListByMember(memberRepository.getById(memberId))).size();
+    }
+
+    @Override
+    @Transactional
+    public List<Register> getRequestRegisterList(List<Register> registerList){
+
+        List<Register> requestRegisterList = new ArrayList<>();
+
+        for (Register register : registerList) {
+
+            if (register.getMemberSuccess() && !register.getCoachSuccess()) {
+                // 유저와 코치가 모두 '성사' 상태일 때만 리스트에 추가
+                requestRegisterList.add(register);
+            }
+        }
+
+        return requestRegisterList;
     }
 }

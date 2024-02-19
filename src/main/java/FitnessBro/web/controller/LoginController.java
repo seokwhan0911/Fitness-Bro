@@ -92,6 +92,7 @@ public class LoginController {
         HashMap<String,String> userInfo = googleService.getUserInfo(accessTokenResponseBody);
         String userToken = memberCommandService.joinSocialMember(userInfo.get("email"), userInfo.get("id"));
 
+
         String userEmail = loginService.decodeJwt(userToken);
         Long userId = loginService.getIdByEmail(userEmail);
         Role role = loginService.getRoleByEmail(userEmail);

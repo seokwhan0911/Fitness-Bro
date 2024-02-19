@@ -93,7 +93,7 @@ public class LoginController {
     public ResponseEntity<ApiResponse<String>> GoogleCode(@RequestParam(value = "code") String code) {
         return ResponseEntity.ok().body(ApiResponse.onSuccess("code : " + code));
     }
-
+//
     @GetMapping("/oauth2/code/google/token")
     public ResponseEntity<ApiResponse<LoginDTO>> GoogleToken(@RequestParam(value = "accessToken") String accessToken) {
 

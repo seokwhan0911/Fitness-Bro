@@ -10,7 +10,9 @@ public class RegisterConverter {
 
     public static RegisterResponseDTO.RegisterMemberDTO toRegisterMemberDTO(Register register){
         return RegisterResponseDTO.RegisterMemberDTO.builder()
+                .memberId(register.getMember().getId())
                 .nickname(register.getMember().getNickname())
+                .memberPicture(register.getMember().getPictureURL())
                 .createdAt(register.getCreatedAt())
                 .build();
     }
@@ -23,7 +25,9 @@ public class RegisterConverter {
 
     public static RegisterResponseDTO.RegisterCoachDTO toRegisterCoachDTO(Register register){
         return RegisterResponseDTO.RegisterCoachDTO.builder()
+                .coachId(register.getCoach().getId())
                 .nickname(register.getCoach().getNickname())
+                .coachPicture(register.getCoach().getPictureURL())
                 .createdAt(register.getCreatedAt())
                 .build();
     }

@@ -3,6 +3,7 @@ package FitnessBro.service.ReviewService;
 import FitnessBro.apiPayload.code.status.ErrorStatus;
 import FitnessBro.apiPayload.exception.handler.TempHandler;
 import FitnessBro.aws.s3.AmazonS3Manager;
+import FitnessBro.converter.CoachConverter;
 import FitnessBro.converter.ReviewConverter;
 import FitnessBro.domain.Coach;
 import FitnessBro.domain.Review;
@@ -69,6 +70,8 @@ public class ReviewServiceImpl implements ReviewService {
         Coach coach = coachRepository.getCoachByNickname(request.getNickname());
         Review review = ReviewConverter.toReview(request, member, coach);
 
+        reviewRepository.save(review);
+
         // file마다 유일한 URL 값 생성
         for(MultipartFile file : files){
             String uuid = UUID.randomUUID().toString();
@@ -79,8 +82,9 @@ public class ReviewServiceImpl implements ReviewService {
             reviewImageRepository.save(ReviewConverter.toReviewImage(pictureUrl, review));
         }
 
-        reviewRepository.save(review);
+
     }
+
 
     @Override
     @Transactional
@@ -97,9 +101,6 @@ public class ReviewServiceImpl implements ReviewService {
         }
         Review review = ReviewConverter.toReview(request, member, coach);
         reviewRepository.save(review);
-
-
-
 
     }
 

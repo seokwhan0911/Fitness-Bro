@@ -59,9 +59,7 @@ public class AmazonS3Manager {
         return amazonConfig.getProfilePath() + '/' + uuid.getUuid();
     }
 
-    public String generateReviewKeyName(Uuid uuid){
-        return amazonConfig.getReviewPath() + '/' + uuid.getUuid();
-    }
+    public String generateReviewKeyName(Uuid uuid){ return amazonConfig.getReviewPath() + '/' + uuid.getUuid(); }
 
     public String generateAlbumKeyName(Uuid uuid) {
         return amazonConfig.getAlbumPath() + '/' + uuid.getUuid();

@@ -53,6 +53,7 @@ public class RegisterController {
 
         String userEmail = loginService.decodeJwt(token);
         Long userId = loginService.getIdByEmail(userEmail);
+
         Member member = memberCommandService.getMemberById(userId);
         List<Register> registerList = registerService.getRegisterListByMember(member);
 
